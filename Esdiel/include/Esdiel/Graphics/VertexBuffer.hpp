@@ -95,7 +95,7 @@ namespace esd
     private:
 
         ///
-        void M_Init();
+        void M_Init() noexcept;
 
         ///
         void M_Update() const noexcept;
