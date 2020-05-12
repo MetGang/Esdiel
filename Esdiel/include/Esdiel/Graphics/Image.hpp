@@ -1,7 +1,7 @@
 #pragma once
 
 // Esdiel
-#include <Esdiel/Core.hpp>
+#include <Esdiel/Math/Vector.hpp>
 
 // C++
 #include <vector>
@@ -79,6 +79,9 @@ namespace esd
 
         ///
         uint32_t GetChannelsCount() const;
+
+        ///
+        Vec2u GetSize() const;
 
     private:
 

@@ -165,4 +165,10 @@ namespace esd
     {
         return m_channels;
     }
+
+    ///
+    Vec2u Image::GetSize() const
+    {
+        return { m_width, m_height };
+    }
 }
