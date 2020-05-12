@@ -22,7 +22,7 @@ namespace esd
         : m_program { rhs.m_program }
         , m_uniformsLocation { std::move(rhs.m_uniformsLocation) }
     {
-        rhs.m_program = 0;
+        rhs.M_Defaultize();
     }
 
     ShaderProgram& ShaderProgram::operator = (ShaderProgram&& rhs) noexcept
@@ -34,7 +34,7 @@ namespace esd
             m_program = rhs.m_program;
             m_uniformsLocation = std::move(rhs.m_uniformsLocation);
 
-            rhs.m_program = 0;
+            rhs.M_Defaultize();
         }
 
         return *this;
@@ -320,11 +320,15 @@ namespace esd
         return m_program;
     }
 
+    void ShaderProgram::M_Defaultize() noexcept
+    {
+        m_program = 0;
+    }
+
     void ShaderProgram::M_Destroy() noexcept
     {
         glDeleteProgram(m_program);
 
-        m_program = 0;
         m_uniformsLocation.clear();
     }
 
