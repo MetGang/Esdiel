@@ -8,6 +8,9 @@
 
 namespace esd
 {
+    //
+    class Color;
+
     ///
     enum class ImgExtType : int32_t
     {
@@ -43,6 +46,9 @@ namespace esd
 
         ///
         ~Image() = default;
+
+        ///
+        void Create(Vec2u const& size, Color const& color);
 
         ///
         bool LoadFromFile(char const* filePath);

@@ -1,5 +1,8 @@
 #include <Esdiel/Graphics/Image.hpp>
 
+// Esdiel
+#include <Esdiel/Graphics/Color.hpp>
+
 // stb
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb/stb_image.h>
@@ -43,6 +46,19 @@ namespace esd
         }
 
         return *this;
+    }
+
+    void Image::Create(Vec2u const& size, Color const& color)
+    {
+        m_bytes.resize(size[0] * size[1] * 4);
+
+        for (size_t i = 0; i < m_bytes.size(); i += 4)
+        {
+            m_bytes[i + 0] = color.r;
+            m_bytes[i + 1] = color.g;
+            m_bytes[i + 2] = color.b;
+            m_bytes[i + 3] = color.a;
+        }
     }
 
     bool Image::LoadFromFile(char const* filePath)
