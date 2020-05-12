@@ -18,8 +18,10 @@ namespace esd
 
     Texture::Texture(Texture&& rhs) noexcept
         : m_texture { rhs.m_texture }
+        , m_width { rhs.m_width }
+        , m_height { rhs.m_height }
     {
-        rhs.m_texture = 0;
+        rhs.M_Defaultize();
     }
 
     Texture& Texture::operator = (Texture&& rhs) noexcept
@@ -29,7 +31,10 @@ namespace esd
             M_Destroy();
 
             m_texture = rhs.m_texture;
-            rhs.m_texture = 0;
+            m_width = rhs.m_width;
+            m_height = rhs.m_height;
+
+            rhs.M_Defaultize();
         }
 
         return *this;
@@ -49,10 +54,10 @@ namespace esd
     {
         M_Destroy();
 
+        glGenTextures(1, &m_texture);
+
         m_width = size.x;
         m_height = size.y;
-
-        glGenTextures(1, &m_texture);
 
         Bind(0);
 
@@ -104,15 +109,6 @@ namespace esd
         return m_texture;
     }
 
-    void Texture::M_Destroy() noexcept
-    {
-        glDeleteTextures(1, &m_texture);
-
-        m_texture = 0;
-        m_width = 0;
-        m_height = 0;
-    }
-
     void Texture::Bind(size_t slot) const noexcept
     {
         if (m_texture)
@@ -120,5 +116,17 @@ namespace esd
             glActiveTexture(GL_TEXTURE0 + slot);
             glBindTexture(GL_TEXTURE_2D, m_texture);
         }
+    }
+
+    void Texture::M_Defaultize() noexcept
+    {
+        m_texture = 0;
+        m_width = 0;
+        m_height = 0;
+    }
+
+    void Texture::M_Destroy() noexcept
+    {
+        glDeleteTextures(1, &m_texture);
     }
 }

@@ -63,7 +63,10 @@ namespace esd
     private:
 
         ///
-        void M_Destroy();
+        void M_Defaultize() noexcept;
+
+        ///
+        void M_Destroy() noexcept;
 
         NativeHandle_t m_texture;
         uint32_t m_width;
