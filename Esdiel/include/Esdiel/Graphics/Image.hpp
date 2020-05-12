@@ -42,12 +42,6 @@ namespace esd
         Image& operator = (Image&& rhs) noexcept;
 
         ///
-        Image(Image const&&) = delete;
-
-        ///
-        Image& operator = (Image const&&) = delete;
-
-        ///
         ~Image() = default;
 
         ///
