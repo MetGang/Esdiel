@@ -16,13 +16,13 @@ namespace esd
         static constexpr size_t size = vSize;
 
         ///
-        constexpr auto operator[] (size_t index) -> T&
+        constexpr auto operator[] (size_t index) -> Value_t&
         {
             return data[index];
         }
 
         ///
-        constexpr auto operator[] (size_t index) const -> T const&
+        constexpr auto operator[] (size_t index) const -> Value_t const&
         {
             return data[index];
         }
