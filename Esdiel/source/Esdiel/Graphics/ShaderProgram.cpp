@@ -11,7 +11,7 @@
 
 namespace esd
 {
-    ShaderProgram::ShaderProgram()
+    ShaderProgram::ShaderProgram() noexcept
         : m_program { 0 }
         , m_uniformsLocation {}
     {
@@ -40,12 +40,12 @@ namespace esd
         return *this;
     }
 
-    ShaderProgram::~ShaderProgram()
+    ShaderProgram::~ShaderProgram() noexcept
     {
         M_Destroy();
     }
 
-    ShaderProgram::NativeHandle_t ShaderProgram::GetNativeHandle() const
+    ShaderProgram::NativeHandle_t ShaderProgram::GetNativeHandle() const noexcept
     {
         return m_program;
     }
@@ -86,7 +86,7 @@ namespace esd
         return false;
     }
 
-    void ShaderProgram::UseProgram() const
+    void ShaderProgram::UseProgram() const noexcept
     {
         glUseProgram(m_program);
     }
@@ -315,12 +315,12 @@ namespace esd
         return false;
     }
 
-    bool ShaderProgram::IsValid() const
+    bool ShaderProgram::IsValid() const noexcept
     {
         return m_program;
     }
 
-    void ShaderProgram::M_Destroy()
+    void ShaderProgram::M_Destroy() noexcept
     {
         glDeleteProgram(m_program);
 
