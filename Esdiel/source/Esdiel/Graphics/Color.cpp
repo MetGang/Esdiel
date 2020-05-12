@@ -21,10 +21,10 @@ namespace esd
     }
 
     Color::Color(uint32_t packed) noexcept
-        : r { (packed >> 24) & 0xff }
-        , g { (packed >> 16) & 0xff }
-        , b { (packed >> 8) & 0xff }
-        , a { (packed >> 0) & 0xff }
+        : r { static_cast<uint8_t>((packed >> 24) & 0xff) }
+        , g { static_cast<uint8_t>((packed >> 16) & 0xff) }
+        , b { static_cast<uint8_t>((packed >> 8) & 0xff) }
+        , a { static_cast<uint8_t>((packed >> 0) & 0xff) }
     {
 
     }
