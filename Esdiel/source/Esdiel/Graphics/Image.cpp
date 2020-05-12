@@ -26,9 +26,7 @@ namespace esd
         , m_height { rhs.m_height }
         , m_channels { rhs.m_channels }
     {
-        rhs.m_width = 0;
-        rhs.m_height = 0;
-        rhs.m_channels = 0;
+        rhs.M_Defaultize();
     }
 
     Image& Image::operator = (Image&& rhs) noexcept
@@ -40,12 +38,17 @@ namespace esd
             m_height = rhs.m_height;
             m_channels = rhs.m_channels;
 
-            rhs.m_width = 0;
-            rhs.m_height = 0;
-            rhs.m_channels = 0;
+            rhs.M_Defaultize();
         }
 
         return *this;
+    }
+
+    void Image::Clear() noexcept
+    {
+        m_bytes.clear();
+
+        M_Defaultize();
     }
 
     void Image::Create(Vec2u const& size, Color const& color)
@@ -191,5 +194,12 @@ namespace esd
     size_t Image::GetBytesCount() const noexcept
     {
         return m_width * m_height * 4;
+    }
+
+    void Image::M_Defaultize() noexcept
+    {
+        m_width = 0;
+        m_height = 0;
+        m_channels = 0;
     }
 }

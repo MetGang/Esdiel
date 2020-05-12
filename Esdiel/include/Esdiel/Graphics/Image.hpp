@@ -48,6 +48,9 @@ namespace esd
         ~Image() noexcept = default;
 
         ///
+        void Clear() noexcept;
+
+        ///
         void Create(Vec2u const& size, Color const& color);
 
         ///
@@ -87,6 +90,9 @@ namespace esd
         size_t GetBytesCount() const noexcept;
 
     private:
+
+        ///
+        void M_Defaultize() noexcept;
 
         Bytes_t m_bytes;
         uint32_t m_width;
