@@ -36,11 +36,11 @@
 #include <cstdint>
 
 // Asserting
-#if defined(NDEBUG)
-    #define ESD_ASSERT(__msg, __expr)
-    #define ESD_JUST_ASSERT(__msg)
-#else
+#if defined(ESD_DEBUG)
     #include <cassert>
     #define ESD_ASSERT(__msg, __expr) assert((__msg) && (__expr))
     #define ESD_JUST_ASSERT(__msg) assert(!(__msg))
+#else
+    #define ESD_ASSERT(__msg, __expr)
+    #define ESD_JUST_ASSERT(__msg)
 #endif
