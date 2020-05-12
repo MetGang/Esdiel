@@ -49,8 +49,8 @@ namespace esd
     {
         M_Destroy();
 
-        m_width = size[0];
-        m_height = size[1];
+        m_width = size.x;
+        m_height = size.y;
 
         glGenTextures(1, &m_texture);
 
@@ -107,6 +107,9 @@ namespace esd
     void Texture::M_Destroy()
     {
         glDeleteTextures(1, &m_texture);
+
+        m_width = 0;
+        m_height = 0;
     }
 
     void Texture::Bind(size_t slot) const
