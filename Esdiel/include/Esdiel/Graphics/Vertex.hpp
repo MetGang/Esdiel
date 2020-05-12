@@ -8,7 +8,7 @@ namespace esd
     ///
     struct Vertex
     {
-        Vec2f position;
+        Vec3f position;
         Vec4f color;
         Vec2f texCoord;
     };
