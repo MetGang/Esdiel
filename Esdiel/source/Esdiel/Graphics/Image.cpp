@@ -61,7 +61,7 @@ namespace esd
         }
     }
 
-    bool Image::LoadFromFile(char const* filePath) noexcept
+    bool Image::LoadFromFile(char const* filePath)
     {
         int32_t w;
         int32_t h;
