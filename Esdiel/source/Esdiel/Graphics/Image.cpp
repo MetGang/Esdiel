@@ -1,4 +1,4 @@
-#include <Esdiel/Image.hpp>
+#include <Esdiel/Graphics/Image.hpp>
 
 // stb
 #define STB_IMAGE_IMPLEMENTATION
