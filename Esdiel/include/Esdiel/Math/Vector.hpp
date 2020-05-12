@@ -13,8 +13,10 @@ namespace esd
 
         static constexpr size_t size = 2;
 
-        Value_t x;
-        Value_t y;
+        union {
+            Value_t data[size];
+            struct { Value_t x, y; };
+        };
     };
 
     using Vec2b = Vec2<bool>;
@@ -32,9 +34,10 @@ namespace esd
 
         static constexpr size_t size = 3;
 
-        Value_t x;
-        Value_t y;
-        Value_t z;
+        union {
+            Value_t data[size];
+            struct { Value_t x, y, z; };
+        };
     };
 
     using Vec3b = Vec3<bool>;
@@ -52,10 +55,10 @@ namespace esd
 
         static constexpr size_t size = 4;
 
-        Value_t x;
-        Value_t y;
-        Value_t z;
-        Value_t w;
+        union {
+            Value_t data[size];
+            struct { Value_t x, y, z, w; };
+        };
     };
 
     using Vec4b = Vec4<bool>;
