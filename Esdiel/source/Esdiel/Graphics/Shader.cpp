@@ -49,7 +49,7 @@ namespace esd
     Shader::Shader(Shader&& rhs) noexcept
         : m_shader { rhs.m_shader }
     {
-        rhs.m_shader = 0;
+        rhs.M_Defaultize();
     }
 
     Shader& Shader::operator = (Shader&& rhs) noexcept
@@ -59,7 +59,8 @@ namespace esd
             M_Destroy();
 
             m_shader = rhs.m_shader;
-            rhs.m_shader = 0;
+
+            rhs.M_Defaultize();
         }
 
         return *this;
@@ -92,11 +93,14 @@ namespace esd
         return m_shader;
     }
 
+    void Shader::M_Defaultize() noexcept
+    {
+        m_shader = 0;
+    }
+
     void Shader::M_Destroy() noexcept
     {
         glDeleteShader(m_shader);
-
-        m_shader = 0;
     }
 
     bool Shader::M_Compile(ShaderType type, char const* data, int32_t size) noexcept

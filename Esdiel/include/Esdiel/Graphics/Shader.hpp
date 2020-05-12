@@ -45,6 +45,9 @@ namespace esd
     private:
 
         ///
+        void M_Defaultize() noexcept;
+
+        ///
         void M_Destroy() noexcept;
 
         ///
