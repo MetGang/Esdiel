@@ -9,6 +9,8 @@ namespace esd
     template <size_t vSize, typename T>
     class Vector
     {
+    public:
+
         using Value_t = T;
 
         static constexpr size_t size = vSize;
