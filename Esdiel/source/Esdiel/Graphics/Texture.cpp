@@ -8,7 +8,7 @@
 
 namespace esd
 {
-    Texture::Texture()
+    Texture::Texture() noexcept
         : m_texture { 0 }
         , m_width { 0 }
         , m_height { 0 }
@@ -35,17 +35,17 @@ namespace esd
         return *this;
     }
 
-    Texture::~Texture()
+    Texture::~Texture() noexcept
     {
         M_Destroy();
     }
 
-    Texture::NativeHandle_t Texture::GetNativeHandle() const
+    Texture::NativeHandle_t Texture::GetNativeHandle() const noexcept
     {
         return m_texture;
     }
 
-    bool Texture::Create(Vec2u const& size, void const* data)
+    bool Texture::Create(Vec2u const& size, void const* data) noexcept
     {
         M_Destroy();
 
@@ -67,7 +67,7 @@ namespace esd
         return true;
     }
 
-    bool Texture::LoadFromImage(Image const& image)
+    bool Texture::LoadFromImage(Image const& image) noexcept
     {
         return Create(image.GetSize(), image.GetData());
     }
@@ -84,27 +84,27 @@ namespace esd
         return false;
     }
 
-    uint32_t Image::GetWidth() const
+    uint32_t Image::GetWidth() const noexcept
     {
         return m_width;
     }
 
-    uint32_t Image::GetHeight() const
+    uint32_t Image::GetHeight() const noexcept
     {
         return m_height;
     }
 
-    Vec2u Texture::GetSize() const
+    Vec2u Texture::GetSize() const noexcept
     {
         return { m_width, m_height };
     }
 
-    bool Texture::IsValid() const
+    bool Texture::IsValid() const noexcept
     {
         return m_texture;
     }
 
-    void Texture::M_Destroy()
+    void Texture::M_Destroy() noexcept
     {
         glDeleteTextures(1, &m_texture);
 
@@ -112,7 +112,7 @@ namespace esd
         m_height = 0;
     }
 
-    void Texture::Bind(size_t slot) const
+    void Texture::Bind(size_t slot) const noexcept
     {
         if (m_texture)
         {

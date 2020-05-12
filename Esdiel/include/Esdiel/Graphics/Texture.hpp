@@ -16,7 +16,7 @@ namespace esd
         using NativeHandle_t = uint32_t;
 
         ///
-        Texture();
+        Texture() noexcept;
 
         ///
         Texture(Texture const&) = delete;
@@ -31,34 +31,34 @@ namespace esd
         Texture& operator = (Texture&& rhs) noexcept;
 
         ///
-        ~Texture();
+        ~Texture() noexcept;
 
         ///
-        NativeHandle_t GetNativeHandle() const;
+        NativeHandle_t GetNativeHandle() const noexcept;
 
         ///
-        bool Create(Vec2u const& size, void const* data = nullptr);
+        bool Create(Vec2u const& size, void const* data = nullptr) noexcept;
 
         ///
-        bool LoadFromImage(Image const& image);
+        bool LoadFromImage(Image const& image) noexcept;
 
         ///
         bool LoadFromFile(char const* path);
 
         ///
-        uint32_t GetWidth() const;
+        uint32_t GetWidth() const noexcept;
 
         ///
-        uint32_t GetHeight() const;
+        uint32_t GetHeight() const noexcept;
 
         ///
-        Vec2u GetSize() const;
+        Vec2u GetSize() const noexcept;
 
         ///
-        bool IsValid() const;
+        bool IsValid() const noexcept;
 
         ///
-        void Bind(size_t slot) const;
+        void Bind(size_t slot) const noexcept;
 
     private:
 
