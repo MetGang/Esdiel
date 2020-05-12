@@ -11,7 +11,7 @@
 
 namespace esd
 {
-    Image::Image()
+    Image::Image() noexcept
         : m_bytes {}
         , m_width { 0 }
         , m_height { 0 }
@@ -61,7 +61,7 @@ namespace esd
         }
     }
 
-    bool Image::LoadFromFile(char const* filePath)
+    bool Image::LoadFromFile(char const* filePath) noexcept
     {
         int32_t w;
         int32_t h;
@@ -85,7 +85,7 @@ namespace esd
         return false;
     }
 
-    bool Image::SaveToFile(char const* filePath, ImgExtType extension, bool flipVertically) const
+    bool Image::SaveToFile(char const* filePath, ImgExtType extension, bool flipVertically) const noexcept
     {
         stbi_flip_vertically_on_write(flipVertically);
 
@@ -108,7 +108,7 @@ namespace esd
         return false;
     }
 
-    void Image::FlipVertically()
+    void Image::FlipVertically() noexcept
     {
         if (!m_bytes.empty())
         {
@@ -127,7 +127,7 @@ namespace esd
         }
     }
 
-    void Image::FlipHorizontally()
+    void Image::FlipHorizontally() noexcept
     {
         if (!m_bytes.empty())
         {
@@ -149,41 +149,41 @@ namespace esd
         }
     }
 
-    Image::Byte_t* Image::GetData()
+    Image::Byte_t* Image::GetData() noexcept
     {
         return m_bytes.data();
     }
 
-    Image::Byte_t const* Image::GetData() const
+    Image::Byte_t const* Image::GetData() const noexcept
     {
         return m_bytes.data();
     }
 
-    size_t Image::GetPixelsCount() const
+    size_t Image::GetPixelsCount() const noexcept
     {
         return m_width * m_height;
     }
 
     ///
-    uint32_t Image::GetWidth() const
+    uint32_t Image::GetWidth() const noexcept
     {
         return m_width;
     }
 
     ///
-    uint32_t Image::GetHeight() const
+    uint32_t Image::GetHeight() const noexcept
     {
         return m_height;
     }
 
     ///
-    Vec2u Image::GetSize() const
+    Vec2u Image::GetSize() const noexcept
     {
         return { m_width, m_height };
     }
 
     ///
-    uint32_t Image::GetChannelsCount() const
+    uint32_t Image::GetChannelsCount() const noexcept
     {
         return m_channels;
     }

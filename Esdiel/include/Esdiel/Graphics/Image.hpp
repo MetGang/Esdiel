@@ -30,7 +30,7 @@ namespace esd
         using Bytes_t = std::vector<Byte_t>;
 
         ///
-        Image();
+        Image() noexcept;
 
         ///
         Image(Image const&) = default;
@@ -45,43 +45,43 @@ namespace esd
         Image& operator = (Image&& rhs) noexcept;
 
         ///
-        ~Image() = default;
+        ~Image() noexcept = default;
 
         ///
         void Create(Vec2u const& size, Color const& color);
 
         ///
-        bool LoadFromFile(char const* filePath);
+        bool LoadFromFile(char const* filePath) noexcept;
 
         ///
-        bool SaveToFile(char const* filePath, ImgExtType extension, bool flipVertically = false) const;
+        bool SaveToFile(char const* filePath, ImgExtType extension, bool flipVertically = false) const noexcept;
 
         ///
-        void FlipVertically();
+        void FlipVertically() noexcept;
 
         ///
-        void FlipHorizontally();
+        void FlipHorizontally() noexcept;
 
         ///
-        Byte_t* GetData();
+        Byte_t* GetData() noexcept;
 
         ///
-        Byte_t const* GetData() const;
+        Byte_t const* GetData() const noexcept;
 
         ///
-        size_t GetPixelsCount() const;
+        size_t GetPixelsCount() const noexcept;
 
         ///
-        uint32_t GetWidth() const;
+        uint32_t GetWidth() const noexcept;
 
         ///
-        uint32_t GetHeight() const;
+        uint32_t GetHeight() const noexcept;
 
         ///
-        Vec2u GetSize() const;
+        Vec2u GetSize() const noexcept;
 
         ///
-        uint32_t GetChannelsCount() const;
+        uint32_t GetChannelsCount() const noexcept;
 
     private:
 
