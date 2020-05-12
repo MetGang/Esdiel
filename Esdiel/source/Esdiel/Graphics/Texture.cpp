@@ -89,12 +89,12 @@ namespace esd
         return false;
     }
 
-    uint32_t Image::GetWidth() const noexcept
+    uint32_t Texture::GetWidth() const noexcept
     {
         return m_width;
     }
 
-    uint32_t Image::GetHeight() const noexcept
+    uint32_t Texture::GetHeight() const noexcept
     {
         return m_height;
     }
