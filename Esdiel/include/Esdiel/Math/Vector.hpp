@@ -6,32 +6,16 @@
 namespace esd
 {
     ///
-    template <size_t vSize, typename T>
-    class Vector
+    template <typename T>
+    struct Vec2
     {
-    public:
-
         using Value_t = T;
 
-        static constexpr size_t size = vSize;
+        static constexpr size_t size = 2;
 
-        ///
-        constexpr auto operator[] (size_t index) -> Value_t&
-        {
-            return data[index];
-        }
-
-        ///
-        constexpr auto operator[] (size_t index) const -> Value_t const&
-        {
-            return data[index];
-        }
-
-        Value_t data[size];
+        Value_t x;
+        Value_t y;
     };
-
-    template <typename T>
-    using Vec2 = Vector<2, T>;
 
     using Vec2b = Vec2<bool>;
     using Vec2i = Vec2<int32_t>;
@@ -40,8 +24,18 @@ namespace esd
     using Vec2f = Vec2<float>;
     using Vec2d = Vec2<double>;
 
+    ///
     template <typename T>
-    using Vec3 = Vector<3, T>;
+    struct Vec3
+    {
+        using Value_t = T;
+
+        static constexpr size_t size = 3;
+
+        Value_t x;
+        Value_t y;
+        Value_t z;
+    };
 
     using Vec3b = Vec3<bool>;
     using Vec3i = Vec3<int32_t>;
@@ -50,8 +44,19 @@ namespace esd
     using Vec3f = Vec3<float>;
     using Vec3d = Vec3<double>;
 
+    ///
     template <typename T>
-    using Vec4 = Vector<4, T>;
+    struct Vec4
+    {
+        using Value_t = T;
+
+        static constexpr size_t size = 4;
+
+        Value_t x;
+        Value_t y;
+        Value_t z;
+        Value_t w;
+    };
 
     using Vec4b = Vec4<bool>;
     using Vec4i = Vec4<int32_t>;

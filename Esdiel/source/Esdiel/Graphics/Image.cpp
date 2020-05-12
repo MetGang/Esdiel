@@ -50,7 +50,7 @@ namespace esd
 
     void Image::Create(Vec2u const& size, Color const& color)
     {
-        m_bytes.resize(size[0] * size[1] * 4);
+        m_bytes.resize(size.x * size.y * 4);
 
         for (size_t i = 0; i < m_bytes.size(); i += 4)
         {
