@@ -6,7 +6,7 @@
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include <stb/stb_image_write.h>
 
-namespace rv
+namespace esd
 {
     Image::Image()
         : m_bytes {}
