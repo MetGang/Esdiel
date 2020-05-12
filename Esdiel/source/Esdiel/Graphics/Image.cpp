@@ -177,14 +177,14 @@ namespace esd
     }
 
     ///
-    uint32_t Image::GetChannelsCount() const
-    {
-        return m_channels;
-    }
-
-    ///
     Vec2u Image::GetSize() const
     {
         return { m_width, m_height };
+    }
+
+    ///
+    uint32_t Image::GetChannelsCount() const
+    {
+        return m_channels;
     }
 }

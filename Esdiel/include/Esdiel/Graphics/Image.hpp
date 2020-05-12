@@ -78,10 +78,10 @@ namespace esd
         uint32_t GetHeight() const;
 
         ///
-        uint32_t GetChannelsCount() const;
+        Vec2u GetSize() const;
 
         ///
-        Vec2u GetSize() const;
+        uint32_t GetChannelsCount() const;
 
     private:
 
