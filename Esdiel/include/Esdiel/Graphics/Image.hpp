@@ -69,9 +69,6 @@ namespace esd
         Byte_t const* GetData() const noexcept;
 
         ///
-        size_t GetPixelsCount() const noexcept;
-
-        ///
         uint32_t GetWidth() const noexcept;
 
         ///
@@ -82,6 +79,12 @@ namespace esd
 
         ///
         uint32_t GetChannelsCount() const noexcept;
+
+        ///
+        size_t GetPixelsCount() const noexcept;
+
+        ///
+        size_t GetBytesCount() const noexcept;
 
     private:
 

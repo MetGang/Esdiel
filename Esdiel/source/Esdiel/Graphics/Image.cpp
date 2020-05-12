@@ -159,11 +159,6 @@ namespace esd
         return m_bytes.data();
     }
 
-    size_t Image::GetPixelsCount() const noexcept
-    {
-        return m_width * m_height;
-    }
-
     ///
     uint32_t Image::GetWidth() const noexcept
     {
@@ -186,5 +181,15 @@ namespace esd
     uint32_t Image::GetChannelsCount() const noexcept
     {
         return m_channels;
+    }
+
+    size_t Image::GetPixelsCount() const noexcept
+    {
+        return m_width * m_height;
+    }
+
+    size_t Image::GetBytesCount() const noexcept
+    {
+        return m_width * m_height * 4;
     }
 }
