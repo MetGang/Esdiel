@@ -30,7 +30,7 @@ namespace esd
         using NativeHandle_t = uint32_t;
 
         ///
-        Shader();
+        Shader() noexcept;
 
         ///
         Shader(Shader const&) = delete;
@@ -45,27 +45,27 @@ namespace esd
         Shader& operator = (Shader&& rhs) noexcept;
 
         ///
-        ~Shader();
+        ~Shader() noexcept;
 
         ///
-        NativeHandle_t GetNativeHandle() const;
+        NativeHandle_t GetNativeHandle() const noexcept;
 
         ///
         bool LoadFromFile(ShaderType type, char const* filePath);
 
         ///
-        bool LoadFromCString(ShaderType type, char const* data);
+        bool LoadFromCString(ShaderType type, char const* data) noexcept;
 
         ///
-        bool IsValid() const;
+        bool IsValid() const noexcept;
 
     private:
 
         ///
-        void M_Destroy();
+        void M_Destroy() noexcept;
 
         ///
-        bool M_Compile(ShaderType type, char const* data, int32_t size);
+        bool M_Compile(ShaderType type, char const* data, int32_t size) noexcept;
 
         NativeHandle_t m_shader;
     };
