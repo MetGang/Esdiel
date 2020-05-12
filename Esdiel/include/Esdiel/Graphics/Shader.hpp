@@ -19,7 +19,7 @@ namespace esd
     namespace impl
     {
         ///
-        int32_t GetNativeHandle(ShaderType type);
+        int32_t GetNativeHandle(ShaderType type) noexcept;
     }
 
     ///
