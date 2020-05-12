@@ -51,7 +51,7 @@ namespace esd
         void Create(Vec2u const& size, Color const& color);
 
         ///
-        bool LoadFromFile(char const* filePath) noexcept;
+        bool LoadFromFile(char const* filePath);
 
         ///
         bool SaveToFile(char const* filePath, ImgExtType extension, bool flipVertically = false) const noexcept;
