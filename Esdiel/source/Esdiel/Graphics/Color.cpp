@@ -2,7 +2,7 @@
 
 namespace esd
 {
-    Color::Color()
+    Color::Color() noexcept
         : r { 0 }
         , g { 0 }
         , b { 0 }
@@ -11,7 +11,7 @@ namespace esd
 
     }
 
-    Color::Color(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
+    Color::Color(uint8_t r, uint8_t g, uint8_t b, uint8_t a) noexcept
         : r { r }
         , g { g }
         , b { b }
@@ -20,7 +20,7 @@ namespace esd
 
     }
 
-    Color::Color(uint32_t packed)
+    Color::Color(uint32_t packed) noexcept
         : r { (packed >> 24) & 0xff }
         , g { (packed >> 16) & 0xff }
         , b { (packed >> 8) & 0xff }

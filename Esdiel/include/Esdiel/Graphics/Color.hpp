@@ -11,19 +11,19 @@ namespace esd
     public:
 
         ///
-        Color();
+        Color() noexcept;
 
         ///
-        explicit Color(uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255);
+        explicit Color(uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255) noexcept;
 
         ///
-        explicit Color(uint32_t packed);
+        explicit Color(uint32_t packed) noexcept;
 
         ///
-        Color(Color const&) = default;
+        Color(Color const&) noexcept = default;
 
         ///
-        Color& operator = (Color const&) = default;
+        Color& operator = (Color const&) noexcept = default;
 
         ///
         Color(Color&& rhs) noexcept = default;
@@ -32,7 +32,7 @@ namespace esd
         Color& operator = (Color&& rhs) noexcept = default;
 
         ///
-        ~Color() = default;
+        ~Color() noexcept = default;
 
         uint8_t r;
         uint8_t g;
