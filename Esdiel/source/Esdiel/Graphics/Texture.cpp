@@ -108,6 +108,7 @@ namespace esd
     {
         glDeleteTextures(1, &m_texture);
 
+        m_texture = 0;
         m_width = 0;
         m_height = 0;
     }

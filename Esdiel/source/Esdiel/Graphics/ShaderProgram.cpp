@@ -324,6 +324,7 @@ namespace esd
     {
         glDeleteProgram(m_program);
 
+        m_program = 0;
         m_uniformsLocation.clear();
     }
 

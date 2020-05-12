@@ -95,6 +95,8 @@ namespace esd
     void Shader::M_Destroy() noexcept
     {
         glDeleteShader(m_shader);
+
+        m_shader = 0;
     }
 
     bool Shader::M_Compile(ShaderType type, char const* data, int32_t size) noexcept
