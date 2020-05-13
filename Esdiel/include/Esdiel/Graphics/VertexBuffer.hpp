@@ -10,6 +10,7 @@
 namespace esd
 {
     //
+    class Camera;
     class ShaderProgram;
     class Transform;
     class Window;
@@ -98,10 +99,10 @@ namespace esd
         void Bind() const noexcept;
 
         ///
-        void Render(Window const& window, ShaderProgram const& shaderProgram) const;
+        void Render(Window const& window, ShaderProgram const& shaderProgram, Camera const& camera) const;
 
         ///
-        void Render(Window const& window, ShaderProgram const& shaderProgram, Transform const& transform) const;
+        void Render(Window const& window, ShaderProgram const& shaderProgram, Camera const& camera, Transform const& transform) const;
 
     private:
 

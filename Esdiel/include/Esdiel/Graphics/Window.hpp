@@ -11,7 +11,7 @@
 namespace esd
 {
     //
-    class Color;
+    class Camera;
     class ShaderProgram;
     class Transform;
 
@@ -84,10 +84,10 @@ namespace esd
         void Clear(Vec4f const& color = { 0.0f, 0.0f, 0.0f, 1.0f }) const noexcept;
 
         ///
-        void PrepareToRender(ShaderProgram const& shaderProgram) const;
+        void PrepareToRender(ShaderProgram const& shaderProgram, Camera const& camera) const;
 
         ///
-        void PrepareToRender(ShaderProgram const& shaderProgram, Transform const& transform) const;
+        void PrepareToRender(ShaderProgram const& shaderProgram, Camera const& camera, Transform const& transform) const;
 
         ///
         void Display();

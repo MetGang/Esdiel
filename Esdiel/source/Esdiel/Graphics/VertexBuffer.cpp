@@ -1,6 +1,7 @@
 #include <Esdiel/Graphics/VertexBuffer.hpp>
 
 // Esdiel
+#include <Esdiel/Graphics/Camera.hpp>
 #include <Esdiel/Graphics/ShaderProgram.hpp>
 #include <Esdiel/Graphics/Transform.hpp>
 #include <Esdiel/Graphics/Window.hpp>
@@ -230,21 +231,21 @@ namespace esd
         }
     }
 
-    void VertexBuffer::Render(Window const& window, ShaderProgram const& shaderProgram) const
+    void VertexBuffer::Render(Window const& window, ShaderProgram const& shaderProgram, Camera const& camera) const
     {
         if (!m_vertices.empty() && m_vao && m_vbo)
         {
-            window.PrepareToRender(shaderProgram);
+            window.PrepareToRender(shaderProgram, camera);
 
             M_Render();
         }
     }
 
-    void VertexBuffer::Render(Window const& window, ShaderProgram const& shaderProgram, Transform const& transform) const
+    void VertexBuffer::Render(Window const& window, ShaderProgram const& shaderProgram, Camera const& camera, Transform const& transform) const
     {
         if (!m_vertices.empty() && m_vao && m_vbo)
         {
-            window.PrepareToRender(shaderProgram, transform);
+            window.PrepareToRender(shaderProgram, camera, transform);
 
             M_Render();
         }

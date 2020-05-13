@@ -1,6 +1,7 @@
 #include <Esdiel/Graphics/Window.hpp>
 
 // Esdiel
+#include <Esdiel/Graphics/Camera.hpp>
 #include <Esdiel/Graphics/ShaderProgram.hpp>
 #include <Esdiel/Graphics/Transform.hpp>
 
@@ -157,23 +158,25 @@ namespace esd
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     }
 
-    void Window::PrepareToRender(ShaderProgram const& shaderProgram) const
+    void Window::PrepareToRender(ShaderProgram const& shaderProgram, Camera const& camera) const
     {
         Bind();
 
         Mat4x4f mvp = Mat4x4f{ 1.0f };
-        mvp *= glm::ortho(0.0f, static_cast<float>(m_size.x), static_cast<float>(m_size.y), 0.0f, -1.0f, 1.0f);
+        mvp *= camera.GetProjectionMatrix(m_size);
+        mvp *= camera.GetViewMatrix();
 
         shaderProgram.UseProgram();
         shaderProgram.SetUniform("mvp", mvp);
     }
 
-    void Window::PrepareToRender(ShaderProgram const& shaderProgram, Transform const& transform) const
+    void Window::PrepareToRender(ShaderProgram const& shaderProgram, Camera const& camera, Transform const& transform) const
     {
         Bind();
 
         Mat4x4f mvp = Mat4x4f{ 1.0f };
-        mvp *= glm::ortho(0.0f, static_cast<float>(m_size.x), static_cast<float>(m_size.y), 0.0f, -1.0f, 1.0f);
+        mvp *= camera.GetProjectionMatrix(m_size);
+        mvp *= camera.GetViewMatrix();
         mvp *= transform.GetMatrix();
 
         shaderProgram.UseProgram();
