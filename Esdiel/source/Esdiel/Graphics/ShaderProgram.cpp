@@ -1,6 +1,8 @@
 #include <Esdiel/Graphics/ShaderProgram.hpp>
 
 // Esdiel
+#include <Esdiel/Math/Matrix.hpp>
+#include <Esdiel/Math/Vector.hpp>
 #include <Esdiel/Utility/FNV.hpp>
 
 // C++
@@ -8,6 +10,9 @@
 
 // glad
 #include <glad/glad.h>
+
+// glm
+#include <glm/gtc/type_ptr.hpp>
 
 namespace esd
 {
@@ -308,6 +313,48 @@ namespace esd
         if (it != m_uniformsLocation.end())
         {
             glUniform4f(it->second, value.x, value.y, value.z, value.w);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    bool ShaderProgram::SetUniform(char const* name, Mat2x2f const& value) const
+    {
+        auto const it = m_uniformsLocation.find(FNV1a_32(name));
+
+        if (it != m_uniformsLocation.end())
+        {
+            glUniformMatrix2fv(it->second, 1, GL_FALSE, glm::value_ptr(value));
+
+            return true;
+        }
+
+        return false;
+    }
+
+    bool ShaderProgram::SetUniform(char const* name, Mat3x3f const& value) const
+    {
+        auto const it = m_uniformsLocation.find(FNV1a_32(name));
+
+        if (it != m_uniformsLocation.end())
+        {
+            glUniformMatrix3fv(it->second, 1, GL_FALSE, glm::value_ptr(value));
+
+            return true;
+        }
+
+        return false;
+    }
+
+    bool ShaderProgram::SetUniform(char const* name, Mat4x4f const& value) const
+    {
+        auto const it = m_uniformsLocation.find(FNV1a_32(name));
+
+        if (it != m_uniformsLocation.end())
+        {
+            glUniformMatrix4fv(it->second, 1, GL_FALSE, glm::value_ptr(value));
 
             return true;
         }

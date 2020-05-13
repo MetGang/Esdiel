@@ -2,14 +2,29 @@
 
 // Esdiel
 #include <Esdiel/Graphics/Shader.hpp>
-#include <Esdiel/Math/Vector.hpp>
-#include <Esdiel/Utility/FNV.hpp>
 
 // C++
 #include <map>
 
 namespace esd
 {
+    //
+    class Vec2b;
+    class Vec3b;
+    class Vec4b;
+    class Vec2i;
+    class Vec3i;
+    class Vec4i;
+    class Vec2u;
+    class Vec3u;
+    class Vec4u;
+    class Vec2f;
+    class Vec3f;
+    class Vec4f;
+    class Mat2x2f;
+    class Mat3x3f;
+    class Mat4x4f;
+
     ///
     class ShaderProgram
     {
@@ -92,6 +107,15 @@ namespace esd
 
         ///
         bool SetUniform(char const* name, Vec4f const& value) const;
+
+        ///
+        bool SetUniform(char const* name, Mat2x2f const& value) const;
+
+        ///
+        bool SetUniform(char const* name, Mat3x3f const& value) const;
+
+        ///
+        bool SetUniform(char const* name, Mat4x4f const& value) const;
 
         ///
         bool IsValid() const noexcept;
