@@ -2,6 +2,7 @@
 
 // Esdiel
 #include <Esdiel/Graphics/Shader.hpp>
+#include <Esdiel/Utility/FNV.hpp>
 
 // C++
 #include <map>
