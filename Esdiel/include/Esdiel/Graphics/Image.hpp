@@ -1,6 +1,7 @@
 #pragma once
 
 // Esdiel
+#include <Esdiel/Graphics/ImgExtType.hpp>
 #include <Esdiel/Math/Vector.hpp>
 
 // C++
@@ -10,16 +11,6 @@ namespace esd
 {
     //
     class Color;
-
-    ///
-    enum class ImgExtType : int32_t
-    {
-        BMP,
-        HDR,
-        JPG,
-        PNG,
-        TGA
-    };
 
     ///
     class Image
