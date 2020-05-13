@@ -9,9 +9,6 @@
 
 namespace esd
 {
-    //
-    class Color;
-
     ///
     class Image
     {
@@ -40,9 +37,6 @@ namespace esd
 
         ///
         void Clear() noexcept;
-
-        ///
-        void Create(Vec2u const& size, Color const& color);
 
         ///
         bool LoadFromFile(char const* filePath);
