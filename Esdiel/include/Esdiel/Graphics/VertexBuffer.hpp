@@ -9,6 +9,11 @@
 
 namespace esd
 {
+    //
+    class ShaderProgram;
+    class Transform;
+    class Window;
+
     ///
     class VertexBuffer
     {
@@ -92,6 +97,12 @@ namespace esd
         ///
         void Bind() const noexcept;
 
+        ///
+        void Render(Window const& window, ShaderProgram const& shaderProgram) const;
+
+        ///
+        void Render(Window const& window, ShaderProgram const& shaderProgram, Transform const& transform) const;
+
     private:
 
         ///
@@ -99,6 +110,9 @@ namespace esd
 
         ///
         void M_Update() const noexcept;
+
+        ///
+        void M_Render() const noexcept;
 
         ///
         void M_Defaultize() noexcept;

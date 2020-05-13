@@ -1,6 +1,9 @@
 #include <Esdiel/Graphics/VertexBuffer.hpp>
 
 // Esdiel
+#include <Esdiel/Graphics/ShaderProgram.hpp>
+#include <Esdiel/Graphics/Transform.hpp>
+#include <Esdiel/Graphics/Window.hpp>
 #include <Esdiel/Utility/OffsetOf.hpp>
 
 // C++
@@ -227,6 +230,26 @@ namespace esd
         }
     }
 
+    void VertexBuffer::Render(Window const& window, ShaderProgram const& shaderProgram) const
+    {
+        if (!m_vertices.empty() && m_vao && m_vbo)
+        {
+            window.PrepareToRender(shaderProgram);
+
+            M_Render();
+        }
+    }
+
+    void VertexBuffer::Render(Window const& window, ShaderProgram const& shaderProgram, Transform const& transform) const
+    {
+        if (!m_vertices.empty() && m_vao && m_vbo)
+        {
+            window.PrepareToRender(shaderProgram, transform);
+
+            M_Render();
+        }
+    }
+
     void VertexBuffer::M_Init() noexcept
     {
         glGenVertexArrays(1, &m_vao);
@@ -242,6 +265,15 @@ namespace esd
 
         glEnableVertexAttribArray(2);
         glVertexAttribPointer(2, decltype(Vertex_t::texCoord)::length(), GL_FLOAT, GL_FALSE, sizeof(Vertex_t), OffsetPtrOf(&Vertex_t::texCoord));
+    }
+
+    void VertexBuffer::M_Render() const noexcept
+    {
+        Bind();
+
+        M_Update();
+
+        glDrawArrays(impl::GetNativeHandle(m_type), 0, m_vertices.size());
     }
 
     void VertexBuffer::M_Update() const noexcept
