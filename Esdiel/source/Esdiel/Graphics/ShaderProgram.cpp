@@ -1,10 +1,5 @@
 #include <Esdiel/Graphics/ShaderProgram.hpp>
 
-// Esdiel
-#include <Esdiel/Math/Matrix.hpp>
-#include <Esdiel/Math/Vector.hpp>
-#include <Esdiel/Utility/FNV.hpp>
-
 // C++
 #include <algorithm>
 
