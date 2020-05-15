@@ -99,10 +99,12 @@ namespace esd
         void Bind() const noexcept;
 
         ///
-        void Render(Window const& window, ShaderProgram const& shaderProgram, Camera const& camera) const;
+        template <typename TRenderTarget>
+        void Render(TRenderTarget const& renderTarget, ShaderProgram const& shaderProgram, Camera const& camera) const;
 
         ///
-        void Render(Window const& window, ShaderProgram const& shaderProgram, Camera const& camera, Transform const& transform) const;
+        template <typename TRenderTarget>
+        void Render(TRenderTarget const& renderTarget, ShaderProgram const& shaderProgram, Camera const& camera, Transform const& transform) const;
 
     private:
 
@@ -130,4 +132,26 @@ namespace esd
         mutable bool m_needsUpdate;
         mutable bool m_needsReallocate;
     };
+
+    template <typename TRenderTarget>
+    void VertexBuffer::Render(TRenderTarget const& renderTarget, ShaderProgram const& shaderProgram, Camera const& camera) const
+    {
+        if (!m_vertices.empty() && m_vao && m_vbo)
+        {
+            renderTarget.PrepareToRender(shaderProgram, camera);
+
+            M_Render();
+        }
+    }
+
+    template <typename TRenderTarget>
+    void VertexBuffer::Render(TRenderTarget const& renderTarget, ShaderProgram const& shaderProgram, Camera const& camera, Transform const& transform) const
+    {
+        if (!m_vertices.empty() && m_vao && m_vbo)
+        {
+            renderTarget.PrepareToRender(shaderProgram, camera, transform);
+
+            M_Render();
+        }
+    }
 }

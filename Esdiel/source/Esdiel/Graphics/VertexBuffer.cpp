@@ -231,26 +231,6 @@ namespace esd
         }
     }
 
-    void VertexBuffer::Render(Window const& window, ShaderProgram const& shaderProgram, Camera const& camera) const
-    {
-        if (!m_vertices.empty() && m_vao && m_vbo)
-        {
-            window.PrepareToRender(shaderProgram, camera);
-
-            M_Render();
-        }
-    }
-
-    void VertexBuffer::Render(Window const& window, ShaderProgram const& shaderProgram, Camera const& camera, Transform const& transform) const
-    {
-        if (!m_vertices.empty() && m_vao && m_vbo)
-        {
-            window.PrepareToRender(shaderProgram, camera, transform);
-
-            M_Render();
-        }
-    }
-
     void VertexBuffer::M_Init() noexcept
     {
         glGenVertexArrays(1, &m_vao);
