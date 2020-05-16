@@ -61,21 +61,18 @@ namespace esd
         {
             m_graphicsContext = SDL_GL_CreateContext(m_window);
 
-            if (m_graphicsContext)
+            if (m_graphicsContext && !isGladLoaded)
             {
                 gladLoadGLLoader(reinterpret_cast<GLADloadproc>(SDL_GL_GetProcAddress));
 
-                if (!isGladLoaded)
+                if (gladLoadGL())
                 {
-                    if (gladLoadGL())
-                    {
-                        isGladLoaded = true;
-                    }
-                    else
-                    {
-                        // TODO better logging
-                        std::fprintf(stderr, "Failed to initialize GLAD\n");
-                    }
+                    isGladLoaded = true;
+                }
+                else
+                {
+                    // TODO better logging
+                    std::fprintf(stderr, "Failed to initialize GLAD\n");
                 }
             }
 
