@@ -72,10 +72,10 @@ namespace esd
         Vec2u GetSize() const;
 
         ///
-        bool IsValid() const;
+        bool IsOpen() const;
 
         ///
-        bool IsOpen() const;
+        bool IsValid() const;
 
         ///
         void Bind() const;

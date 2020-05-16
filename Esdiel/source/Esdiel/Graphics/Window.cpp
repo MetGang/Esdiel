@@ -139,14 +139,14 @@ namespace esd
         return m_size;
     }
 
-    bool Window::IsValid() const
-    {
-        return m_window;
-    }
-
     bool Window::IsOpen() const
     {
         return m_isOpen;
+    }
+
+    bool Window::IsValid() const
+    {
+        return m_window;
     }
 
     void Window::Bind() const
