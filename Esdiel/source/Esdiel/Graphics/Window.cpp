@@ -134,7 +134,7 @@ namespace esd
         return m_framerateLimit - m_dtClock.GetElapsedDuration();
     }
 
-    Vec2u Window::GetSize() const
+    Vec2u const& Window::GetSize() const
     {
         return m_size;
     }

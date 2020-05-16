@@ -69,7 +69,7 @@ namespace esd
         Duration_t GetDT() const;
 
         ///
-        Vec2u GetSize() const;
+        Vec2u const& GetSize() const;
 
         ///
         bool IsOpen() const;
