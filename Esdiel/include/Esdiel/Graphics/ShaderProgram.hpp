@@ -20,7 +20,7 @@ namespace esd
         using UniformsLocation_t = std::map<Hash32_t, int32_t>;
 
         ///
-        ShaderProgram() noexcept;
+        ShaderProgram();
 
         ///
         ShaderProgram(ShaderProgram const&) = delete;
@@ -35,16 +35,16 @@ namespace esd
         ShaderProgram& operator = (ShaderProgram&& rhs) noexcept;
 
         ///
-        ~ShaderProgram() noexcept;
+        ~ShaderProgram();
 
         ///
-        NativeHandle_t GetNativeHandle() const noexcept;
+        NativeHandle_t GetNativeHandle() const;
 
         ///
         bool LinkShaders(std::initializer_list<Shader*> il);
 
         ///
-        void UseProgram() const noexcept;
+        void UseProgram() const;
 
         ///
         bool SetUniform(char const* name, bool value) const;
@@ -104,15 +104,15 @@ namespace esd
         bool SetUniform(char const* name, Mat4x4f const& value) const;
 
         ///
-        bool IsValid() const noexcept;
+        bool IsValid() const;
 
     private:
 
         ///
-        void M_Defaultize() noexcept;
+        void M_Defaultize();
 
         ///
-        void M_Destroy() noexcept;
+        void M_Destroy();
 
         ///
         bool M_FinishLinking(NativeHandle_t program);

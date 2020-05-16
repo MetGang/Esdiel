@@ -51,7 +51,7 @@ namespace esd
         VertexBuffer& operator = (VertexBuffer&& rhs) noexcept;
 
         ///
-        ~VertexBuffer() noexcept;
+        ~VertexBuffer();
 
         ///
         VertexBuffer& Assign(size_t size, Vertex_t const& vertex, PrimitiveType type = PrimitiveType::Triangles);
@@ -63,40 +63,40 @@ namespace esd
         VertexBuffer& Assign(Vertex_t const* vertices, size_t size, PrimitiveType type = PrimitiveType::Triangles);
 
         ///
-        void SetVertex(size_t index, Vertex_t const& vertex) noexcept;
+        void SetVertex(size_t index, Vertex_t const& vertex);
 
         ///
-        Vertex_t& GetVertex(size_t index) noexcept;
+        Vertex_t& GetVertex(size_t index);
 
         ///
-        Vertex_t const& GetVertex(size_t index) const noexcept;
+        Vertex_t const& GetVertex(size_t index) const;
 
         ///
-        void SetPrimitiveType(PrimitiveType type) noexcept;
+        void SetPrimitiveType(PrimitiveType type);
 
         ///
-        PrimitiveType GetPrimitiveType() const noexcept;
+        PrimitiveType GetPrimitiveType() const;
 
         ///
-        Vertex_t* GetData() noexcept;
+        Vertex_t* GetData();
 
         ///
-        Vertex_t const* GetData() const noexcept;
+        Vertex_t const* GetData() const;
 
         ///
-        size_t GetVerticesCount() const noexcept;
+        size_t GetVerticesCount() const;
 
         ///
-        size_t GetBytesCount() const noexcept;
+        size_t GetBytesCount() const;
 
         ///
-        Vec4f GetBounds2D() const noexcept;
+        Vec4f GetBounds2D() const;
 
         ///
-        bool IsValid() const noexcept;
+        bool IsValid() const;
 
         ///
-        void Bind() const noexcept;
+        void Bind() const;
 
         ///
         template <typename TRenderTarget>
@@ -109,19 +109,19 @@ namespace esd
     private:
 
         ///
-        void M_Init() noexcept;
+        void M_Init();
 
         ///
-        void M_Update() const noexcept;
+        void M_Update() const;
 
         ///
-        void M_Render() const noexcept;
+        void M_Render() const;
 
         ///
-        void M_Defaultize() noexcept;
+        void M_Defaultize();
 
         ///
-        void M_Destroy() noexcept;
+        void M_Destroy();
 
         Vertices_t m_vertices;
         mutable size_t m_lowerIndex;

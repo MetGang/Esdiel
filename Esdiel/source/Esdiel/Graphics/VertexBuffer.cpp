@@ -97,7 +97,7 @@ namespace esd
         return *this;
     }
 
-    VertexBuffer::~VertexBuffer() noexcept
+    VertexBuffer::~VertexBuffer()
     {
         M_Destroy();
     }
@@ -117,7 +117,7 @@ namespace esd
         return *this = VertexBuffer{ vertices, size, type };
     }
 
-    void VertexBuffer::SetVertex(size_t index, Vertex_t const& vertex) noexcept
+    void VertexBuffer::SetVertex(size_t index, Vertex_t const& vertex)
     {
         m_vertices[index] = vertex;
 
@@ -127,7 +127,7 @@ namespace esd
         m_needsUpdate = true;
     }
 
-    VertexBuffer::Vertex_t& VertexBuffer::GetVertex(size_t index) noexcept
+    VertexBuffer::Vertex_t& VertexBuffer::GetVertex(size_t index)
     {
         m_lowerIndex = std::min(m_lowerIndex, index);
         m_upperIndex = std::max(m_upperIndex, index);
@@ -137,22 +137,22 @@ namespace esd
         return m_vertices[index];
     }
 
-    VertexBuffer::Vertex_t const& VertexBuffer::GetVertex(size_t index) const noexcept
+    VertexBuffer::Vertex_t const& VertexBuffer::GetVertex(size_t index) const
     {
         return m_vertices[index];
     }
 
-    void VertexBuffer::SetPrimitiveType(PrimitiveType type) noexcept
+    void VertexBuffer::SetPrimitiveType(PrimitiveType type)
     {
         m_type = type;
     }
 
-    PrimitiveType VertexBuffer::GetPrimitiveType() const noexcept
+    PrimitiveType VertexBuffer::GetPrimitiveType() const
     {
         return m_type;
     }
 
-    VertexBuffer::Vertex_t* VertexBuffer::GetData() noexcept
+    VertexBuffer::Vertex_t* VertexBuffer::GetData()
     {
         m_needsUpdate = true;
 
@@ -162,27 +162,27 @@ namespace esd
         return m_vertices.empty() ? nullptr : m_vertices.data();
     }
 
-    VertexBuffer::Vertex_t const* VertexBuffer::GetData() const noexcept
+    VertexBuffer::Vertex_t const* VertexBuffer::GetData() const
     {
         return m_vertices.empty() ? nullptr : m_vertices.data();
     }
 
-    size_t VertexBuffer::GetVerticesCount() const noexcept
+    size_t VertexBuffer::GetVerticesCount() const
     {
         return m_vertices.size();
     }
 
-    size_t VertexBuffer::GetBytesCount() const noexcept
+    size_t VertexBuffer::GetBytesCount() const
     {
         return m_vertices.size() * sizeof(Vertex_t);
     }
 
-    bool VertexBuffer::IsValid() const noexcept
+    bool VertexBuffer::IsValid() const
     {
         return m_vao && m_vbo;
     }
 
-    Vec4f VertexBuffer::GetBounds2D() const noexcept
+    Vec4f VertexBuffer::GetBounds2D() const
     {
         if (!m_vertices.empty())
         {
@@ -222,7 +222,7 @@ namespace esd
         }
     }
 
-    void VertexBuffer::Bind() const noexcept
+    void VertexBuffer::Bind() const
     {
         if (m_vao && m_vbo)
         {
@@ -231,7 +231,7 @@ namespace esd
         }
     }
 
-    void VertexBuffer::M_Init() noexcept
+    void VertexBuffer::M_Init()
     {
         glGenVertexArrays(1, &m_vao);
         glGenBuffers(1, &m_vbo);
@@ -248,7 +248,7 @@ namespace esd
         glVertexAttribPointer(2, decltype(Vertex_t::texCoord)::length(), GL_FLOAT, GL_FALSE, sizeof(Vertex_t), OffsetPtrOf(&Vertex_t::texCoord));
     }
 
-    void VertexBuffer::M_Render() const noexcept
+    void VertexBuffer::M_Render() const
     {
         Bind();
 
@@ -257,7 +257,7 @@ namespace esd
         glDrawArrays(impl::GetNativeHandle(m_type), 0, m_vertices.size());
     }
 
-    void VertexBuffer::M_Update() const noexcept
+    void VertexBuffer::M_Update() const
     {
         if (m_needsUpdate)
         {
@@ -282,7 +282,7 @@ namespace esd
         }
     }
 
-    void VertexBuffer::M_Defaultize() noexcept
+    void VertexBuffer::M_Defaultize()
     {
         m_lowerIndex = maxIndex;
         m_upperIndex = minIndex;
@@ -292,7 +292,7 @@ namespace esd
         m_needsReallocate = true;
     } 
 
-    void VertexBuffer::M_Destroy() noexcept
+    void VertexBuffer::M_Destroy()
     {
         glDeleteVertexArrays(1, &m_vao);
         glDeleteBuffers(1, &m_vbo);

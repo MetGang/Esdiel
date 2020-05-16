@@ -9,18 +9,18 @@
 
 namespace esd
 {
-    Camera::Camera() noexcept
+    Camera::Camera()
         : m_position { 0.0f, 0.0f, 0.0f }
     {
 
     }
 
-    Mat4x4f Camera::GetViewMatrix() const noexcept
+    Mat4x4f Camera::GetViewMatrix() const
     {
         return Mat4x4f{ 1.0f };
     }
 
-    Mat4x4f Camera::GetProjectionMatrix(Vec2u const& targetSize) const noexcept
+    Mat4x4f Camera::GetProjectionMatrix(Vec2u const& targetSize) const
     {
         return glm::ortho(0.0f + m_position.x, targetSize.x + m_position.x, targetSize.y + m_position.y, 0.0f + m_position.y, -1.0f, 1.0f);
     }

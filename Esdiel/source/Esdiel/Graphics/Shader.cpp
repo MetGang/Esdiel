@@ -40,7 +40,7 @@ namespace
 
 namespace esd
 {
-    Shader::Shader() noexcept
+    Shader::Shader()
         : m_shader { 0 }
     {
 
@@ -66,12 +66,12 @@ namespace esd
         return *this;
     }
 
-    Shader::~Shader() noexcept
+    Shader::~Shader()
     {
         M_Destroy();
     }
 
-    Shader::NativeHandle_t Shader::GetNativeHandle() const noexcept
+    Shader::NativeHandle_t Shader::GetNativeHandle() const
     {
         return m_shader;
     }
@@ -83,27 +83,27 @@ namespace esd
         return ptr && M_Compile(type, ptr.get(), -1);
     }
 
-    bool Shader::LoadFromCString(ShaderType type, char const* data) noexcept
+    bool Shader::LoadFromCString(ShaderType type, char const* data)
     {
         return M_Compile(type, data, -1);
     }
 
-    bool Shader::IsValid() const noexcept
+    bool Shader::IsValid() const
     {
         return m_shader;
     }
 
-    void Shader::M_Defaultize() noexcept
+    void Shader::M_Defaultize()
     {
         m_shader = 0;
     }
 
-    void Shader::M_Destroy() noexcept
+    void Shader::M_Destroy()
     {
         glDeleteShader(m_shader);
     }
 
-    bool Shader::M_Compile(ShaderType type, char const* data, int32_t size) noexcept
+    bool Shader::M_Compile(ShaderType type, char const* data, int32_t size)
     {
         NativeHandle_t shader = glCreateShader(impl::GetNativeHandle(type));
         glShaderSource(shader, 1, &data, &size);

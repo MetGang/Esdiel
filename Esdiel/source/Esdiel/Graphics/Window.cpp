@@ -34,12 +34,12 @@ namespace esd
         M_Destroy();
     }
     
-    Window::NativeHandle_t Window::GetNativeHandle() const noexcept
+    Window::NativeHandle_t Window::GetNativeHandle() const
     {
         return m_window;
     }
 
-    Window::GraphicsContext_t Window::GetGraphicsContext() const noexcept
+    Window::GraphicsContext_t Window::GetGraphicsContext() const
     {
         return m_graphicsContext;
     }
@@ -93,27 +93,27 @@ namespace esd
         return false;
     }
 
-    void Window::Show() noexcept
+    void Window::Show()
     {
         SDL_ShowWindow(m_window);
     }
 
-    void Window::Hide() noexcept
+    void Window::Hide()
     {
         SDL_HideWindow(m_window);
     }
 
-    void Window::Close() noexcept
+    void Window::Close()
     {
         m_isOpen = false;
     }
 
-    bool Window::PollEvent(SDL_Event& event) noexcept
+    bool Window::PollEvent(SDL_Event& event)
     {
         return SDL_PollEvent(&event) != 0;
     }
 
-    void Window::SetFramerateLimit(uint32_t limit) noexcept
+    void Window::SetFramerateLimit(uint32_t limit)
     {
         if (limit == 0)
         {
@@ -130,27 +130,27 @@ namespace esd
         return m_framerateLimit - m_dtClock.GetElapsedDuration();
     }
 
-    Vec2u Window::GetSize() const noexcept
+    Vec2u Window::GetSize() const
     {
         return m_size;
     }
 
-    bool Window::IsValid() const noexcept
+    bool Window::IsValid() const
     {
         return m_window;
     }
 
-    bool Window::IsOpen() const noexcept
+    bool Window::IsOpen() const
     {
         return m_isOpen;
     }
 
-    void Window::Bind() const noexcept
+    void Window::Bind() const
     {
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
     }
 
-    void Window::Clear(Vec4f const& color) const noexcept
+    void Window::Clear(Vec4f const& color) const
     {
         Bind();
 
@@ -202,7 +202,7 @@ namespace esd
         m_dtClock.Restart();
     }
 
-    void Window::M_Defaultize() noexcept
+    void Window::M_Defaultize()
     {
         m_window = nullptr;
         m_graphicsContext = nullptr;
@@ -212,7 +212,7 @@ namespace esd
         m_isOpen = false;
     }
 
-    void Window::M_Destroy() noexcept
+    void Window::M_Destroy()
     {
         if (m_window)
         {

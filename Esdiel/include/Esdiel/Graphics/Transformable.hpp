@@ -11,16 +11,16 @@ namespace esd
     public:
 
         ///
-        Transformable() noexcept;
+        Transformable();
 
         ///
-        Transformable(Vec3f const& position, Vec3f const& origin, Vec3f const& rotation, Vec3f const& scale) noexcept;
+        Transformable(Vec3f const& position, Vec3f const& origin, Vec3f const& rotation, Vec3f const& scale);
 
         ///
-        Transformable(Transformable const&) noexcept = default;
+        Transformable(Transformable const&) = default;
 
         ///
-        Transformable& operator = (Transformable const&) noexcept = default;
+        Transformable& operator = (Transformable const&) = default;
 
         ///
         Transformable(Transformable&& rhs) noexcept = default;
@@ -29,57 +29,57 @@ namespace esd
         Transformable& operator = (Transformable&& rhs) noexcept = default;
 
         ///
-        ~Transformable() noexcept = default;
+        ~Transformable() = default;
 
         ///
-        void SetTransform(Vec3f const& position, Vec3f const& origin, Vec3f const& rotation, Vec3f const& scale) noexcept;
+        void SetTransform(Vec3f const& position, Vec3f const& origin, Vec3f const& rotation, Vec3f const& scale);
 
         ///
-        void TranslatePosition(Vec3f const& offset) noexcept;
+        void TranslatePosition(Vec3f const& offset);
 
         ///
-        void SetPosition(Vec3f const& position) noexcept;
+        void SetPosition(Vec3f const& position);
 
         ///
-        Vec3f const& GetPosition() const noexcept;
+        Vec3f const& GetPosition() const;
 
         ///
-        void TranslateOrigin(Vec3f const& offset) noexcept;
+        void TranslateOrigin(Vec3f const& offset);
 
         ///
-        void SetOrigin(Vec3f const& origin) noexcept;
+        void SetOrigin(Vec3f const& origin);
 
         ///
-        Vec3f const& GetOrigin() const noexcept;
+        Vec3f const& GetOrigin() const;
 
         ///
-        void Rotate(Vec3f const& angle) noexcept;
+        void Rotate(Vec3f const& angle);
 
         ///
-        void SetRotation(Vec3f const& rotation) noexcept;
+        void SetRotation(Vec3f const& rotation);
 
         ///
-        Vec3f const& GetRotation() const noexcept;
+        Vec3f const& GetRotation() const;
 
         ///
-        void Scale(Vec3f const& factor) noexcept;
+        void Scale(Vec3f const& factor);
 
         ///
-        void SetScale(Vec3f const& scale) noexcept;
+        void SetScale(Vec3f const& scale);
 
         ///
-        Vec3f const& GetScale() const noexcept;
+        Vec3f const& GetScale() const;
 
         ///
-        Transform const& GetTransform() const noexcept;
+        Transform const& GetTransform() const;
 
         ///
-        Transform GetInverseTransform() const noexcept;
+        Transform GetInverseTransform() const;
 
     private:
 
         ///
-        void M_UpdateTransform() const noexcept;
+        void M_UpdateTransform() const;
 
         Vec3f m_position;
         Vec3f m_origin;

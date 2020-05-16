@@ -8,7 +8,7 @@
 
 namespace esd
 {
-    Image::Image() noexcept
+    Image::Image()
         : m_bytes {}
         , m_width { 0 }
         , m_height { 0 }
@@ -41,7 +41,7 @@ namespace esd
         return *this;
     }
 
-    void Image::Clear() noexcept
+    void Image::Clear()
     {
         m_bytes.clear();
 
@@ -72,7 +72,7 @@ namespace esd
         return false;
     }
 
-    bool Image::SaveToFile(char const* filePath, ImgExtType extension, bool flipVertically) const noexcept
+    bool Image::SaveToFile(char const* filePath, ImgExtType extension, bool flipVertically) const
     {
         stbi_flip_vertically_on_write(flipVertically);
 
@@ -95,7 +95,7 @@ namespace esd
         return false;
     }
 
-    void Image::FlipVertically() noexcept
+    void Image::FlipVertically()
     {
         if (!m_bytes.empty())
         {
@@ -114,7 +114,7 @@ namespace esd
         }
     }
 
-    void Image::FlipHorizontally() noexcept
+    void Image::FlipHorizontally()
     {
         if (!m_bytes.empty())
         {
@@ -136,51 +136,51 @@ namespace esd
         }
     }
 
-    Image::Byte_t* Image::GetData() noexcept
+    Image::Byte_t* Image::GetData()
     {
         return m_bytes.data();
     }
 
-    Image::Byte_t const* Image::GetData() const noexcept
+    Image::Byte_t const* Image::GetData() const
     {
         return m_bytes.data();
     }
 
     ///
-    uint32_t Image::GetWidth() const noexcept
+    uint32_t Image::GetWidth() const
     {
         return m_width;
     }
 
     ///
-    uint32_t Image::GetHeight() const noexcept
+    uint32_t Image::GetHeight() const
     {
         return m_height;
     }
 
     ///
-    Vec2u Image::GetSize() const noexcept
+    Vec2u Image::GetSize() const
     {
         return { m_width, m_height };
     }
 
     ///
-    uint32_t Image::GetChannelsCount() const noexcept
+    uint32_t Image::GetChannelsCount() const
     {
         return m_channels;
     }
 
-    size_t Image::GetPixelsCount() const noexcept
+    size_t Image::GetPixelsCount() const
     {
         return m_width * m_height;
     }
 
-    size_t Image::GetBytesCount() const noexcept
+    size_t Image::GetBytesCount() const
     {
         return m_width * m_height * 4;
     }
 
-    void Image::M_Defaultize() noexcept
+    void Image::M_Defaultize()
     {
         m_width = 0;
         m_height = 0;

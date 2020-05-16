@@ -18,7 +18,7 @@ namespace esd
         using Bytes_t = std::vector<Byte_t>;
 
         ///
-        Image() noexcept;
+        Image();
 
         ///
         Image(Image const&) = default;
@@ -33,51 +33,51 @@ namespace esd
         Image& operator = (Image&& rhs) noexcept;
 
         ///
-        ~Image() noexcept = default;
+        ~Image() = default;
 
         ///
-        void Clear() noexcept;
+        void Clear();
 
         ///
         bool LoadFromFile(char const* filePath);
 
         ///
-        bool SaveToFile(char const* filePath, ImgExtType extension, bool flipVertically = false) const noexcept;
+        bool SaveToFile(char const* filePath, ImgExtType extension, bool flipVertically = false) const;
 
         ///
-        void FlipVertically() noexcept;
+        void FlipVertically();
 
         ///
-        void FlipHorizontally() noexcept;
+        void FlipHorizontally();
 
         ///
-        Byte_t* GetData() noexcept;
+        Byte_t* GetData();
 
         ///
-        Byte_t const* GetData() const noexcept;
+        Byte_t const* GetData() const;
 
         ///
-        uint32_t GetWidth() const noexcept;
+        uint32_t GetWidth() const;
 
         ///
-        uint32_t GetHeight() const noexcept;
+        uint32_t GetHeight() const;
 
         ///
-        Vec2u GetSize() const noexcept;
+        Vec2u GetSize() const;
 
         ///
-        uint32_t GetChannelsCount() const noexcept;
+        uint32_t GetChannelsCount() const;
 
         ///
-        size_t GetPixelsCount() const noexcept;
+        size_t GetPixelsCount() const;
 
         ///
-        size_t GetBytesCount() const noexcept;
+        size_t GetBytesCount() const;
 
     private:
 
         ///
-        void M_Defaultize() noexcept;
+        void M_Defaultize();
 
         Bytes_t m_bytes;
         uint32_t m_width;

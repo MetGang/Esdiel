@@ -12,19 +12,19 @@ namespace esd
     public:
 
         ///
-        Transform() noexcept = default;
+        Transform() = default;
 
         ///
-        explicit Transform(float value) noexcept;
+        explicit Transform(float value);
 
         ///
-        explicit Transform(Mat4x4f const& matrix) noexcept;
+        explicit Transform(Mat4x4f const& matrix);
 
         ///
-        Transform(Transform const&) noexcept = default;
+        Transform(Transform const&) = default;
 
         ///
-        Transform& operator = (Transform const&) noexcept = default;
+        Transform& operator = (Transform const&) = default;
 
         ///
         Transform(Transform&& rhs) noexcept = default;
@@ -33,55 +33,55 @@ namespace esd
         Transform& operator = (Transform&& rhs) noexcept = default;
 
         ///
-        ~Transform() noexcept = default;
+        ~Transform() = default;
 
         ///
-        Transform& SetZero() noexcept;
+        Transform& SetZero();
 
         ///
-        Transform& SetIdentity() noexcept;
+        Transform& SetIdentity();
 
         ///
-        Transform& SetMatrix(Mat4x4f const& matrix) noexcept;
+        Transform& SetMatrix(Mat4x4f const& matrix);
 
         ///
-        Transform& Translate(Vec3f const& offset) noexcept;
+        Transform& Translate(Vec3f const& offset);
 
         ///
-        Transform& Rotate(Vec3f const& angle) noexcept;
+        Transform& Rotate(Vec3f const& angle);
 
         ///
-        Transform& Scale(Vec3f const& factor) noexcept;
+        Transform& Scale(Vec3f const& factor);
 
         ///
-        Transform& Inverse() noexcept;
+        Transform& Inverse();
 
         ///
-        Transform& Combine(Transform const& transform) noexcept;
+        Transform& Combine(Transform const& transform);
 
         ///
-        Transform& Combine(Mat4x4f const& matrix) noexcept;
+        Transform& Combine(Mat4x4f const& matrix);
 
         ///
-        Transform Translated(Vec3f const& offset) noexcept;
+        Transform Translated(Vec3f const& offset);
 
         ///
-        Transform Rotated(Vec3f const& angle) noexcept;
+        Transform Rotated(Vec3f const& angle);
 
         ///
-        Transform Scaled(Vec3f const& factor) noexcept;
+        Transform Scaled(Vec3f const& factor);
 
         ///
-        Transform Inversed() noexcept;
+        Transform Inversed();
 
         ///
-        Transform Combined(Transform const& transform) noexcept;
+        Transform Combined(Transform const& transform);
 
         ///
-        Transform Combined(Mat4x4f const& matrix) noexcept;
+        Transform Combined(Mat4x4f const& matrix);
 
         ///
-        Mat4x4f const& GetMatrix() const noexcept;
+        Mat4x4f const& GetMatrix() const;
 
     private:
 

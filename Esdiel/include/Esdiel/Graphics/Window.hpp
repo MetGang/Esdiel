@@ -39,49 +39,49 @@ namespace esd
         Window& operator = (Window&&) = delete;
 
         ///
-        ~Window() noexcept;
+        ~Window();
 
         ///
-        NativeHandle_t GetNativeHandle() const noexcept;
+        NativeHandle_t GetNativeHandle() const;
 
         ///
-        GraphicsContext_t GetGraphicsContext() const noexcept;
+        GraphicsContext_t GetGraphicsContext() const;
 
         ///
         bool Create(Vec2u const& size, char const* name);
 
         ///
-        void Show() noexcept;
+        void Show();
 
         ///
-        void Hide() noexcept;
+        void Hide();
 
         ///
-        void Close() noexcept;
+        void Close();
 
         ///
-        bool PollEvent(SDL_Event& event) noexcept;
+        bool PollEvent(SDL_Event& event);
 
         ///
-        void SetFramerateLimit(uint32_t limit) noexcept;
+        void SetFramerateLimit(uint32_t limit);
 
         ///
         Duration_t GetDT() const;
 
         ///
-        Vec2u GetSize() const noexcept;
+        Vec2u GetSize() const;
 
         ///
-        bool IsValid() const noexcept;
+        bool IsValid() const;
 
         ///
-        bool IsOpen() const noexcept;
+        bool IsOpen() const;
 
         ///
-        void Bind() const noexcept;
+        void Bind() const;
 
         ///
-        void Clear(Vec4f const& color = { 0.0f, 0.0f, 0.0f, 1.0f }) const noexcept;
+        void Clear(Vec4f const& color = { 0.0f, 0.0f, 0.0f, 1.0f }) const;
 
         ///
         void PrepareToRender(ShaderProgram const& shaderProgram, Camera const& camera) const;
@@ -98,10 +98,10 @@ namespace esd
         void M_AdjustFramerate();
 
         ///
-        void M_Defaultize() noexcept;
+        void M_Defaultize();
 
         ///
-        void M_Destroy() noexcept;
+        void M_Destroy();
 
         NativeHandle_t m_window;
         GraphicsContext_t m_graphicsContext;

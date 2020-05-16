@@ -12,7 +12,7 @@ namespace esd
     public:
 
         ///
-        Camera() noexcept;
+        Camera();
 
         ///
         Camera(Camera const&) = delete;
@@ -27,13 +27,13 @@ namespace esd
         Camera& operator = (Camera&&) = delete;
 
         ///
-        ~Camera() noexcept = default;
+        ~Camera() = default;
 
         ///
-        Mat4x4f GetViewMatrix() const noexcept;
+        Mat4x4f GetViewMatrix() const;
 
         ///
-        Mat4x4f GetProjectionMatrix(Vec2u const& targetSize) const noexcept;
+        Mat4x4f GetProjectionMatrix(Vec2u const& targetSize) const;
 
     private:
 

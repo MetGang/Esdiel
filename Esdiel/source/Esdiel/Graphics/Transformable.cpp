@@ -9,7 +9,7 @@
 
 namespace esd
 {
-    Transformable::Transformable() noexcept
+    Transformable::Transformable()
         : m_position { 0.0f, 0.0f, 0.0f }
         , m_origin { 0.0f, 0.0f, 0.0f }
         , m_rotation { 0.0f, 0.0f, 0.0f }
@@ -20,7 +20,7 @@ namespace esd
 
     }
 
-    Transformable::Transformable(Vec3f const& position, Vec3f const& origin, Vec3f const& rotation, Vec3f const& scale) noexcept
+    Transformable::Transformable(Vec3f const& position, Vec3f const& origin, Vec3f const& rotation, Vec3f const& scale)
         : m_position { position }
         , m_origin { origin }
         , m_rotation { rotation }
@@ -31,7 +31,7 @@ namespace esd
         
     }
 
-    void Transformable::SetTransform(Vec3f const& position, Vec3f const& origin, Vec3f const& rotation, Vec3f const& scale) noexcept
+    void Transformable::SetTransform(Vec3f const& position, Vec3f const& origin, Vec3f const& rotation, Vec3f const& scale)
     {
         m_position = position;
         m_origin = origin;
@@ -41,97 +41,97 @@ namespace esd
         m_needsUpdate = true;
     }
 
-    void Transformable::TranslatePosition(Vec3f const& offset) noexcept
+    void Transformable::TranslatePosition(Vec3f const& offset)
     {
         m_position += offset;
 
         m_needsUpdate = true;
     }
 
-    void Transformable::SetPosition(Vec3f const& position)  noexcept
+    void Transformable::SetPosition(Vec3f const& position) 
     {
         m_position = position;
 
         m_needsUpdate = true;
     }
 
-    Vec3f const& Transformable::GetPosition() const noexcept
+    Vec3f const& Transformable::GetPosition() const
     {
         return m_position;
     }
 
-    void Transformable::TranslateOrigin(Vec3f const& offset) noexcept
+    void Transformable::TranslateOrigin(Vec3f const& offset)
     {
         m_origin += offset;
 
         m_needsUpdate = true;
     }
 
-    void Transformable::SetOrigin(Vec3f const& origin) noexcept
+    void Transformable::SetOrigin(Vec3f const& origin)
     {
         m_origin = origin;
 
         m_needsUpdate = true;
     }
 
-    Vec3f const& Transformable::GetOrigin() const noexcept
+    Vec3f const& Transformable::GetOrigin() const
     {
         return m_origin;
     }
 
-    void Transformable::Rotate(Vec3f const& angle) noexcept
+    void Transformable::Rotate(Vec3f const& angle)
     {
         m_rotation += angle;
 
         m_needsUpdate = true;
     }
 
-    void Transformable::SetRotation(Vec3f const& rotation) noexcept
+    void Transformable::SetRotation(Vec3f const& rotation)
     {
         m_rotation = rotation;
 
         m_needsUpdate = true;
     }
 
-    Vec3f const& Transformable::GetRotation() const noexcept
+    Vec3f const& Transformable::GetRotation() const
     {
         return m_rotation;
     }
 
-    void Transformable::Scale(Vec3f const& factor) noexcept
+    void Transformable::Scale(Vec3f const& factor)
     {
         m_scale *= factor;
 
         m_needsUpdate = true;
     }
 
-    void Transformable::SetScale(Vec3f const& scale) noexcept
+    void Transformable::SetScale(Vec3f const& scale)
     {
         m_scale = scale;
 
         m_needsUpdate = true;
     }
 
-    Vec3f const& Transformable::GetScale() const noexcept
+    Vec3f const& Transformable::GetScale() const
     {
         return m_scale;
     }
 
-    Transform const& Transformable::GetTransform() const noexcept
+    Transform const& Transformable::GetTransform() const
     {
         M_UpdateTransform();
 
         return m_cachedTransform;
     }
 
-    Transform Transformable::GetInverseTransform() const noexcept
+    Transform Transformable::GetInverseTransform() const
     {
         M_UpdateTransform();
 
         return m_cachedTransform.Inversed();
     }
 
-    void Transformable::M_UpdateTransform() const noexcept
+    void Transformable::M_UpdateTransform() const
     {
         if (m_needsUpdate)
         {
