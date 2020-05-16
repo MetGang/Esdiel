@@ -166,6 +166,8 @@ namespace esd
     {
         Bind();
 
+        glViewport(0, 0, m_size.x, m_size.y);
+
         Mat4x4f mvp = Mat4x4f{ 1.0f };
         mvp *= camera.GetProjectionMatrix(m_size);
         mvp *= camera.GetViewMatrix();
@@ -177,6 +179,8 @@ namespace esd
     void Window::PrepareToRender(ShaderProgram const& shaderProgram, Camera const& camera, Transform const& transform) const
     {
         Bind();
+
+        glViewport(0, 0, m_size.x, m_size.y);
 
         Mat4x4f mvp = Mat4x4f{ 1.0f };
         mvp *= camera.GetProjectionMatrix(m_size);
