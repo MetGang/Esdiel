@@ -46,13 +46,7 @@ namespace esd
         bool LoadFromFile(char const* path);
 
         ///
-        uint32_t GetWidth() const;
-
-        ///
-        uint32_t GetHeight() const;
-
-        ///
-        Vec2u GetSize() const;
+        Vec2u const& GetSize() const;
 
         ///
         bool IsValid() const;
@@ -69,7 +63,6 @@ namespace esd
         void M_Destroy();
 
         NativeHandle_t m_texture;
-        uint32_t m_width;
-        uint32_t m_height;
+        Vec2u m_size;
     };
 }

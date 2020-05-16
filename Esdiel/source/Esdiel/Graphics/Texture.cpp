@@ -10,16 +10,14 @@ namespace esd
 {
     Texture::Texture()
         : m_texture { 0 }
-        , m_width { 0 }
-        , m_height { 0 }
+        , m_size { 0, 0 }
     {
 
     }
 
     Texture::Texture(Texture&& rhs) noexcept
         : m_texture { rhs.m_texture }
-        , m_width { rhs.m_width }
-        , m_height { rhs.m_height }
+        , m_size { rhs.m_size }
     {
         rhs.M_Defaultize();
     }
@@ -31,8 +29,7 @@ namespace esd
             M_Destroy();
 
             m_texture = rhs.m_texture;
-            m_width = rhs.m_width;
-            m_height = rhs.m_height;
+            m_size = rhs.m_size;
 
             rhs.M_Defaultize();
         }
@@ -56,8 +53,7 @@ namespace esd
 
         glGenTextures(1, &m_texture);
 
-        m_width = size.x;
-        m_height = size.y;
+        m_size = size;;
 
         Bind(0);
 
@@ -66,7 +62,7 @@ namespace esd
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
 
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, m_size.x, m_size.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
         glGenerateMipmap(GL_TEXTURE_2D);
 
         return true;
@@ -89,19 +85,9 @@ namespace esd
         return false;
     }
 
-    uint32_t Texture::GetWidth() const
+    Vec2u const& Texture::GetSize() const
     {
-        return m_width;
-    }
-
-    uint32_t Texture::GetHeight() const
-    {
-        return m_height;
-    }
-
-    Vec2u Texture::GetSize() const
-    {
-        return { m_width, m_height };
+        return m_size;
     }
 
     bool Texture::IsValid() const
@@ -121,8 +107,7 @@ namespace esd
     void Texture::M_Defaultize()
     {
         m_texture = 0;
-        m_width = 0;
-        m_height = 0;
+        m_size = { 0, 0 };
     }
 
     void Texture::M_Destroy()
