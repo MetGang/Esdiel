@@ -99,10 +99,10 @@ namespace esd
 
         auto vertices = m_vertexBuffer.GetData();
 
-        vertices[0] = { { 0.0f, 0.0f, 0.0f }, m_color, { 0.0f, texRect.y + texRect.w } };
+        vertices[0] = { { 0.0f, 0.0f, 0.0f }, m_color, { texRect.x, texRect.y + texRect.w } };
         vertices[1] = { { m_textureRect.z, 0.0f, 0.0f }, m_color, { texRect.x + texRect.z, texRect.y + texRect.w } };
-        vertices[2] = { { m_textureRect.z, m_textureRect.w, 0.0f }, m_color, { texRect.x + texRect.z, 0.0f } };
-        vertices[3] = { { 0.0f, m_textureRect.w, 0.0f }, m_color, { 0.0f, 0.0f } };
+        vertices[2] = { { m_textureRect.z, m_textureRect.w, 0.0f }, m_color, { texRect.x + texRect.z, texRect.y } };
+        vertices[3] = { { 0.0f, m_textureRect.w, 0.0f }, m_color, { texRect.x, texRect.y } };
     }
 
     void Sprite::M_Defaultize()
