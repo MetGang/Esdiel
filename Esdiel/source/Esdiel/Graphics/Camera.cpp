@@ -15,6 +15,16 @@ namespace esd
 
     }
 
+    void Camera::SetPosition(Vec3f const& position)
+    {
+        m_position = position;
+    }
+
+    Vec3f const& Camera::GetPosition() const
+    {
+        return m_position;
+    }
+
     Mat4x4f Camera::GetViewMatrix() const
     {
         return Mat4x4f{ 1.0f };
@@ -22,6 +32,6 @@ namespace esd
 
     Mat4x4f Camera::GetProjectionMatrix(Vec2u const& targetSize) const
     {
-        return glm::ortho(0.0f + m_position.x, targetSize.x + m_position.x, 0.0f + m_position.y, targetSize.y + m_position.y, -1.0f, 1.0f);
+        return glm::ortho(m_position.x, targetSize.x + m_position.x, m_position.y, targetSize.y + m_position.y, -1.0f, 1.0f);
     }
 }

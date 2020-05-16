@@ -30,6 +30,12 @@ namespace esd
         ~Camera() = default;
 
         ///
+        void SetPosition(Vec3f const& position);
+
+        ///
+        Vec3f const& GetPosition() const;
+
+        ///
         Mat4x4f GetViewMatrix() const;
 
         ///
