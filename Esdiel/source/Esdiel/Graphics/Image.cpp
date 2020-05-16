@@ -10,8 +10,7 @@ namespace esd
 {
     Image::Image()
         : m_bytes {}
-        , m_width { 0 }
-        , m_height { 0 }
+        , m_size { 0, 0 }
         , m_channels { 0 }
     {
 
@@ -19,8 +18,7 @@ namespace esd
 
     Image::Image(Image&& rhs) noexcept
         : m_bytes { std::move(rhs.m_bytes) }
-        , m_width { rhs.m_width }
-        , m_height { rhs.m_height }
+        , m_size { rhs.m_size }
         , m_channels { rhs.m_channels }
     {
         rhs.M_Defaultize();
@@ -31,8 +29,7 @@ namespace esd
         if (this != &rhs)
         {
             m_bytes = std::move(rhs.m_bytes);
-            m_width = rhs.m_width;
-            m_height = rhs.m_height;
+            m_size = rhs.m_size;
             m_channels = rhs.m_channels;
 
             rhs.M_Defaultize();
@@ -58,11 +55,11 @@ namespace esd
 
         if (ptr)
         {
-            m_width = w;
-            m_height = h;
+            m_size.x = w;
+            m_size.y = h;
             m_channels = bpp;
 
-            m_bytes.assign(ptr, ptr + (m_width * m_height * 4));
+            m_bytes.assign(ptr, ptr + (w * h * 4));
 
             stbi_image_free(ptr);
 
@@ -80,15 +77,15 @@ namespace esd
         {
             switch (extension)
             {
-                case ImgExtType::BMP: return stbi_write_bmp(filePath, m_width, m_height, m_channels, m_bytes.data());
+                case ImgExtType::BMP: return stbi_write_bmp(filePath, m_size.x, m_size.y, m_channels, m_bytes.data());
 
                 case ImgExtType::HDR: return false; // TODO implement
 
-                case ImgExtType::JPG: return stbi_write_jpg(filePath, m_width, m_height, m_channels, m_bytes.data(), 90);
+                case ImgExtType::JPG: return stbi_write_jpg(filePath, m_size.x, m_size.y, m_channels, m_bytes.data(), 90);
 
-                case ImgExtType::PNG: return stbi_write_png(filePath, m_width, m_height, m_channels, m_bytes.data(), 0);
+                case ImgExtType::PNG: return stbi_write_png(filePath, m_size.x, m_size.y, m_channels, m_bytes.data(), 0);
 
-                case ImgExtType::TGA: return stbi_write_tga(filePath, m_width, m_height, m_channels, m_bytes.data());
+                case ImgExtType::TGA: return stbi_write_tga(filePath, m_size.x, m_size.y, m_channels, m_bytes.data());
             }
         }
 
@@ -99,12 +96,12 @@ namespace esd
     {
         if (!m_bytes.empty())
         {
-            size_t const rowSize = m_width * 4;
+            size_t const rowSize = m_size.x * 4;
 
             auto top    = m_bytes.begin();
             auto bottom = m_bytes.end() - rowSize;
 
-            for (size_t y = 0; y < m_height / 2; ++y)
+            for (size_t y = 0; y < m_size.y / 2; ++y)
             {
                 std::swap_ranges(top, top + rowSize, bottom);
 
@@ -118,14 +115,14 @@ namespace esd
     {
         if (!m_bytes.empty())
         {
-            size_t const rowSize = m_width * 4;
+            size_t const rowSize = m_size.x * 4;
 
-            for (size_t y = 0; y < m_height; ++y)
+            for (size_t y = 0; y < m_size.y; ++y)
             {
                 auto left  = m_bytes.begin() + y * rowSize;
                 auto right = m_bytes.begin() + (y + 1) * rowSize - 4;
 
-                for (size_t x = 0; x < m_width / 2; ++x)
+                for (size_t x = 0; x < m_size.x / 2; ++x)
                 {
                     std::swap_ranges(left, left + 4, right);
 
@@ -147,21 +144,9 @@ namespace esd
     }
 
     ///
-    uint32_t Image::GetWidth() const
+    Vec2u const& Image::GetSize() const
     {
-        return m_width;
-    }
-
-    ///
-    uint32_t Image::GetHeight() const
-    {
-        return m_height;
-    }
-
-    ///
-    Vec2u Image::GetSize() const
-    {
-        return { m_width, m_height };
+        return m_size;
     }
 
     ///
@@ -172,18 +157,18 @@ namespace esd
 
     size_t Image::GetPixelsCount() const
     {
-        return m_width * m_height;
+        return m_size.x * m_size.y;
     }
 
     size_t Image::GetBytesCount() const
     {
-        return m_width * m_height * 4;
+        return m_size.x * m_size.y * 4;
     }
 
     void Image::M_Defaultize()
     {
-        m_width = 0;
-        m_height = 0;
+        m_size.x = 0;
+        m_size.y = 0;
         m_channels = 0;
     }
 }

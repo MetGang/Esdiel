@@ -57,13 +57,7 @@ namespace esd
         Byte_t const* GetData() const;
 
         ///
-        uint32_t GetWidth() const;
-
-        ///
-        uint32_t GetHeight() const;
-
-        ///
-        Vec2u GetSize() const;
+        Vec2u const& GetSize() const;
 
         ///
         uint32_t GetChannelsCount() const;
@@ -80,8 +74,7 @@ namespace esd
         void M_Defaultize();
 
         Bytes_t m_bytes;
-        uint32_t m_width;
-        uint32_t m_height;
+        Vec2u m_size;
         uint32_t m_channels;
     };
 }
