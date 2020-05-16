@@ -90,33 +90,19 @@ namespace esd
 
     void Sprite::M_Update() const
     {
+        auto const texRect = Vec4f {
+            m_textureRect.x / m_texture->GetSize().x,
+            m_textureRect.y / m_texture->GetSize().y,
+            m_textureRect.z / m_texture->GetSize().x,
+            m_textureRect.w / m_texture->GetSize().y
+        };
+
         auto vertices = m_vertexBuffer.GetData();
-        auto const& texSize = m_texture->GetSize();
-        auto rect = Vec4f{ m_textureRect.x / texSize.x, m_textureRect.y / texSize.y, m_textureRect.z / texSize.x, m_textureRect.w / texSize.y };
 
-        vertices[0] = {
-            { m_textureRect.x, m_textureRect.y, 0.0f },
-            m_color,
-            { rect.x, rect.y }
-        };
-
-        vertices[1] = {
-            { m_textureRect.x + m_textureRect.z, m_textureRect.y, 0.0f },
-            m_color,
-            { rect.x + rect.z, rect.y }
-        };
-
-        vertices[2] = {
-            { m_textureRect.x + m_textureRect.z, m_textureRect.y + m_textureRect.w, 0.0f },
-            m_color,
-            { rect.x + rect.z, rect.y + rect.w }
-        };
-
-        vertices[3] = {
-            { m_textureRect.x, m_textureRect.y + m_textureRect.w, 0.0f },
-            m_color,
-            { rect.x, rect.y + rect.w }
-        };
+        vertices[0] = { { m_textureRect.x, m_textureRect.y, 0.0f }, m_color, { texRect.x, texRect.y } };
+        vertices[1] = { { m_textureRect.x + m_textureRect.z, m_textureRect.y, 0.0f }, m_color, { texRect.x + texRect.z, texRect.y } };
+        vertices[2] = { { m_textureRect.x + m_textureRect.z, m_textureRect.y + m_textureRect.w, 0.0f }, m_color, { texRect.x + texRect.z, texRect.y + texRect.w } };
+        vertices[3] = { { m_textureRect.x, m_textureRect.y + m_textureRect.w, 0.0f }, m_color, { texRect.x, texRect.y + texRect.w } };
     }
 
     void Sprite::M_Defaultize()
