@@ -60,6 +60,9 @@ namespace esd
         Vec2b const& GetFlipped() const;
 
         ///
+        void SetAnimationFrame(uint32_t index, uint32_t framesInRow, Vec2u const& frameSize);
+
+        ///
         Vec4f GetLocalBounds() const;
 
         ///

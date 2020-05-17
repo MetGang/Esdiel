@@ -82,6 +82,11 @@ namespace esd
         return m_flipped;
     }
 
+    void Sprite::SetAnimationFrame(uint32_t index, uint32_t framesInRow, Vec2u const& frameSize)
+    {
+        m_textureRect = { static_cast<float>(index % framesInRow) * frameSize.x, static_cast<float>(index / framesInRow) * frameSize.y, frameSize.x, frameSize.y };
+    }
+
     Vec4f Sprite::GetLocalBounds() const
     {
         M_Update();
