@@ -88,6 +88,15 @@ namespace esd
         m_vertexBuffer.Render(window, shaderProgram, camera, GetTransform());
     }
 
+    void Sprite::Render(RenderLayer const& renderLayer, ShaderProgram const& shaderProgram, Camera const& camera) const
+    {
+        M_Update();
+
+        m_texture->Bind(0);
+
+        m_vertexBuffer.Render(renderLayer, shaderProgram, camera, GetTransform());
+    }
+
     void Sprite::M_Update() const
     {
         auto const texRect = Vec4f {

@@ -11,6 +11,7 @@ namespace esd
 {
     //
     class Camera;
+    class RenderLayer;
     class ShaderProgram;
     class Transform;
     class Window;
@@ -103,6 +104,12 @@ namespace esd
 
         ///
         void Render(Window const& window, ShaderProgram const& shaderProgram, Camera const& camera, Transform const& transform) const;
+
+        ///
+        void Render(RenderLayer const& renderLayer, ShaderProgram const& shaderProgram, Camera const& camera) const;
+
+        ///
+        void Render(RenderLayer const& renderLayer, ShaderProgram const& shaderProgram, Camera const& camera, Transform const& transform) const;
 
     private:
 

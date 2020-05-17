@@ -2,6 +2,7 @@
 
 // Esdiel
 #include <Esdiel/Graphics/Camera.hpp>
+#include <Esdiel/Graphics/RenderLayer.hpp>
 #include <Esdiel/Graphics/ShaderProgram.hpp>
 #include <Esdiel/Graphics/Transform.hpp>
 #include <Esdiel/Graphics/Window.hpp>
@@ -246,6 +247,26 @@ namespace esd
         if (!m_vertices.empty() && m_vao && m_vbo)
         {
             window.PrepareToRender(shaderProgram, camera, transform);
+
+            M_Render();
+        }
+    }
+
+    void VertexBuffer::Render(RenderLayer const& renderLayer, ShaderProgram const& shaderProgram, Camera const& camera) const
+    {
+        if (!m_vertices.empty() && m_vao && m_vbo)
+        {
+            renderLayer.PrepareToRender(shaderProgram, camera);
+
+            M_Render();
+        }
+    }
+
+    void VertexBuffer::Render(RenderLayer const& renderLayer, ShaderProgram const& shaderProgram, Camera const& camera, Transform const& transform) const
+    {
+        if (!m_vertices.empty() && m_vao && m_vbo)
+        {
+            renderLayer.PrepareToRender(shaderProgram, camera, transform);
 
             M_Render();
         }

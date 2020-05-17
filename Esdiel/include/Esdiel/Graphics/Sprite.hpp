@@ -59,6 +59,9 @@ namespace esd
         ///
         void Render(Window const& window, ShaderProgram const& shaderProgram, Camera const& camera) const;
 
+        ///
+        void Render(RenderLayer const& renderLayer, ShaderProgram const& shaderProgram, Camera const& camera) const;
+
     private:
 
         ///
