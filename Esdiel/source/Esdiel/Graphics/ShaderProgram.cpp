@@ -2,6 +2,7 @@
 
 // C++
 #include <algorithm>
+#include <cstdio>
 
 // glad
 #include <glad/glad.h>
