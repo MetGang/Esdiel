@@ -54,6 +54,12 @@ namespace esd
         Vec4f const& GetTextureRect() const;
 
         ///
+        void SetFlipped(Vec2b const& flipped);
+
+        ///
+        Vec2b const& GetFlipped() const;
+
+        ///
         Vec4f GetLocalBounds() const;
 
         ///
@@ -74,5 +80,6 @@ namespace esd
         Texture const* m_texture;
         Vec4f m_color;
         Vec4f m_textureRect;
+        Vec2b m_flipped;
     };
 }

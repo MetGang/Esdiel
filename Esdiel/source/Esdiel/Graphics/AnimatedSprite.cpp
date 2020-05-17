@@ -12,6 +12,7 @@ namespace esd
         , m_frameSize { 0.0f, 0.0f }
         , m_currentFrame { 0 }
         , m_framesInRowCount { 1 }
+        , m_flipped { false, false }
     {
 
     }
@@ -23,8 +24,9 @@ namespace esd
         , m_frameSize { rhs.m_frameSize }
         , m_currentFrame { rhs.m_currentFrame }
         , m_framesInRowCount { rhs.m_framesInRowCount }
+        , m_flipped { rhs.m_flipped }
     {
-        
+        rhs.M_Defaultize();
     }
 
     AnimatedSprite& AnimatedSprite::operator = (AnimatedSprite&& rhs) noexcept
@@ -37,6 +39,7 @@ namespace esd
             m_frameSize = rhs.m_frameSize;
             m_currentFrame = rhs.m_currentFrame;
             m_framesInRowCount = rhs.m_framesInRowCount;
+            m_flipped = rhs.m_flipped;
 
             rhs.M_Defaultize();
         }
@@ -94,6 +97,16 @@ namespace esd
         return m_framesInRowCount;
     }
 
+    void AnimatedSprite::SetFlipped(Vec2b const& flipped)
+    {
+        m_flipped = flipped;
+    }
+
+    Vec2b const& AnimatedSprite::GetFlipped() const
+    {
+        return m_flipped;
+    }
+
     Vec4f AnimatedSprite::GetLocalBounds() const
     {
         M_Update();
@@ -137,6 +150,18 @@ namespace esd
         vertices[1] = { { m_frameSize.x, 0.0f, 0.0f }, m_color, { texRect.x + texRect.z, texRect.y + texRect.w } };
         vertices[2] = { { m_frameSize.x, m_frameSize.y, 0.0f }, m_color, { texRect.x + texRect.z, texRect.y } };
         vertices[3] = { { 0.0f, m_frameSize.y, 0.0f }, m_color, { texRect.x, texRect.y } };
+
+        if (m_flipped.x)
+        {
+            std::swap(vertices[0].texCoord.x, vertices[1].texCoord.x);
+            std::swap(vertices[2].texCoord.x, vertices[3].texCoord.x);
+        }
+
+        if (m_flipped.y)
+        {
+            std::swap(vertices[0].texCoord.y, vertices[3].texCoord.y);
+            std::swap(vertices[1].texCoord.y, vertices[2].texCoord.y);
+        }
     }
 
     void AnimatedSprite::M_Defaultize()

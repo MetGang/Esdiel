@@ -66,6 +66,12 @@ namespace esd
         uint32_t GetramesInRowCount() const;
 
         ///
+        void SetFlipped(Vec2b const& flipped);
+
+        ///
+        Vec2b const& GetFlipped() const;
+
+        ///
         Vec4f GetLocalBounds() const;
 
         ///
@@ -88,5 +94,6 @@ namespace esd
         Vec2f m_frameSize;
         uint32_t m_currentFrame;
         uint32_t m_framesInRowCount;
+        Vec2b m_flipped;
     };
 }

@@ -10,6 +10,7 @@ namespace esd
         , m_texture { nullptr }
         , m_color { 1.0f, 1.0f, 1.0f, 1.0f }
         , m_textureRect { 0.0f, 0.0f, 0.0f, 0.0f }
+        , m_flipped { false, false }
     {
 
     }
@@ -19,8 +20,9 @@ namespace esd
         , m_texture { rhs.m_texture }
         , m_color { rhs.m_color }
         , m_textureRect { rhs.m_textureRect }
+        , m_flipped { rhs.m_flipped }
     {
-        
+        rhs.M_Defaultize();
     }
 
     Sprite& Sprite::operator = (Sprite&& rhs) noexcept
@@ -31,6 +33,7 @@ namespace esd
             m_texture = rhs.m_texture;
             m_color = rhs.m_color;
             m_textureRect = rhs.m_textureRect;
+            m_flipped = rhs.m_flipped;
 
             rhs.M_Defaultize();
         }
@@ -67,6 +70,16 @@ namespace esd
     Vec4f const& Sprite::GetTextureRect() const
     {
         return m_textureRect;
+    }
+
+    void Sprite::SetFlipped(Vec2b const& flipped)
+    {
+        m_flipped = flipped;
+    }
+
+    Vec2b const& Sprite::GetFlipped() const
+    {
+        return m_flipped;
     }
 
     Vec4f Sprite::GetLocalBounds() const
@@ -112,6 +125,18 @@ namespace esd
         vertices[1] = { { m_textureRect.z, 0.0f, 0.0f }, m_color, { texRect.x + texRect.z, texRect.y + texRect.w } };
         vertices[2] = { { m_textureRect.z, m_textureRect.w, 0.0f }, m_color, { texRect.x + texRect.z, texRect.y } };
         vertices[3] = { { 0.0f, m_textureRect.w, 0.0f }, m_color, { texRect.x, texRect.y } };
+
+        if (m_flipped.x)
+        {
+            std::swap(vertices[0].texCoord.x, vertices[1].texCoord.x);
+            std::swap(vertices[2].texCoord.x, vertices[3].texCoord.x);
+        }
+
+        if (m_flipped.y)
+        {
+            std::swap(vertices[0].texCoord.y, vertices[3].texCoord.y);
+            std::swap(vertices[1].texCoord.y, vertices[2].texCoord.y);
+        }
     }
 
     void Sprite::M_Defaultize()
@@ -120,5 +145,6 @@ namespace esd
         m_texture = nullptr;
         m_color = { 1.0f, 1.0f, 1.0f, 1.0f };
         m_textureRect = { 0.0f, 0.0f, 0.0f, 0.0f };
+        m_flipped = { false, false };
     }
 }
