@@ -1,4 +1,5 @@
 .vscode
-example
 build
 Makefile
+*.dll
+*.exe
