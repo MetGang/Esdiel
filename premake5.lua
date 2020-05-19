@@ -25,9 +25,6 @@ workspace "E+G Study Project"
         defines { "NDEBUG" }
         optimize "Full"
 
--- Global variables
-targetDir = "%{cfg.system}/%{prj.name}/%{cfg.buildcfg}"
-
 -- Main project
 project "Esdiel"
 
@@ -35,14 +32,16 @@ project "Esdiel"
 
     kind "WindowedApp"
 
-    targetdir ("build/" .. targetDir .. "/bin")
-    objdir ("build/" .. targetDir .. "/obj")
+    targetname "%{prj.name}-%{cfg.system}-%{cfg.buildcfg}"
+
+    targetdir "example"
+
+    objdir "build/%{cfg.system}/%{cfg.buildcfg}/obj"
 
     files {
-        "%{prj.location}/**.h",
-        "%{prj.location}/**.hpp",
-        "%{prj.location}/**.c",
-        "%{prj.location}/**.cpp"
+        "%{prj.location}/include/**.hpp",
+        "%{prj.location}/source/**.cpp",
+        "%{prj.location}/thirdparty/glad/glad.c"
     }
 
     includedirs {
@@ -51,12 +50,10 @@ project "Esdiel"
         "%{prj.location}/thirdparty/SDL2/include"
     }
 
-    libdirs {
-        "%{prj.location}/thirdparty/SDL2/lib"
-    }
+    filter "system:windows"
+        libdirs "%{prj.location}/thirdparty/SDL2/lib"
 
     links {
         "SDL2main",
-        "SDL2",
-        "opengl32"
+        "SDL2"
     }
