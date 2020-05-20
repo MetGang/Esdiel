@@ -5,25 +5,25 @@
 
 namespace esd
 {
-    Context::Context() noexcept
+    Context::Context()
         : m_initialized { false }
     {
 
     }
 
-    Context::~Context() noexcept
+    Context::~Context()
     {
         Shutdown();
     }
 
-    bool Context::Initialize() noexcept
+    bool Context::Initialize()
     {
         m_initialized = SDL_Init(SDL_INIT_EVERYTHING) == 0;
 
         return m_initialized;
     }
 
-    void Context::Shutdown() noexcept
+    void Context::Shutdown()
     {
         if (m_initialized)
         {

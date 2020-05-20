@@ -5,7 +5,7 @@
 
 namespace esd
 {
-    Sound::Sound() noexcept
+    Sound::Sound()
         : m_audioSpec {}
         , m_buffer { nullptr }
         , m_bufferLength { 0 }
@@ -38,12 +38,12 @@ namespace esd
         return *this;
     }
 
-    Sound::~Sound() noexcept
+    Sound::~Sound()
     {
         M_Destroy();
     }
 
-    bool Sound::LoadFromFile(char const* filename) noexcept
+    bool Sound::LoadFromFile(char const* filename)
     {
         if (SDL_LoadWAV(filename, &m_audioSpec, &m_buffer, &m_bufferLength) != nullptr)
         {
@@ -57,7 +57,7 @@ namespace esd
         }
     }
 
-    void Sound::Play() const noexcept
+    void Sound::Play() const
     {
         Stop();
 
@@ -67,22 +67,22 @@ namespace esd
         }
     }
 
-    void Sound::Stop() const noexcept
+    void Sound::Stop() const
     {
         SDL_ClearQueuedAudio(m_deviceID);
     }
 
-    void Sound::Pause() const noexcept
+    void Sound::Pause() const
     {
         SDL_PauseAudioDevice(m_deviceID, 1);
     }
 
-    void Sound::Unpause() const noexcept
+    void Sound::Unpause() const
     {
         SDL_PauseAudioDevice(m_deviceID, 0);
     }
 
-    void Sound::Toggle() const noexcept
+    void Sound::Toggle() const
     {
         if (IsPlaying())
         {
@@ -94,17 +94,17 @@ namespace esd
         }
     }
 
-    bool Sound::IsPlaying() const noexcept
+    bool Sound::IsPlaying() const
     {
         return SDL_GetAudioDeviceStatus(m_deviceID) == SDL_AUDIO_PLAYING;
     }
 
-    bool Sound::IsPaused() const noexcept
+    bool Sound::IsPaused() const
     {
         return SDL_GetAudioDeviceStatus(m_deviceID) == SDL_AUDIO_PAUSED;
     }
 
-    void Sound::M_Defaultize() noexcept
+    void Sound::M_Defaultize()
     {
         m_audioSpec = {};
         m_buffer = nullptr;
@@ -112,7 +112,7 @@ namespace esd
         m_deviceID = 0;
     }
 
-    void Sound::M_Destroy() const noexcept
+    void Sound::M_Destroy() const
     {
         if (m_deviceID > 1)
         {

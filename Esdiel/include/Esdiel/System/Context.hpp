@@ -11,7 +11,7 @@ namespace esd
     public:
 
         ///
-        Context() noexcept;
+        Context();
 
         ///
         Context(Context const&) = delete;
@@ -26,13 +26,13 @@ namespace esd
         Context& operator = (Context&&) = delete;
 
         ///
-        ~Context() noexcept;
+        ~Context();
 
         ///
-        bool Initialize() noexcept;
+        bool Initialize();
 
         ///
-        void Shutdown() noexcept;
+        void Shutdown();
 
     private:
 

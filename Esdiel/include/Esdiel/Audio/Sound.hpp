@@ -14,7 +14,7 @@ namespace esd
     public:
 
         ///
-        Sound() noexcept;
+        Sound();
 
         ///
         Sound(Sound const&) = delete;
@@ -29,39 +29,39 @@ namespace esd
         Sound& operator = (Sound&& rhs) noexcept;
 
         ///
-        ~Sound() noexcept;
+        ~Sound();
 
         ///
-        bool LoadFromFile(char const* filename) noexcept;
+        bool LoadFromFile(char const* filename);
 
         ///
-        void Play() const noexcept;
+        void Play() const;
 
         ///
-        void Stop() const noexcept;
+        void Stop() const;
 
         ///
-        void Pause() const noexcept;
+        void Pause() const;
 
         ///
-        void Unpause() const noexcept;
+        void Unpause() const;
 
         ///
-        void Toggle() const noexcept;
+        void Toggle() const;
 
         ///
-        bool IsPlaying() const noexcept;
+        bool IsPlaying() const;
 
         ///
-        bool IsPaused() const noexcept;
+        bool IsPaused() const;
 
     private:
 
         ///
-        void M_Defaultize() noexcept;
+        void M_Defaultize();
 
         ///
-        void M_Destroy() const noexcept;
+        void M_Destroy() const;
 
         SDL_AudioSpec m_audioSpec;
         uint8_t* m_buffer;
