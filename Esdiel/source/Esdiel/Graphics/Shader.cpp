@@ -49,7 +49,7 @@ namespace esd
     Shader::Shader(Shader&& rhs) noexcept
         : m_shader { rhs.m_shader }
     {
-        rhs.M_Defaultize();
+        
     }
 
     Shader& Shader::operator = (Shader&& rhs) noexcept
@@ -59,8 +59,6 @@ namespace esd
             M_Destroy();
 
             m_shader = rhs.m_shader;
-
-            rhs.M_Defaultize();
         }
 
         return *this;
@@ -91,11 +89,6 @@ namespace esd
     bool Shader::IsValid() const
     {
         return m_shader;
-    }
-
-    void Shader::M_Defaultize()
-    {
-        m_shader = 0;
     }
 
     void Shader::M_Destroy()
