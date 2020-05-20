@@ -19,7 +19,7 @@ namespace esd
         : m_texture { rhs.m_texture }
         , m_size { rhs.m_size }
     {
-        rhs.M_Defaultize();
+        
     }
 
     Texture& Texture::operator = (Texture&& rhs) noexcept
@@ -30,8 +30,6 @@ namespace esd
 
             m_texture = rhs.m_texture;
             m_size = rhs.m_size;
-
-            rhs.M_Defaultize();
         }
 
         return *this;
@@ -102,12 +100,6 @@ namespace esd
             glActiveTexture(GL_TEXTURE0 + slot);
             glBindTexture(GL_TEXTURE_2D, m_texture);
         }
-    }
-
-    void Texture::M_Defaultize()
-    {
-        m_texture = 0;
-        m_size = { 0, 0 };
     }
 
     void Texture::M_Destroy()

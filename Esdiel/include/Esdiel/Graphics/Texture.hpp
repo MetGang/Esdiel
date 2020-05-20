@@ -57,9 +57,6 @@ namespace esd
     private:
 
         ///
-        void M_Defaultize();
-
-        ///
         void M_Destroy();
 
         NativeHandle_t m_texture;
