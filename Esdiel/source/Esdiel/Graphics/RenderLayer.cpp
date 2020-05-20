@@ -25,19 +25,19 @@ namespace esd
         , m_fbo { rhs.m_fbo }
         , m_color { rhs.m_color }
     {
-        rhs.M_Defaultize();
+        
     }
 
     RenderLayer& RenderLayer::operator = (RenderLayer&& rhs) noexcept
     {
         if (this != &rhs)
         {
+            M_Destroy();
+
             m_vertexBuffer = std::move(rhs.m_vertexBuffer);
             m_texture = std::move(rhs.m_texture);
             m_fbo = rhs.m_fbo;
             m_color = rhs.m_color;
-
-            rhs.M_Defaultize();
         }
 
         return *this;
@@ -150,14 +150,6 @@ namespace esd
         vertices[1] = { { m_texture.GetSize().x, 0.0f, 0.0f }, m_color, { 1.0f, 0.0f } };
         vertices[2] = { { m_texture.GetSize().x, m_texture.GetSize().y, 0.0f }, m_color, { 1.0f, 1.0f } };
         vertices[3] = { { 0.0f, m_texture.GetSize().y, 0.0f }, m_color, { 0.0f, 1.0f } };
-    }
-
-    void RenderLayer::M_Defaultize()
-    {
-        m_vertexBuffer = { 4u, {}, PrimitiveType::TriangleFan };
-        m_texture = {};
-        m_fbo = 0;
-        m_color = { 1.0f, 1.0f, 1.0f, 1.0f };
     }
 
     void RenderLayer::M_Destroy()

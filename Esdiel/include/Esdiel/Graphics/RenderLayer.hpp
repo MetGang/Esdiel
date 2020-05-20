@@ -74,9 +74,6 @@ namespace esd
         void M_Update() const;
 
         ///
-        void M_Defaultize();
-
-        ///
         void M_Destroy();
 
         mutable VertexBuffer m_vertexBuffer;
