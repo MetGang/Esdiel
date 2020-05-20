@@ -74,7 +74,7 @@ namespace esd
         , m_needsUpdate { rhs.m_needsUpdate }
         , m_needsReallocate { rhs.m_needsReallocate }
     {
-        rhs.M_Defaultize();
+        
     }
 
     VertexBuffer& VertexBuffer::operator = (VertexBuffer&& rhs) noexcept
@@ -91,8 +91,6 @@ namespace esd
             m_vbo = rhs.m_vbo;
             m_needsUpdate = rhs.m_needsUpdate;
             m_needsReallocate = rhs.m_needsReallocate;
-
-            rhs.M_Defaultize();
         }
 
         return *this;
@@ -322,16 +320,6 @@ namespace esd
             m_needsUpdate = false;
         }
     }
-
-    void VertexBuffer::M_Defaultize()
-    {
-        m_lowerIndex = maxIndex;
-        m_upperIndex = minIndex;
-        m_vao = 0;
-        m_vbo = 0;
-        m_needsUpdate = true;
-        m_needsReallocate = true;
-    } 
 
     void VertexBuffer::M_Destroy()
     {

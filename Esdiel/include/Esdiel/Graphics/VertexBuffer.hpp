@@ -123,9 +123,6 @@ namespace esd
         void M_Render() const;
 
         ///
-        void M_Defaultize();
-
-        ///
         void M_Destroy();
 
         Vertices_t m_vertices;
