@@ -76,9 +76,6 @@ namespace esd
         ///
         void M_Update() const;
 
-        ///
-        void M_Defaultize();
-
         mutable VertexBuffer m_vertexBuffer;
         Texture const* m_texture;
         Vec4f m_color;

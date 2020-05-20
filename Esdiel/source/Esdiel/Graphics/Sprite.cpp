@@ -22,7 +22,7 @@ namespace esd
         , m_textureRect { rhs.m_textureRect }
         , m_flipped { rhs.m_flipped }
     {
-        rhs.M_Defaultize();
+        r
     }
 
     Sprite& Sprite::operator = (Sprite&& rhs) noexcept
@@ -34,8 +34,6 @@ namespace esd
             m_color = rhs.m_color;
             m_textureRect = rhs.m_textureRect;
             m_flipped = rhs.m_flipped;
-
-            rhs.M_Defaultize();
         }
 
         return *this;
@@ -142,14 +140,5 @@ namespace esd
             std::swap(vertices[0].texCoord.y, vertices[3].texCoord.y);
             std::swap(vertices[1].texCoord.y, vertices[2].texCoord.y);
         }
-    }
-
-    void Sprite::M_Defaultize()
-    {
-        m_vertexBuffer = { 4u, {}, PrimitiveType::TriangleFan };
-        m_texture = nullptr;
-        m_color = { 1.0f, 1.0f, 1.0f, 1.0f };
-        m_textureRect = { 0.0f, 0.0f, 0.0f, 0.0f };
-        m_flipped = { false, false };
     }
 }
