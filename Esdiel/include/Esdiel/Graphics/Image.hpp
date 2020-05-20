@@ -27,10 +27,10 @@ namespace esd
         Image& operator = (Image const&) = default;
 
         ///
-        Image(Image&& rhs) noexcept = default;
+        Image(Image&&) noexcept = default;
 
         ///
-        Image& operator = (Image&& rhs) noexcept = default;
+        Image& operator = (Image&&) noexcept = default;
 
         ///
         ~Image() = default;
