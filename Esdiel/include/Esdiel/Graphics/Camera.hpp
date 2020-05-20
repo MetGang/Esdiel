@@ -15,16 +15,16 @@ namespace esd
         Camera();
 
         ///
-        Camera(Camera const&) = delete;
+        Camera(Camera const&) = default;
 
         ///
-        Camera& operator = (Camera const&) = delete;
+        Camera& operator = (Camera const&) = default;
 
         ///
-        Camera(Camera&&) = delete;
+        Camera(Camera&&) noexcept = default;
 
         ///
-        Camera& operator = (Camera&&) = delete;
+        Camera& operator = (Camera&&) noexcept = default;
 
         ///
         ~Camera() = default;
