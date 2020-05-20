@@ -16,33 +16,11 @@ namespace esd
 
     }
 
-    Image::Image(Image&& rhs) noexcept
-        : m_bytes { std::move(rhs.m_bytes) }
-        , m_size { rhs.m_size }
-        , m_channels { rhs.m_channels }
-    {
-        rhs.M_Defaultize();
-    }
-
-    Image& Image::operator = (Image&& rhs) noexcept
-    {
-        if (this != &rhs)
-        {
-            m_bytes = std::move(rhs.m_bytes);
-            m_size = rhs.m_size;
-            m_channels = rhs.m_channels;
-
-            rhs.M_Defaultize();
-        }
-
-        return *this;
-    }
-
     void Image::Clear()
     {
         m_bytes.clear();
-
-        M_Defaultize();
+        m_size = { 0, 0 };
+        m_channels = 0;
     }
 
     bool Image::LoadFromFile(char const* filePath)
@@ -163,12 +141,5 @@ namespace esd
     size_t Image::GetBytesCount() const
     {
         return m_size.x * m_size.y * 4;
-    }
-
-    void Image::M_Defaultize()
-    {
-        m_size.x = 0;
-        m_size.y = 0;
-        m_channels = 0;
     }
 }

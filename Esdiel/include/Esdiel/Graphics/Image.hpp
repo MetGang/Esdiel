@@ -27,10 +27,10 @@ namespace esd
         Image& operator = (Image const&) = default;
 
         ///
-        Image(Image&& rhs) noexcept;
+        Image(Image&& rhs) noexcept = default;
 
         ///
-        Image& operator = (Image&& rhs) noexcept;
+        Image& operator = (Image&& rhs) noexcept = default;
 
         ///
         ~Image() = default;
@@ -69,9 +69,6 @@ namespace esd
         size_t GetBytesCount() const;
 
     private:
-
-        ///
-        void M_Defaultize();
 
         Bytes_t m_bytes;
         Vec2u m_size;
