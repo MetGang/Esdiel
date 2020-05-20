@@ -210,16 +210,6 @@ namespace esd
         m_dtClock.Restart();
     }
 
-    void Window::M_Defaultize()
-    {
-        m_window = nullptr;
-        m_graphicsContext = nullptr;
-        m_size = { 0, 0 };
-        m_framerateLimit = Duration_t::zero();
-        m_dtClock.Restart();
-        m_isOpen = false;
-    }
-
     void Window::M_Destroy()
     {
         if (m_window)

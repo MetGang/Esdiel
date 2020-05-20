@@ -98,9 +98,6 @@ namespace esd
         void M_AdjustFramerate();
 
         ///
-        void M_Defaultize();
-
-        ///
         void M_Destroy();
 
         NativeHandle_t m_window;
