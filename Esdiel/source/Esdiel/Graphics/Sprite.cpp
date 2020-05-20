@@ -22,7 +22,7 @@ namespace esd
         , m_textureRect { rhs.m_textureRect }
         , m_flipped { rhs.m_flipped }
     {
-        r
+        
     }
 
     Sprite& Sprite::operator = (Sprite&& rhs) noexcept
