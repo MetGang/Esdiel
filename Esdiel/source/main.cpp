@@ -1,5 +1,6 @@
 #include <Esdiel/Audio/Sound.hpp>
 #include <Esdiel/System/Context.hpp>
+#include <Esdiel/Graphics/Animation.hpp>
 #include <Esdiel/Graphics/Camera.hpp>
 #include <Esdiel/Graphics/RenderLayer.hpp>
 #include <Esdiel/Graphics/ShaderProgram.hpp>
@@ -48,6 +49,15 @@ int main()
     spr.SetTexture(tex);
     spr.SetTextureRect({ 450, 450, 450, 450 });
 
+    esd::Animation anim;
+    anim.SetAnimations({
+        4,
+        4
+    });
+    anim.SetFrameDuration(std::chrono::seconds{ 1 });
+    anim.SetFrameSize({ 225, 450 });
+    anim.Play(0);
+
     esd::Sprite aspr;
     aspr.SetTexture(tex);
     aspr.SetPosition({ 500, 50, 0 });
@@ -82,6 +92,14 @@ int main()
                 {
                     snd.Toggle();
                 }
+                else if (event.key.keysym.scancode == SDL_SCANCODE_SPACE)
+                {
+                    anim.PlayOnce(1, 0);
+                }
+                else if (event.key.keysym.scancode == SDL_SCANCODE_P)
+                {
+                    anim.Toggle();
+                }
             }
         }
 
@@ -89,6 +107,7 @@ int main()
 
         rl.Clear();
 
+        spr.SetTextureRect(anim.GetTextureRect());
         spr.Render(rl, shaderProgram, camera);
     
         window.Clear();
