@@ -23,7 +23,7 @@ namespace esd
         : m_program { rhs.m_program }
         , m_uniformsLocation { std::move(rhs.m_uniformsLocation) }
     {
-        rhs.M_Defaultize();
+        
     }
 
     ShaderProgram& ShaderProgram::operator = (ShaderProgram&& rhs) noexcept
@@ -34,8 +34,6 @@ namespace esd
 
             m_program = rhs.m_program;
             m_uniformsLocation = std::move(rhs.m_uniformsLocation);
-
-            rhs.M_Defaultize();
         }
 
         return *this;
@@ -361,11 +359,6 @@ namespace esd
     bool ShaderProgram::IsValid() const
     {
         return m_program;
-    }
-
-    void ShaderProgram::M_Defaultize()
-    {
-        m_program = 0;
     }
 
     void ShaderProgram::M_Destroy()
