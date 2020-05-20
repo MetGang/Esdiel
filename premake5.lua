@@ -30,7 +30,7 @@ project "Esdiel"
 
     location "Esdiel"
 
-    kind "WindowedApp"
+    kind "ConsoleApp"
 
     targetname "%{prj.name}-%{cfg.system}-%{cfg.buildcfg}"
 
