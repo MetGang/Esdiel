@@ -58,9 +58,6 @@ namespace esd
     private:
 
         ///
-        void M_Defaultize();
-
-        ///
         void M_Destroy() const;
 
         SDL_AudioSpec m_audioSpec;

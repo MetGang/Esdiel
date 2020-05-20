@@ -20,19 +20,19 @@ namespace esd
         , m_bufferLength { rhs.m_bufferLength }
         , m_deviceID { rhs.m_deviceID }
     {
-        rhs.M_Defaultize();
+        
     }
 
     Sound& Sound::operator = (Sound&& rhs) noexcept
     {
         if (this != &rhs)
         {
+            M_Destroy();
+
             m_audioSpec = std::move(rhs.m_audioSpec);
             m_buffer = rhs.m_buffer;
             m_bufferLength = rhs.m_bufferLength;
             m_deviceID = rhs.m_deviceID;
-
-            rhs.M_Defaultize();
         }
 
         return *this;
@@ -102,14 +102,6 @@ namespace esd
     bool Sound::IsPaused() const
     {
         return SDL_GetAudioDeviceStatus(m_deviceID) == SDL_AUDIO_PAUSED;
-    }
-
-    void Sound::M_Defaultize()
-    {
-        m_audioSpec = {};
-        m_buffer = nullptr;
-        m_bufferLength = 0;
-        m_deviceID = 0;
     }
 
     void Sound::M_Destroy() const
