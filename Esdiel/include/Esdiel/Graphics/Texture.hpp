@@ -46,6 +46,18 @@ namespace esd
         bool LoadFromFile(char const* path);
 
         ///
+        void SetRepeated(bool repeated);
+
+        ///
+        bool IsRepeated() const;
+
+        ///
+        void SetSmooth(bool repeated);
+
+        ///
+        bool IsSmooth() const;
+
+        ///
         Vec2u const& GetSize() const;
 
         ///
@@ -61,5 +73,7 @@ namespace esd
 
         NativeHandle_t m_texture;
         Vec2u m_size;
+        bool m_isRepeated;
+        bool m_isSmooth;
     };
 }
