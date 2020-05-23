@@ -13,7 +13,7 @@ namespace esd
     class Window;
 
     ///
-    class RenderLayer : Transformable
+    class RenderLayer : public Transformable
     {
     public:
 
