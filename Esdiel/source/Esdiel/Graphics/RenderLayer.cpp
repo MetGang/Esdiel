@@ -77,6 +77,11 @@ namespace esd
         return m_texture.GetSize();
     }
 
+    Vec2u RenderLayer::GetSizeHalved() const
+    {
+        return m_texture.GetSizeHalved();
+    }
+
     bool RenderLayer::IsValid() const
     {
         return m_texture.IsValid() && m_fbo;
