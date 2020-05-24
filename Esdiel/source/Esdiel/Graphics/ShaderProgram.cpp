@@ -85,6 +85,14 @@ namespace esd
         return false;
     }
 
+    bool ShaderProgram::LoadFromFile(char const* vertPath, char const* fragPath)
+    {
+        Shader vert;
+        Shader frag;
+
+        return vert.LoadFromFile(ShaderType::Vertex, vertPath) && frag.LoadFromFile(ShaderType::Fragment, fragPath) && LinkShaders({ &vert, &frag });
+    }
+
     void ShaderProgram::UseProgram() const
     {
         glUseProgram(m_program);

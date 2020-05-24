@@ -44,6 +44,9 @@ namespace esd
         bool LinkShaders(std::initializer_list<Shader*> il);
 
         ///
+        bool LoadFromFile(char const* vertPath, char const* fragPath);
+
+        ///
         void UseProgram() const;
 
         ///
