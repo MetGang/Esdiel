@@ -142,6 +142,11 @@ namespace esd
         return m_size;
     }
 
+    Vec2u Texture::GetSizeHalved() const
+    {
+        return m_size / 2u;
+    }
+
     bool Texture::IsValid() const
     {
         return m_texture;

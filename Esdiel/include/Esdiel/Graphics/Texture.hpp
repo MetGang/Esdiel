@@ -61,6 +61,9 @@ namespace esd
         Vec2u const& GetSize() const;
 
         ///
+        Vec2u GetSizeHalved() const;
+
+        ///
         bool IsValid() const;
 
         ///
