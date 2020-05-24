@@ -121,13 +121,16 @@ namespace esd
         return m_bytes.data();
     }
 
-    ///
     Vec2u const& Image::GetSize() const
     {
         return m_size;
     }
 
-    ///
+    Vec2u Image::GetSizeHalved() const
+    {
+        return m_size / 2u;
+    }
+
     uint32_t Image::GetChannelsCount() const
     {
         return m_channels;

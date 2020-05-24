@@ -60,6 +60,9 @@ namespace esd
         Vec2u const& GetSize() const;
 
         ///
+        Vec2u GetSizeHalved() const;
+
+        ///
         uint32_t GetChannelsCount() const;
 
         ///
