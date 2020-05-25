@@ -27,4 +27,10 @@ namespace esd
     {
         return x * pi / 180.0f;
     }
+
+    /// Computes distance between two pints
+    constexpr float Distance(float x1, float y1, float x2, float y2)
+    {
+        return std::sqrt(std::pow(x1 - x2, 2.0f) + std::pow(y1 - y2, 2.0f));
+    }
 }
