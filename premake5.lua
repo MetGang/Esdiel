@@ -32,6 +32,8 @@ project "Esdiel"
 
     kind "ConsoleApp"
 
+    warnings "Extra"
+
     targetname "%{prj.name}-%{cfg.system}-%{cfg.buildcfg}"
 
     targetdir "example"
