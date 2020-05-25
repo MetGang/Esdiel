@@ -44,7 +44,7 @@ namespace esd
         return m_graphicsContext;
     }
 
-    bool Window::Create(Vec2u const& size, char const* name)
+    bool Window::Create(char const* name)
     {
         static bool isGladLoaded = false;
 
@@ -54,8 +54,11 @@ namespace esd
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 
-        m_size = size;
-        m_window = SDL_CreateWindow(name, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, m_size.x, m_size.y, SDL_WINDOW_OPENGL);
+        SDL_DisplayMode dm;
+        SDL_GetCurrentDisplayMode(0, &dm);
+        m_size = { dm.w, dm.h };
+
+        m_window = SDL_CreateWindow(name, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, m_size.x, m_size.y, SDL_WINDOW_OPENGL | SDL_WINDOW_BORDERLESS | SDL_WINDOW_INPUT_GRABBED);
 
         if (m_window)
         {

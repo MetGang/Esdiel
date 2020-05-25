@@ -48,7 +48,7 @@ namespace esd
         GraphicsContext_t GetGraphicsContext() const;
 
         ///
-        bool Create(Vec2u const& size, char const* name);
+        bool Create(char const* name);
 
         ///
         void Show();
