@@ -3,3 +3,4 @@ build
 Makefile
 *.dll
 *.exe
+*.xcf
