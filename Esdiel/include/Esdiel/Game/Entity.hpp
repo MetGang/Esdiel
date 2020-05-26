@@ -71,6 +71,7 @@ namespace esd
         Animation m_animation;
         AnimationState m_animationState;
 
+        EntityType m_type;
         LogicFunction_t m_logicFunction;
 
         Collider m_collider;

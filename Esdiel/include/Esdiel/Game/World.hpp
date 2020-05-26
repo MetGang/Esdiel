@@ -71,6 +71,9 @@ namespace esd
         Camera m_staticCamera;
 
         Vec4i m_mousePosition;
+
+        Texture m_texBg;
+        Sprite m_sprBg;
         
         Texture m_textures[+EntityType::COUNT];
 

@@ -14,7 +14,8 @@ namespace esd
     Entity::Entity()
         : m_sprite {}
         , m_animation {}
-        , m_animationState { AnimationState::Move }
+        , m_animationState { AnimationState::Basic }
+        , m_type { static_cast<EntityType>(-1) }
         , m_logicFunction { nullptr }
         , m_collider {}
         , m_position { 0.0f, 0.0f, 0.0f }
@@ -42,31 +43,33 @@ namespace esd
         m_sprite.SetTexture(texture);
         m_sprite.SetOrigin({ 32.0f, 32.0f, 0.0f });
 
-        m_animation.SetFrameDuration(std::chrono::milliseconds{ 500 });
+        m_animation.SetFrameDuration(std::chrono::milliseconds{ 100 });
         m_animation.SetFrameSize({ 64u, 64u });
 
         switch (type)
         {
             case EntityType::Player:
             {
-                m_logicFunction = +[](Entity& e, int64_t dt, Vec4i const& m, Entity const& p) {
-                    // Follows mouse cursor
-                    auto const distance = Distance(m.x, m.y, p.m_position.x, p.m_position.y);
+                m_type = EntityType::Player;
+
+                m_logicFunction = +[](Entity& e, int64_t dt, Vec4i const& m, Entity const&)
+                {
+                    auto const distance = Distance(m.x, m.y, e.m_position.x, e.m_position.y);
 
                     if (distance > 8.0f)
                     {
-                        auto const dir = glm::normalize(Vec2f{ m.x - p.m_position.x, m.y - p.m_position.y });
+                        auto const angle = std::atan2(m.y - e.m_position.y, m.x - e.m_position.x);
                         auto const speed = Lerp(e.m_speed, e.m_speed * (e.m_isAccelerating ? 2.3f : 1.7f), std::clamp(distance / 600.0f, 0.0f, 1.0f));
 
-                        e.m_position.x += dir.x * speed * dt;
-                        e.m_position.y += dir.y * speed * dt;
-                        e.m_rotation = std::atan2(dir.y, dir.x);
+                        e.m_position.x += std::cos(angle) * speed * dt;
+                        e.m_position.y += std::sin(angle) * speed * dt;
+                        e.m_rotation = angle;
                     }
                 };
 
                 m_animation.SetAnimations({
-                    4, // Move
-                    3, // Acceleration
+                    4, // Basic
+                    4, // Acceleration
                 });
 
                 m_collider.SetRadius(18.0f);
@@ -79,67 +82,166 @@ namespace esd
 
             case EntityType::Static:
             {
-                m_logicFunction = +[](Entity& e, int64_t, Vec4i const&, Entity const&) {
-                    // Nothing, just stay still (and rotate)
-                    e.m_rotation += 0.01f;                    
+                m_type = EntityType::Static;
+
+                m_logicFunction = +[](Entity& e, int64_t, Vec4i const&, Entity const&)
+                {
+                    e.m_rotation += 0.01f;              
                 };
 
                 m_animation.SetAnimations({
-                    6, // Move
+                    6, // Basic
                 });
 
                 m_collider.SetRadius(30.0f);
 
-                m_position.x = 100.0f;
-                m_position.y = 100.0f;
+                m_position.x = std::rand() % static_cast<int32_t>(window.GetSize().x);
+                m_position.y = std::rand() % static_cast<int32_t>(window.GetSize().y);
             }
             break;
 
             case EntityType::Follower:
             {
-                m_logicFunction = +[](Entity& e, int64_t dt, Vec4i const&, Entity const& p) {
-                    // Follows player
-                    auto const dir = glm::normalize(Vec2f{ p.m_position.x - e.m_position.x, p.m_position.y - e.m_position.y });
+                m_type = EntityType::Follower;
 
-                    e.m_position.x += dir.x * e.m_speed * dt;
-                    e.m_position.y += dir.y * e.m_speed * dt;
-                    e.m_rotation = std::atan2(dir.y, dir.x);
+                m_logicFunction = +[](Entity& e, int64_t dt, Vec4i const&, Entity const& p)
+                {
+                    auto const angle = std::atan2(p.m_position.y - e.m_position.y, p.m_position.x - e.m_position.x);
+
+                    e.m_position.x += std::cos(angle) * e.m_speed * dt;
+                    e.m_position.y += std::sin(angle) * e.m_speed * dt;
+                    e.m_rotation = angle;
                 };
 
                 m_animation.SetAnimations({
-                    4, // Move
+                    4, // Basic
                 });
 
                 m_collider.SetRadius(18.0f);
 
-                m_position.x = 100.0f;
-                m_position.y = 100.0f;
+                m_position.x = std::rand() % static_cast<int32_t>(window.GetSize().x);
+                m_position.y = std::rand() % static_cast<int32_t>(window.GetSize().y);
                 m_speed = 0.3f;
             }
             break;
 
             case EntityType::Stealth:
             {
-                m_logicFunction = +[](Entity& e, int64_t dt, Vec4i const&, Entity const& p) {
-                    // Follows player, visibility depends on distance to player
-                    auto const distance = Distance(p.m_position.x, p.m_position.y, e.m_position.x, e.m_position.y);
-                    auto const dir = glm::normalize(Vec2f{ p.m_position.x - e.m_position.x, p.m_position.y - e.m_position.y });
+                m_type = EntityType::Stealth;
 
-                    e.m_position.x += dir.x * e.m_speed * dt;
-                    e.m_position.y += dir.y * e.m_speed * dt;
-                    e.m_rotation = std::atan2(dir.y, dir.x);
-                    e.m_opacity = Lerp(0.8f, 0.0f, std::clamp(distance / 680.0f, 0.0f, 1.0f));
+                m_logicFunction = +[](Entity& e, int64_t dt, Vec4i const&, Entity const& p)
+                {
+                    auto const distance = Distance(p.m_position.x, p.m_position.y, e.m_position.x, e.m_position.y);
+                    auto const angle = std::atan2(p.m_position.y - e.m_position.y, p.m_position.x - e.m_position.x);
+
+                    e.m_position.x += std::cos(angle) * e.m_speed * dt;
+                    e.m_position.y += std::sin(angle) * e.m_speed * dt;
+                    e.m_rotation = angle;
+                    e.m_opacity = Lerp(0.8f, 0.0f, std::clamp(distance / 500.0f, 0.0f, 1.0f));
                 };
 
                 m_animation.SetAnimations({
-                    2, // Move
+                    2, // Basic
                 });
 
                 m_collider.SetRadius(15.0f);
 
-                m_position.x = 100.0f;
-                m_position.y = 100.0f;
+                m_position.x = std::rand() % static_cast<int32_t>(window.GetSize().x);
+                m_position.y = std::rand() % static_cast<int32_t>(window.GetSize().y);
                 m_speed = 0.25f;
+            }
+            break;
+
+            case EntityType::Fatty:
+            {
+                m_type = EntityType::Fatty;
+
+                m_logicFunction = +[](Entity& e, int64_t dt, Vec4i const&, Entity const& p)
+                {
+                    auto const angle = std::atan2(p.m_position.y - e.m_position.y, p.m_position.x - e.m_position.x);
+
+                    e.m_position.x += std::cos(angle) * e.m_speed * dt;
+                    e.m_position.y += std::sin(angle) * e.m_speed * dt;
+                    e.m_rotation = angle;
+                };
+
+                m_animation.SetAnimations({
+                    2, // Basic
+                });
+
+                m_collider.SetRadius(26.0f);
+
+                m_position.x = std::rand() % static_cast<int32_t>(window.GetSize().x);
+                m_position.y = std::rand() % static_cast<int32_t>(window.GetSize().y);
+                m_speed = 0.08f;
+            }
+            break;
+
+            case EntityType::Mouser:
+            {
+                m_type = EntityType::Mouser;
+
+                m_logicFunction = +[](Entity& e, int64_t dt, Vec4i const& m, Entity const&)
+                {
+                    auto const distance = Distance(m.x, m.y, e.m_position.x, e.m_position.y);
+
+                    if (distance > 8.0f)
+                    {
+                        auto const angle = std::atan2(m.y - e.m_position.y, m.x - e.m_position.x);
+                        auto const speed = Lerp(e.m_speed, e.m_speed * 2.0f, std::clamp(distance / 600.0f, 0.0f, 1.0f));
+
+                        e.m_position.x += std::cos(angle) * speed * dt;
+                        e.m_position.y += std::sin(angle) * speed * dt;
+                        e.m_rotation = angle;
+                    }
+                };
+
+                m_animation.SetAnimations({
+                    4, // Basic
+                });
+
+                m_collider.SetRadius(26.0f);
+
+                m_position.x = std::rand() % static_cast<int32_t>(window.GetSize().x);
+                m_position.y = std::rand() % static_cast<int32_t>(window.GetSize().y);
+                m_speed = 0.2f;
+            }
+            break;
+
+            case EntityType::Madman:
+            {
+                m_type = EntityType::Madman;
+
+                m_logicFunction = +[](Entity& e, int64_t dt, Vec4i const&, Entity const& p)
+                {
+                    auto const distance = Distance(p.m_position.x, p.m_position.y, e.m_position.x, e.m_position.y);
+                    auto const angle = std::atan2(p.m_position.y - e.m_position.y, p.m_position.x - e.m_position.x);
+                    auto speed = e.m_speed;
+
+                    if (distance < 220.0f)
+                    {
+                        speed *= 1.8f;
+                        e.m_isAccelerating = true;
+                    }
+                    else
+                    {
+                        e.m_isAccelerating = false;
+                    }                    
+
+                    e.m_position.x += std::cos(angle) * speed * dt;
+                    e.m_position.y += std::sin(angle) * speed * dt;
+                    e.m_rotation = angle;
+                };
+
+                m_animation.SetAnimations({
+                    2, // Basic
+                });
+
+                m_collider.SetRadius(15.0f);
+
+                m_position.x = std::rand() % static_cast<int32_t>(window.GetSize().x);
+                m_position.y = std::rand() % static_cast<int32_t>(window.GetSize().y);
+                m_speed = 0.3f;
             }
             break;
 
@@ -185,7 +287,7 @@ namespace esd
     {
         if (m_isAccelerating)
         {
-            if (m_animationState == AnimationState::Move)
+            if (m_animationState != AnimationState::Acceleration)
             {
                 m_animationState = AnimationState::Acceleration;
                 m_animation.Play(+m_animationState);
@@ -193,9 +295,9 @@ namespace esd
         }
         else
         {
-            if (m_animationState == AnimationState::Acceleration)
+            if (m_animationState != AnimationState::Basic)
             {
-                m_animationState = AnimationState::Move;
+                m_animationState = AnimationState::Basic;
                 m_animation.Play(+m_animationState);
             }
         }

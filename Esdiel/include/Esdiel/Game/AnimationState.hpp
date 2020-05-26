@@ -8,7 +8,7 @@ namespace esd
     ///
     enum class AnimationState : int32_t
     {
-        Move,
+        Basic,
         Acceleration
     };
 

@@ -13,11 +13,9 @@ namespace esd
         Static,
         Follower,
         Stealth,
-        Mime,
-        Parkinson,
         Fatty,
-        Madman,
         Mouser,
+        Madman,
         Eater,
         Guardian,
 

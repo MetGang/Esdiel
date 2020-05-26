@@ -40,15 +40,25 @@ namespace esd
             )
             {
                 if (
+                    m_texBg.LoadFromFile("Assets/Textures/background.png") &&
                     m_textures[+EntityType::Player].LoadFromFile("Assets/Textures/player.png") &&
                     m_textures[+EntityType::Static].LoadFromFile("Assets/Textures/static.png") &&
                     m_textures[+EntityType::Follower].LoadFromFile("Assets/Textures/follower.png") &&
-                    m_textures[+EntityType::Stealth].LoadFromFile("Assets/Textures/stealth.png")
+                    m_textures[+EntityType::Stealth].LoadFromFile("Assets/Textures/stealth.png") &&
+                    m_textures[+EntityType::Fatty].LoadFromFile("Assets/Textures/fatty.png") &&
+                    m_textures[+EntityType::Mouser].LoadFromFile("Assets/Textures/mouser.png") &&
+                    m_textures[+EntityType::Madman].LoadFromFile("Assets/Textures/madman.png")
                 )
                 {
-                    // m_enemies.emplace_back().Initialize(EntityType::Static, window, m_textures[+EntityType::Static]);
-                    // m_enemies.emplace_back().Initialize(EntityType::Follower, window, m_textures[+EntityType::Follower]);
+                    m_sprBg.SetPosition({ -100.0f, -100.0f, 0.0f });
+                    m_sprBg.SetTexture(m_texBg);
+
+                    m_enemies.emplace_back().Initialize(EntityType::Static, window, m_textures[+EntityType::Static]);
+                    m_enemies.emplace_back().Initialize(EntityType::Follower, window, m_textures[+EntityType::Follower]);
                     m_enemies.emplace_back().Initialize(EntityType::Stealth, window, m_textures[+EntityType::Stealth]);
+                    m_enemies.emplace_back().Initialize(EntityType::Fatty, window, m_textures[+EntityType::Fatty]);
+                    m_enemies.emplace_back().Initialize(EntityType::Mouser, window, m_textures[+EntityType::Mouser]);
+                    m_enemies.emplace_back().Initialize(EntityType::Madman, window, m_textures[+EntityType::Madman]);
 
                     return m_player.Initialize(EntityType::Player, window, m_textures[+EntityType::Player]);
                 }
@@ -72,17 +82,17 @@ namespace esd
 
     void World::ProcessEvent(Window const& window, SDL_Event const& event)
     {
+        if (event.type == SDL_MOUSEMOTION)
+        {
+            m_mousePosition = { event.motion.x + m_gameCamera.GetPosition().x, window.GetSize().y - event.motion.y + m_gameCamera.GetPosition().y, event.motion.xrel, -event.motion.yrel };
+        }
+        else if (event.type == SDL_KEYDOWN && event.key.keysym.scancode == SDL_SCANCODE_P && event.key.repeat == 0)
+        {
+            TogglePause();
+        }
+    
         if (m_clock.IsRunning())
         {
-            if (event.type == SDL_MOUSEMOTION)
-            {
-                m_mousePosition = { event.motion.x, window.GetSize().y - event.motion.y, event.motion.xrel, -event.motion.yrel };
-            }
-            else if (event.type == SDL_KEYDOWN && event.key.keysym.scancode == SDL_SCANCODE_P && event.key.repeat == 0)
-            {
-                TogglePause();
-            }
-
             m_player.ProcessEvent(event);
         }
     }
@@ -127,16 +137,18 @@ namespace esd
     {
         if (m_clock.IsRunning())
         {
-            // m_gameCamera.SetPosition({
-            //     std::clamp(m_player.GetPosition().x - window.GetSizeHalved().x, -100.0f, 100.0f),
-            //     std::clamp(m_player.GetPosition().y - window.GetSizeHalved().y, -100.0f, 100.0f),
-            //     0.0f
-            // });
+            m_gameCamera.SetPosition({
+                std::clamp(m_player.GetPosition().x - window.GetSizeHalved().x, -100.0f, 100.0f),
+                std::clamp(m_player.GetPosition().y - window.GetSizeHalved().y, -100.0f, 100.0f),
+                0.0f
+            });
         }
 
         //
 
         m_gameLayer.Clear();
+
+        m_sprBg.Render(m_gameLayer, m_defaultProgram, m_gameCamera);
 
         m_player.Render(m_gameLayer, m_defaultProgram, m_gameCamera);
 
