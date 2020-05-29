@@ -60,6 +60,8 @@ namespace esd
 
         m_window = SDL_CreateWindow(name, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, m_size.x, m_size.y, SDL_WINDOW_OPENGL | SDL_WINDOW_BORDERLESS | SDL_WINDOW_INPUT_GRABBED);
 
+        SDL_ShowCursor(SDL_DISABLE);
+
         if (m_window)
         {
             m_graphicsContext = SDL_GL_CreateContext(m_window);

@@ -5,7 +5,7 @@
 #include <Esdiel/Graphics/Sprite.hpp>
 #include <Esdiel/Graphics/Texture.hpp>
 #include <Esdiel/Game/AnimationState.hpp>
-#include <Esdiel/Game/EntityType.hpp>
+#include <Esdiel/Game/EntityTypes.hpp>
 #include <Esdiel/Game/Collider.hpp>
 
 //
@@ -18,7 +18,7 @@ namespace esd
     {
     public:
 
-        using LogicFunction_t = void (*)(Entity& e, int64_t dt, Vec4i const& m, Entity const& p);
+        using LogicFunction_t = void (*)(Entity& e, int64_t dt, Vec4i const& m, Entity const& p, Entity const& b, float r);
 
         ///
         Entity();
@@ -45,7 +45,13 @@ namespace esd
         Vec3f const& GetPosition() const;
 
         ///
-        bool Initialize(EntityType type, Window const& window, Texture const& texture);
+        void Initialize(Texture const& texture, Vec3f const& position);
+
+        ///
+        void Initialize(EnemyType type, Texture const& texture, Vec3f const& position);
+
+        ///
+        void Initialize(BonusType type, Texture const& texture, Vec3f const& position);
 
         ///
         void TogglePause();
@@ -54,13 +60,31 @@ namespace esd
         void ProcessEvent(SDL_Event const& event);
 
         ///
-        void ProcessLogic(int64_t dt, Vec4i const& mousePosition, Entity const& player);
+        void ProcessLogic(int64_t dt, Vec4i const& mousePosition, Entity const& player, Entity const& bonus, float piRand);
 
         ///
-        void ProcessCollision();
+        void PrepareCollider();
+
+        ///
+        bool ProcessCollision(Entity& other);
 
         ///
         void ProcessAnimation();
+
+        ///
+        EntityType GetType() const;
+
+        ///
+        EntitySubType GetSubType() const;
+
+        ///
+        int32_t GetRewardAmount() const;
+
+        ///
+        void Kill();
+
+        ///
+        bool IsAlive() const;
 
         ///
         void Render(RenderLayer const& renderLayer, ShaderProgram const& shaderProgram, Camera const& camera) const;
@@ -72,7 +96,9 @@ namespace esd
         AnimationState m_animationState;
 
         EntityType m_type;
+        EntitySubType m_subType;
         LogicFunction_t m_logicFunction;
+        int32_t m_reward;
 
         Collider m_collider;
 
@@ -83,5 +109,6 @@ namespace esd
 
         bool m_isAccelerating;
         bool m_isAlive;
+
     };
 }

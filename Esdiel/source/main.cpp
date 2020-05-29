@@ -26,9 +26,13 @@ int main(int, char**)
 
     //
 
-    esd::World world;
+    SDL_Event event;
 
-    if (!world.Initialize(window))
+    //
+
+    auto world = esd::World{ window, event };
+
+    if (!world.Initialize())
     {
         return -3;
     }
@@ -37,8 +41,8 @@ int main(int, char**)
 
     while (window.IsOpen())
     {
-        SDL_Event event;
-
+        event = SDL_Event{};
+        
         while (window.PollEvent(event))
         {
             if (event.type == SDL_QUIT || (event.type == SDL_KEYDOWN && event.key.keysym.scancode == SDL_SCANCODE_ESCAPE))
@@ -46,12 +50,16 @@ int main(int, char**)
                 window.Close();
             }
 
-            world.ProcessEvent(window, event);
+            world.ProcessEvent();
         }
 
         //
 
-        world.ProcessLogic(window.GetDT());
+        world.ProcessLogic();
+
+        //
+
+        world.ProcessCollision();
 
         //
 
@@ -61,7 +69,7 @@ int main(int, char**)
     
         window.Clear();
 
-        world.Render(window);
+        world.Render();
 
         window.Display();
     }

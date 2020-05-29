@@ -1,12 +1,16 @@
 #pragma once
 
 // Esdiel
+#include <Esdiel/Audio/Sound.hpp>
 #include <Esdiel/Graphics/Camera.hpp>
 #include <Esdiel/Graphics/RenderLayer.hpp>
 #include <Esdiel/Graphics/ShaderProgram.hpp>
 #include <Esdiel/Graphics/Window.hpp>
 #include <Esdiel/Game/Entity.hpp>
 #include <Esdiel/Game/GameState.hpp>
+
+// C++
+#include <random>
 
 //
 union SDL_Event;
@@ -19,7 +23,7 @@ namespace esd
     public:
 
         ///
-        World();
+        World(Window const& window, SDL_Event const& event);
 
         ///
         World(World const&) = delete;
@@ -37,16 +41,16 @@ namespace esd
         ~World() = default;
 
         ///
-        bool Initialize(Window const& window);
+        bool Initialize();
 
         ///
         void TogglePause();
 
         ///
-        void ProcessEvent(Window const& window, SDL_Event const& event);
+        void ProcessEvent();
 
         ///
-        void ProcessLogic(Duration_t const& duration);
+        void ProcessLogic();
 
         ///
         void ProcessCollision();
@@ -55,12 +59,40 @@ namespace esd
         void ProcessAnimation();
 
         ///
-        void Render(Window const& window);
+        void Render();
 
     private:
 
+        ///
+        void M_StartGame();
+
+        ///
+        void M_StopGame();
+
+        ///
+        void M_SpawnPlayer();
+
+        ///
+        void M_SpawnBonus();
+
+        ///
+        void M_SpawnEnemy();
+
+        ///
+        Vec3f GetSpawnPosition() const;
+
+        Window const* m_window;
+        SDL_Event const* m_event;
+
+        std::random_device m_randomDevice;
+        std::mt19937 m_mt19937;
+        std::discrete_distribution<std::underlying_type_t<BonusType>> m_bonusDistribution;
+        std::discrete_distribution<std::underlying_type_t<EnemyType>> m_enemyDistribution;
+        std::uniform_real_distribution<float> m_piDistribution;
+
         Clock m_clock;
         GameState m_gameState;
+        int32_t m_score;
 
         RenderLayer m_gameLayer;
         RenderLayer m_guiLayer;
@@ -74,11 +106,25 @@ namespace esd
 
         Texture m_texBg;
         Sprite m_sprBg;
-        
-        Texture m_textures[+EntityType::COUNT];
+
+        Texture m_texCursor;
+        Sprite m_sprCursor;
+        Animation m_animCursor;
 
         Entity m_player;
+        Texture m_texPlayer;
+
+        Entity m_bonus;
+        Texture m_texBonuses[+BonusType::COUNT];
+
         std::vector<Entity> m_enemies;
-        // Bonus m_bonus;
+        Texture m_texEnemies[+EnemyType::COUNT];
+
+        Sound m_sndBonusPickups[+BonusType::COUNT];
+
+        Sound m_sndAmbient;
+        Clock m_ambientLoopClock;
+
+        Sound m_sndGameOver;
     };
 }
