@@ -17,7 +17,8 @@ namespace esd
     Entity::Entity()
         : m_sprite {}
         , m_animation {}
-        , m_animationState { AnimationState::Basic }
+        , m_animState { AnimationState::Basic }
+        , m_animNextState { AnimationState::Basic }
         , m_clock {}
         , m_type { static_cast<EntityType>(-1) }
         , m_subType {}
@@ -28,7 +29,6 @@ namespace esd
         , m_speed { 0.0f }
         , m_rotation { 0.0f }
         , m_opacity { 1.0f }
-        , m_isAccelerating { false }
         , m_isAlive { true }
     {
         
@@ -57,20 +57,21 @@ namespace esd
         m_logicFunction = +[](Entity& e, int64_t dt, Vec4i const& m, Entity const&, Entity const&, float, Clock&)
         {
             auto const distance = Distance(m.x, m.y, e.m_position.x, e.m_position.y);
+            auto const isAccelerating = distance > 600.0f;
 
-            if (distance > 600.0f)
+            if (isAccelerating)
             {
-                e.m_isAccelerating = true;
+                e.m_animNextState = AnimationState::Special1;
             }
             else
             {
-                e.m_isAccelerating = false;
+                e.m_animNextState = AnimationState::Basic;
             }            
             
             if (distance > 8.0f)
             {
                 auto const angle = std::atan2(m.y - e.m_position.y, m.x - e.m_position.x);
-                auto const speed = Lerp(e.m_speed, e.m_speed * (e.m_isAccelerating ? 2.1f : 1.6f), std::clamp(distance / 600.0f, 0.0f, 1.0f));
+                auto const speed = Lerp(e.m_speed, e.m_speed * (isAccelerating ? 2.1f : 1.6f), std::clamp(distance / 600.0f, 0.0f, 1.0f));
 
                 e.m_position.x += std::cos(angle) * speed * dt;
                 e.m_position.y += std::sin(angle) * speed * dt;
@@ -80,7 +81,7 @@ namespace esd
 
         m_animation.SetAnimations({
             4, // Basic
-            4, // Acceleration
+            4, // Special1
         });
 
         m_collider.SetRadius(20.0f);
@@ -88,7 +89,7 @@ namespace esd
         m_position = position;
         m_speed = 0.4f;
 
-        m_animation.Play(+m_animationState);
+        m_animation.Play(+m_animState);
     }
 
     void Entity::Initialize(EnemyType type, Texture const& texture, Vec2f const& position)
@@ -240,12 +241,12 @@ namespace esd
                     if (distance < 220.0f)
                     {
                         speed *= 1.8f;
-                        e.m_isAccelerating = true;
+                        e.m_animNextState = AnimationState::Special1;
                     }
                     else
                     {
-                        e.m_isAccelerating = false;
-                    }                    
+                        e.m_animNextState = AnimationState::Basic;
+                    }
 
                     e.m_position.x += std::cos(angle) * speed * dt;
                     e.m_position.y += std::sin(angle) * speed * dt;
@@ -276,12 +277,12 @@ namespace esd
                     if (distance < 180.0f)
                     {
                         speed *= 1.2f;
-                        e.m_isAccelerating = true;
+                        e.m_animNextState = AnimationState::Special1;
                     }
                     else
                     {
-                        e.m_isAccelerating = false;
-                    }                    
+                        e.m_animNextState = AnimationState::Basic;
+                    }                
 
                     e.m_position.x += std::cos(angle) * speed * dt;
                     e.m_position.y += std::sin(angle) * speed * dt;
@@ -290,7 +291,7 @@ namespace esd
 
                 m_animation.SetAnimations({
                     4, // Basic
-                    4, // Acceleration
+                    4, // Special1
                 });
 
                 m_collider.SetRadius(20.0f);
@@ -375,16 +376,32 @@ namespace esd
                 {
                     auto const distance = Distance(p.m_position.x, p.m_position.y, e.m_position.x, e.m_position.y);
                     auto const srcDir = glm::normalize(Vec2f{ std::cos(e.m_rotation), std::sin(e.m_rotation) });
-                    auto const dstDir = glm::normalize(Vec2f{ p.m_position.x - e.m_position.x, p.m_position.y - e.m_position.y });
+                    auto const dstDir = glm::normalize(p.m_position - e.m_position);
                     auto const speed = Lerp(e.m_speed, e.m_speed * 0.5f, std::clamp(distance / 1000.0f, 0.0f, 1.0f));
+                    auto const rotation = glm::orientedAngle(srcDir, dstDir) * Lerp(0.001f, 0.04f, std::clamp(distance / 300.0f, 0.0f, 1.0f));
 
-                    e.m_rotation += glm::orientedAngle(srcDir, dstDir) * Lerp(0.001f, 0.04f, std::clamp(distance / 300.0f, 0.0f, 1.0f));
+                    if (rotation > 0.01f)
+                    {
+                        e.m_animNextState = AnimationState::Special1;
+                    }
+                    else if (rotation < -0.01f)
+                    {
+                        e.m_animNextState = AnimationState::Special2;
+                    }
+                    else
+                    {
+                        e.m_animNextState = AnimationState::Basic;
+                    }
+
+                    e.m_rotation += rotation;
                     e.m_position.x += std::cos(e.m_rotation) * speed * dt;
                     e.m_position.y += std::sin(e.m_rotation) * speed * dt;
                 };
 
                 m_animation.SetAnimations({
-                    2, // Basic
+                    1, // Basic
+                    1, // Special1
+                    1, // Special2
                 });
 
                 m_collider.SetRadius(22.0f);
@@ -399,7 +416,7 @@ namespace esd
             case EnemyType::COUNT: default: break;
         }
 
-        m_animation.Play(+m_animationState);
+        m_animation.Play(+m_animState);
     }
 
     void Entity::Initialize(BonusType type, Texture const& texture, Vec2f const& position)
@@ -461,7 +478,7 @@ namespace esd
             case BonusType::COUNT: default: break;
         }
 
-        m_animation.Play(+m_animationState);
+        m_animation.Play(+m_animState);
 
         m_isAlive = true;
     }
@@ -492,21 +509,10 @@ namespace esd
 
     void Entity::ProcessAnimation()
     {
-        if (m_isAccelerating)
+        if (m_animState != m_animNextState)
         {
-            if (m_animationState != AnimationState::Acceleration)
-            {
-                m_animationState = AnimationState::Acceleration;
-                m_animation.Play(+m_animationState);
-            }
-        }
-        else
-        {
-            if (m_animationState != AnimationState::Basic)
-            {
-                m_animationState = AnimationState::Basic;
-                m_animation.Play(+m_animationState);
-            }
+            m_animState = m_animNextState;
+            m_animation.Play(+m_animState);
         }
 
         m_sprite.SetPosition({ m_position.x, m_position.y, 0.0f });

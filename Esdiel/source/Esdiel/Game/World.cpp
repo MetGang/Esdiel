@@ -24,15 +24,15 @@ namespace esd
             2.0, // Good
         }
         , m_enemyDistribution {
-            1.8, // Static
-            4.0, // Follower
-            2.0, // Stealth
-            2.0, // Fatty
-            1.5, // Mouser
-            1.5, // Madman
-            0.8, // Eater
-            1.4, // Guardian
-            2.0, // Retard
+            0.0, // Static
+            0.0, // Follower
+            0.0, // Stealth
+            0.0, // Fatty
+            0.0, // Mouser
+            0.0, // Madman
+            0.0, // Eater
+            0.0, // Guardian
+            0.0, // Retard
             4.0, // Rotador
         }
         , m_piDistribution { -pi, pi }
@@ -87,7 +87,7 @@ namespace esd
                     m_texEnemies[+EnemyType::Eater].LoadFromFile("Assets/Textures/Enemies/eater.png") &&
                     m_texEnemies[+EnemyType::Guardian].LoadFromFile("Assets/Textures/Enemies/guardian.png") &&
                     m_texEnemies[+EnemyType::Retard].LoadFromFile("Assets/Textures/Bonuses/regular.png") &&
-                    m_texEnemies[+EnemyType::Rotador].LoadFromFile("Assets/Textures/Bonuses/good.png") &&
+                    m_texEnemies[+EnemyType::Rotador].LoadFromFile("Assets/Textures/Enemies/rotador.png") &&
 
                     m_sndBonusPickups[+BonusType::Regular].LoadFromFile("Assets/Sounds/bonus_pickup.wav") &&
                     m_sndBonusPickups[+BonusType::Good].LoadFromFile("Assets/Sounds/enemy_bonus_pickup.wav") &&

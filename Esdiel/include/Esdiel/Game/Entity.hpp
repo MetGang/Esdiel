@@ -90,7 +90,8 @@ namespace esd
 
         Sprite m_sprite;
         Animation m_animation;
-        AnimationState m_animationState;
+        AnimationState m_animState;
+        AnimationState m_animNextState;
         Clock m_clock;
 
         EntityType m_type;
@@ -105,7 +106,6 @@ namespace esd
         float m_rotation;
         float m_opacity;
 
-        bool m_isAccelerating;
         bool m_isAlive;
 
     };
