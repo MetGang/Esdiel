@@ -7,6 +7,9 @@
 // C++
 #include <algorithm>
 
+// glm
+#include <glm/gtx/vector_angle.hpp>
+
 #include <iostream>
 
 namespace esd
@@ -21,7 +24,7 @@ namespace esd
         , m_logicFunction { nullptr }
         , m_reward { 0u }
         , m_collider {}
-        , m_position { 0.0f, 0.0f, 0.0f }
+        , m_position { 0.0f, 0.0f }
         , m_speed { 0.0f }
         , m_rotation { 0.0f }
         , m_opacity { 1.0f }
@@ -31,17 +34,17 @@ namespace esd
         
     }
 
-    void Entity::SetPosition(Vec3f const& position)
+    void Entity::SetPosition(Vec2f const& position)
     {
         m_position = position;
     }
 
-    Vec3f const& Entity::GetPosition() const
+    Vec2f const& Entity::GetPosition() const
     {
         return m_position;
     }
 
-    void Entity::Initialize(Texture const& texture, Vec3f const& position)
+    void Entity::Initialize(Texture const& texture, Vec2f const& position)
     {
         m_sprite.SetTexture(texture);
         m_sprite.SetOrigin({ 32.0f, 32.0f, 0.0f });
@@ -51,7 +54,7 @@ namespace esd
 
         m_type = EntityType::Player;
 
-        m_logicFunction = +[](Entity& e, int64_t dt, Vec4i const& m, Entity const&, Entity const&, float)
+        m_logicFunction = +[](Entity& e, int64_t dt, Vec4i const& m, Entity const&, Entity const&, float, Clock&)
         {
             auto const distance = Distance(m.x, m.y, e.m_position.x, e.m_position.y);
 
@@ -88,7 +91,7 @@ namespace esd
         m_animation.Play(+m_animationState);
     }
 
-    void Entity::Initialize(EnemyType type, Texture const& texture, Vec3f const& position)
+    void Entity::Initialize(EnemyType type, Texture const& texture, Vec2f const& position)
     {
         m_sprite.SetTexture(texture);
         m_sprite.SetOrigin({ 32.0f, 32.0f, 0.0f });
@@ -104,7 +107,7 @@ namespace esd
             {
                 m_subType.e = EnemyType::Static;
 
-                m_logicFunction = +[](Entity& e, int64_t, Vec4i const&, Entity const&, Entity const&, float)
+                m_logicFunction = +[](Entity& e, int64_t, Vec4i const&, Entity const&, Entity const&, float, Clock&)
                 {
                     e.m_rotation += 0.01f;
                 };
@@ -123,7 +126,7 @@ namespace esd
             {
                 m_subType.e = EnemyType::Follower;
 
-                m_logicFunction = +[](Entity& e, int64_t dt, Vec4i const&, Entity const& p, Entity const&, float)
+                m_logicFunction = +[](Entity& e, int64_t dt, Vec4i const&, Entity const& p, Entity const&, float, Clock&)
                 {
                     auto const angle = std::atan2(p.m_position.y - e.m_position.y, p.m_position.x - e.m_position.x);
 
@@ -147,7 +150,7 @@ namespace esd
             {
                 m_subType.e = EnemyType::Stealth;
 
-                m_logicFunction = +[](Entity& e, int64_t dt, Vec4i const&, Entity const& p, Entity const&, float)
+                m_logicFunction = +[](Entity& e, int64_t dt, Vec4i const&, Entity const& p, Entity const&, float, Clock&)
                 {
                     auto const distance = Distance(p.m_position.x, p.m_position.y, e.m_position.x, e.m_position.y);
                     auto const angle = std::atan2(p.m_position.y - e.m_position.y, p.m_position.x - e.m_position.x);
@@ -174,7 +177,7 @@ namespace esd
             {
                 m_subType.e = EnemyType::Fatty;
 
-                m_logicFunction = +[](Entity& e, int64_t dt, Vec4i const&, Entity const& p, Entity const&, float)
+                m_logicFunction = +[](Entity& e, int64_t dt, Vec4i const&, Entity const& p, Entity const&, float, Clock&)
                 {
                     auto const angle = std::atan2(p.m_position.y - e.m_position.y, p.m_position.x - e.m_position.x);
 
@@ -198,7 +201,7 @@ namespace esd
             {
                 m_subType.e = EnemyType::Mouser;
 
-                m_logicFunction = +[](Entity& e, int64_t dt, Vec4i const& m, Entity const&, Entity const&, float)
+                m_logicFunction = +[](Entity& e, int64_t dt, Vec4i const& m, Entity const&, Entity const&, float, Clock&)
                 {
                     auto const distance = Distance(m.x, m.y, e.m_position.x, e.m_position.y);
 
@@ -228,7 +231,7 @@ namespace esd
             {
                 m_subType.e = EnemyType::Madman;
 
-                m_logicFunction = +[](Entity& e, int64_t dt, Vec4i const&, Entity const& p, Entity const&, float)
+                m_logicFunction = +[](Entity& e, int64_t dt, Vec4i const&, Entity const& p, Entity const&, float, Clock&)
                 {
                     auto const distance = Distance(p.m_position.x, p.m_position.y, e.m_position.x, e.m_position.y);
                     auto const angle = std::atan2(p.m_position.y - e.m_position.y, p.m_position.x - e.m_position.x);
@@ -264,7 +267,7 @@ namespace esd
             {
                 m_subType.e = EnemyType::Eater;
 
-                m_logicFunction = +[](Entity& e, int64_t dt, Vec4i const&, Entity const&, Entity const& b, float)
+                m_logicFunction = +[](Entity& e, int64_t dt, Vec4i const&, Entity const&, Entity const& b, float, Clock&)
                 {
                     auto const distance = Distance(b.m_position.x, b.m_position.y, e.m_position.x, e.m_position.y);
                     auto const angle = std::atan2(b.m_position.y - e.m_position.y, b.m_position.x - e.m_position.x);
@@ -290,7 +293,7 @@ namespace esd
                     4, // Acceleration
                 });
 
-                m_collider.SetRadius(22.0f);
+                m_collider.SetRadius(20.0f);
 
                 m_position = position;
                 m_speed = 0.11f;
@@ -301,7 +304,7 @@ namespace esd
             {
                 m_subType.e = EnemyType::Guardian;
 
-                m_logicFunction = +[](Entity& e, int64_t dt, Vec4i const&, Entity const&, Entity const& b, float)
+                m_logicFunction = +[](Entity& e, int64_t dt, Vec4i const&, Entity const&, Entity const& b, float, Clock&)
                 {
                     auto const distance = Distance(b.m_position.x, b.m_position.y, e.m_position.x, e.m_position.y);
                     auto angle = std::atan2(b.m_position.y - e.m_position.y, b.m_position.x - e.m_position.x);
@@ -329,10 +332,65 @@ namespace esd
                     4, // Basic
                 });
 
-                m_collider.SetRadius(22.0f);
+                m_collider.SetRadius(18.0f);
 
                 m_position = position;
                 m_speed = 0.24f;
+            }
+            break;
+
+            case EnemyType::Retard:
+            {
+                m_subType.e = EnemyType::Retard;
+
+                m_logicFunction = +[](Entity& e, int64_t dt, Vec4i const&, Entity const& p, Entity const&, float, Clock& c)
+                {
+                    if (c.CheckContinuousStep(std::chrono::seconds{ 2 }))
+                    {
+                        auto const angle = std::atan2(p.m_position.y - e.m_position.y, p.m_position.x - e.m_position.x);
+
+                        e.m_rotation = angle;
+                    }
+
+                    e.m_position.x += std::cos(e.m_rotation) * e.m_speed * dt;
+                    e.m_position.y += std::sin(e.m_rotation) * e.m_speed * dt;
+                };
+
+                m_animation.SetAnimations({
+                    2, // Basic
+                });
+
+                m_collider.SetRadius(22.0f);
+
+                m_position = position;
+                m_speed = 0.3f;
+            }
+            break;
+
+            case EnemyType::Rotador:
+            {
+                m_subType.e = EnemyType::Rotador;
+
+                m_logicFunction = +[](Entity& e, int64_t dt, Vec4i const&, Entity const& p, Entity const&, float, Clock&)
+                {
+                    auto const distance = Distance(p.m_position.x, p.m_position.y, e.m_position.x, e.m_position.y);
+                    auto const srcDir = glm::normalize(Vec2f{ std::cos(e.m_rotation), std::sin(e.m_rotation) });
+                    auto const dstDir = glm::normalize(Vec2f{ p.m_position.x - e.m_position.x, p.m_position.y - e.m_position.y });
+                    auto const speed = Lerp(e.m_speed, e.m_speed * 0.5f, std::clamp(distance / 1000.0f, 0.0f, 1.0f));
+
+                    e.m_rotation += glm::orientedAngle(srcDir, dstDir) * Lerp(0.001f, 0.04f, std::clamp(distance / 300.0f, 0.0f, 1.0f));
+                    e.m_position.x += std::cos(e.m_rotation) * speed * dt;
+                    e.m_position.y += std::sin(e.m_rotation) * speed * dt;
+                };
+
+                m_animation.SetAnimations({
+                    2, // Basic
+                });
+
+                m_collider.SetRadius(22.0f);
+
+                m_position = position;
+                m_speed = 0.5f;
             }
             break;
 
@@ -344,7 +402,7 @@ namespace esd
         m_animation.Play(+m_animationState);
     }
 
-    void Entity::Initialize(BonusType type, Texture const& texture, Vec3f const& position)
+    void Entity::Initialize(BonusType type, Texture const& texture, Vec2f const& position)
     {
         m_sprite.SetTexture(texture);
         m_sprite.SetOrigin({ 32.0f, 32.0f, 0.0f });
@@ -360,7 +418,7 @@ namespace esd
             {
                 m_subType.b = BonusType::Regular;
 
-                m_logicFunction = +[](Entity&, int64_t, Vec4i const&, Entity const&, Entity const&, float)
+                m_logicFunction = +[](Entity&, int64_t, Vec4i const&, Entity const&, Entity const&, float, Clock&)
                 {
                     
                 };
@@ -381,7 +439,7 @@ namespace esd
             {
                 m_subType.b = BonusType::Good;
 
-                m_logicFunction = +[](Entity&, int64_t, Vec4i const&, Entity const&, Entity const&, float)
+                m_logicFunction = +[](Entity&, int64_t, Vec4i const&, Entity const&, Entity const&, float, Clock&)
                 {
                     
                 };
@@ -411,13 +469,14 @@ namespace esd
     void Entity::TogglePause()
     {
         m_animation.Toggle();
+        m_clock.Toggle();
     }
 
     void Entity::ProcessLogic(int64_t dt, Vec4i const& mousePosition, Entity const& player, Entity const& bonus, float piRand)
     {
         if (m_logicFunction != nullptr)
         {
-            m_logicFunction(*this, dt, mousePosition, player, bonus, piRand);
+            m_logicFunction(*this, dt, mousePosition, player, bonus, piRand, m_clock);
         }
     }
 
@@ -450,7 +509,7 @@ namespace esd
             }
         }
 
-        m_sprite.SetPosition(m_position);
+        m_sprite.SetPosition({ m_position.x, m_position.y, 0.0f });
         m_sprite.SetRotation({ 0.0f, 0.0f, m_rotation });
         m_sprite.SetColor({ 1.0f, 1.0f, 1.0f, m_opacity });
         m_sprite.SetTextureRect(m_animation.GetTextureRect());

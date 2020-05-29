@@ -79,7 +79,7 @@ namespace esd
         void M_SpawnEnemy();
 
         ///
-        Vec3f GetSpawnPosition() const;
+        Vec2f M_GetSpawnPosition() const;
 
         Window const* m_window;
         SDL_Event const* m_event;

@@ -18,7 +18,7 @@ namespace esd
     {
     public:
 
-        using LogicFunction_t = void (*)(Entity& e, int64_t dt, Vec4i const& m, Entity const& p, Entity const& b, float r);
+        using LogicFunction_t = void (*)(Entity& e, int64_t dt, Vec4i const& m, Entity const& p, Entity const& b, float r, Clock& c);
 
         ///
         Entity();
@@ -39,19 +39,19 @@ namespace esd
         ~Entity() = default;
 
         ///
-        void SetPosition(Vec3f const& position);
+        void SetPosition(Vec2f const& position);
 
         ///
-        Vec3f const& GetPosition() const;
+        Vec2f const& GetPosition() const;
 
         ///
-        void Initialize(Texture const& texture, Vec3f const& position);
+        void Initialize(Texture const& texture, Vec2f const& position);
 
         ///
-        void Initialize(EnemyType type, Texture const& texture, Vec3f const& position);
+        void Initialize(EnemyType type, Texture const& texture, Vec2f const& position);
 
         ///
-        void Initialize(BonusType type, Texture const& texture, Vec3f const& position);
+        void Initialize(BonusType type, Texture const& texture, Vec2f const& position);
 
         ///
         void TogglePause();
@@ -100,7 +100,7 @@ namespace esd
 
         Collider m_collider;
 
-        Vec3f m_position;
+        Vec2f m_position;
         float m_speed;
         float m_rotation;
         float m_opacity;

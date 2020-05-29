@@ -32,6 +32,8 @@ namespace esd
             1.5, // Madman
             0.8, // Eater
             1.4, // Guardian
+            2.0, // Retard
+            4.0, // Rotador
         }
         , m_piDistribution { -pi, pi }
         , m_pauseClock {}
@@ -84,6 +86,8 @@ namespace esd
                     m_texEnemies[+EnemyType::Madman].LoadFromFile("Assets/Textures/Enemies/madman.png") &&
                     m_texEnemies[+EnemyType::Eater].LoadFromFile("Assets/Textures/Enemies/eater.png") &&
                     m_texEnemies[+EnemyType::Guardian].LoadFromFile("Assets/Textures/Enemies/guardian.png") &&
+                    m_texEnemies[+EnemyType::Retard].LoadFromFile("Assets/Textures/Bonuses/regular.png") &&
+                    m_texEnemies[+EnemyType::Rotador].LoadFromFile("Assets/Textures/Bonuses/good.png") &&
 
                     m_sndBonusPickups[+BonusType::Regular].LoadFromFile("Assets/Sounds/bonus_pickup.wav") &&
                     m_sndBonusPickups[+BonusType::Good].LoadFromFile("Assets/Sounds/enemy_bonus_pickup.wav") &&
@@ -354,29 +358,28 @@ namespace esd
 
     void World::M_SpawnPlayer()
     {
-        m_player.Initialize(m_texPlayer, GetSpawnPosition());
+        m_player.Initialize(m_texPlayer, M_GetSpawnPosition());
     }
 
     void World::M_SpawnBonus()
     {
         auto type = static_cast<BonusType>(m_bonusDistribution(m_mt19937));
 
-        m_bonus.Initialize(type, m_texBonuses[+type], GetSpawnPosition());
+        m_bonus.Initialize(type, m_texBonuses[+type], M_GetSpawnPosition());
     }
 
     void World::M_SpawnEnemy()
     {
         auto type = static_cast<EnemyType>(m_enemyDistribution(m_mt19937));
 
-        m_enemies.emplace_back().Initialize(type, m_texEnemies[+type], GetSpawnPosition());
+        m_enemies.emplace_back().Initialize(type, m_texEnemies[+type], M_GetSpawnPosition());
     }
 
-    Vec3f World::GetSpawnPosition() const
+    Vec2f World::M_GetSpawnPosition() const
     {
-        auto ret = Vec3f{
+        auto ret = Vec2f{
             std::rand() % static_cast<int32_t>(m_window->GetSize().x),
             std::rand() % static_cast<int32_t>(m_window->GetSize().y),
-            0.0f
         };
 
         return ret;

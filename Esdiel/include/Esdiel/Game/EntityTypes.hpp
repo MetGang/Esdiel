@@ -59,6 +59,8 @@ namespace esd
         Madman,
         Eater,
         Guardian,
+        Retard,
+        Rotador,
 
         COUNT
     };
