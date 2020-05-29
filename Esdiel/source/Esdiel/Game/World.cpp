@@ -31,9 +31,11 @@ namespace esd
             1.5, // Mouser
             1.5, // Madman
             0.8, // Eater
+            1.4, // Guardian
         }
         , m_piDistribution { -pi, pi }
-        , m_clock {}
+        , m_pauseClock {}
+        , m_timeClock {}
         , m_gameState { GameState::Menu }
         , m_score { 0 }
         , m_gameLayer {}
@@ -81,6 +83,7 @@ namespace esd
                     m_texEnemies[+EnemyType::Mouser].LoadFromFile("Assets/Textures/Enemies/mouser.png") &&
                     m_texEnemies[+EnemyType::Madman].LoadFromFile("Assets/Textures/Enemies/madman.png") &&
                     m_texEnemies[+EnemyType::Eater].LoadFromFile("Assets/Textures/Enemies/eater.png") &&
+                    m_texEnemies[+EnemyType::Guardian].LoadFromFile("Assets/Textures/Enemies/guardian.png") &&
 
                     m_sndBonusPickups[+BonusType::Regular].LoadFromFile("Assets/Sounds/bonus_pickup.wav") &&
                     m_sndBonusPickups[+BonusType::Good].LoadFromFile("Assets/Sounds/enemy_bonus_pickup.wav") &&
@@ -92,9 +95,8 @@ namespace esd
                 {
                     m_texBg.SetRepeated(true);
                     m_sprBg.SetTexture(m_texBg);
-                    m_sprBg.SetTextureRect({ 0.0f, 0.0f, m_window->GetSize().x * 2.0f, m_window->GetSize().y * 2.0f });
-                    m_sprBg.SetPosition({ m_window->GetSizeHalved().x, m_window->GetSizeHalved().y, 0.0f });
-                    m_sprBg.SetOrigin({ m_texBg.GetSizeHalved().x, m_texBg.GetSizeHalved().y, 0.0f });
+                    m_sprBg.SetTextureRect({ 0.0f, 0.0f, m_window->GetSize().x + 200.0f, m_window->GetSize().y + 200.0f });
+                    m_sprBg.SetPosition({ -100.0f, -100.0f, 0.0f });
 
                     m_sprCursor.SetTexture(m_texCursor);
                     m_sprCursor.SetOrigin({ 16.0f, 16.0f, 0.0f });
@@ -113,7 +115,8 @@ namespace esd
 
     void World::TogglePause()
     {
-        m_clock.Toggle();
+        m_pauseClock.Toggle();
+        m_timeClock.Toggle();
 
         m_player.TogglePause();
 
@@ -158,11 +161,6 @@ namespace esd
             {
                 TogglePause();
             }
-        
-            if (m_clock.IsRunning())
-            {
-                m_player.ProcessEvent(*m_event);
-            }
         }
     }
 
@@ -175,7 +173,7 @@ namespace esd
                 m_sndAmbient.Play();
             }
 
-            if (m_clock.IsRunning())
+            if (m_pauseClock.IsRunning())
             {
                 auto const dt = AsMilliseconds(m_window->GetDT());
                 auto const piRand = m_piDistribution(m_mt19937);
@@ -196,7 +194,7 @@ namespace esd
     {
         if (m_gameState == GameState::InGame)
         {
-            if (m_clock.IsRunning())
+            if (m_pauseClock.IsRunning())
             {
                 m_player.PrepareCollider();
                 
@@ -257,7 +255,7 @@ namespace esd
     {
         if (m_gameState == GameState::InGame)
         {
-            if (m_clock.IsRunning())
+            if (m_pauseClock.IsRunning())
             {
                 m_player.ProcessAnimation();
 
@@ -281,7 +279,7 @@ namespace esd
         }
         else if (m_gameState == GameState::InGame)
         {
-            if (m_clock.IsRunning())
+            if (m_pauseClock.IsRunning())
             {
                 m_gameCamera.SetPosition({
                     std::clamp(m_player.GetPosition().x - m_window->GetSizeHalved().x, -100.0f, 100.0f),

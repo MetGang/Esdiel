@@ -57,9 +57,6 @@ namespace esd
         void TogglePause();
 
         ///
-        void ProcessEvent(SDL_Event const& event);
-
-        ///
         void ProcessLogic(int64_t dt, Vec4i const& mousePosition, Entity const& player, Entity const& bonus, float piRand);
 
         ///
@@ -94,6 +91,7 @@ namespace esd
         Sprite m_sprite;
         Animation m_animation;
         AnimationState m_animationState;
+        Clock m_clock;
 
         EntityType m_type;
         EntitySubType m_subType;

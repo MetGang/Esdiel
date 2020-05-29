@@ -58,6 +58,7 @@ namespace esd
         Mouser,
         Madman,
         Eater,
+        Guardian,
 
         COUNT
     };

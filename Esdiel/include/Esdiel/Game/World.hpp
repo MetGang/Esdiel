@@ -90,7 +90,8 @@ namespace esd
         std::discrete_distribution<std::underlying_type_t<EnemyType>> m_enemyDistribution;
         std::uniform_real_distribution<float> m_piDistribution;
 
-        Clock m_clock;
+        Clock m_pauseClock;
+        Clock m_timeClock;
         GameState m_gameState;
         int32_t m_score;
 

@@ -15,6 +15,7 @@ namespace esd
         : m_sprite {}
         , m_animation {}
         , m_animationState { AnimationState::Basic }
+        , m_clock {}
         , m_type { static_cast<EntityType>(-1) }
         , m_subType {}
         , m_logicFunction { nullptr }
@@ -255,7 +256,7 @@ namespace esd
                 m_collider.SetRadius(18.0f);
 
                 m_position = position;
-                m_speed = 0.3f;
+                m_speed = 0.28f;
             }
             break;
 
@@ -293,6 +294,45 @@ namespace esd
 
                 m_position = position;
                 m_speed = 0.11f;
+            }
+            break;
+
+            case EnemyType::Guardian:
+            {
+                m_subType.e = EnemyType::Guardian;
+
+                m_logicFunction = +[](Entity& e, int64_t dt, Vec4i const&, Entity const&, Entity const& b, float)
+                {
+                    auto const distance = Distance(b.m_position.x, b.m_position.y, e.m_position.x, e.m_position.y);
+                    auto angle = std::atan2(b.m_position.y - e.m_position.y, b.m_position.x - e.m_position.x);
+                    auto speed = e.m_speed;
+                    
+                    if (distance > 160.0f)
+                    {
+                        speed *= 1.2f;
+                    }
+                    else if (distance < 170.0f && distance > 130.0f)
+                    {
+                        angle += pi * 0.5f;
+                    }
+                    else
+                    {
+                        angle += pi;
+                    }
+
+                    e.m_position.x += std::cos(angle) * speed * dt;
+                    e.m_position.y += std::sin(angle) * speed * dt;
+                    e.m_rotation = angle;
+                };
+
+                m_animation.SetAnimations({
+                    4, // Basic
+                });
+
+                m_collider.SetRadius(22.0f);
+
+                m_position = position;
+                m_speed = 0.24f;
             }
             break;
 
@@ -371,18 +411,6 @@ namespace esd
     void Entity::TogglePause()
     {
         m_animation.Toggle();
-    }
-
-    void Entity::ProcessEvent(SDL_Event const& event)
-    {
-        if (event.type == SDL_KEYDOWN && event.key.keysym.scancode == SDL_SCANCODE_A && event.key.repeat == 0)
-        {
-            m_isAccelerating = true;
-        }
-        else if (event.type == SDL_KEYUP && event.key.keysym.scancode == SDL_SCANCODE_A && event.key.repeat == 0)
-        {
-            m_isAccelerating = false;
-        }
     }
 
     void Entity::ProcessLogic(int64_t dt, Vec4i const& mousePosition, Entity const& player, Entity const& bonus, float piRand)
