@@ -28,7 +28,7 @@ workspace "E+G Study Project"
 -- Main project
 project "Esdiel"
 
-    location "Esdiel"
+    location "."
 
     kind "ConsoleApp"
 
