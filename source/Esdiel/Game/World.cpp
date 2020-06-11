@@ -24,15 +24,15 @@ namespace esd
             2.0, // Good
         }
         , m_enemyDistribution {
-            0.0, // Static
-            0.0, // Follower
-            0.0, // Stealth
-            0.0, // Fatty
-            0.0, // Mouser
-            0.0, // Madman
-            0.0, // Eater
-            0.0, // Guardian
-            0.0, // Retard
+            1.8, // Static
+            3.6, // Follower
+            2.0, // Stealth
+            2.0, // Fatty
+            1.5, // Mouser
+            1.5, // Madman
+            0.8, // Eater
+            1.4, // Guardian
+            2.0, // Retard
             4.0, // Rotador
         }
         , m_piDistribution { -pi, pi }
