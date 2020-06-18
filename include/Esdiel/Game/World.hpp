@@ -105,6 +105,15 @@ namespace esd
 
         Vec4i m_mousePosition;
 
+        Texture m_texMenuBg;
+        Sprite m_sprMenuBg;
+
+        Texture m_texMenuLogo;
+        Sprite m_sprMenuLogo;
+
+        Texture m_texMenuText;
+        Sprite m_sprMenuText;
+
         Texture m_texBg;
         Sprite m_sprBg;
 
@@ -122,6 +131,8 @@ namespace esd
         Texture m_texEnemies[+EnemyType::COUNT];
 
         Sound m_sndBonusPickups[+BonusType::COUNT];
+
+        Sound m_sndMenu;
 
         Sound m_sndAmbient;
         Clock m_ambientLoopClock;

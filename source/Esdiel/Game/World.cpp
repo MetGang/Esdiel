@@ -20,8 +20,9 @@ namespace esd
         , m_randomDevice {}
         , m_mt19937 { m_randomDevice() }
         , m_bonusDistribution {
-            8.0, // Regular
-            2.0, // Good
+            7.0, // Regular
+            1.5, // Good
+            2.0, // Killer
         }
         , m_enemyDistribution {
             1.8, // Static
@@ -71,12 +72,17 @@ namespace esd
                 if (
                     m_texCursor.LoadFromFile("Assets/Textures/cursor.png") &&
 
+                    m_texMenuBg.LoadFromFile("Assets/Textures/menu_bg.png") &&
+                    m_texMenuLogo.LoadFromFile("Assets/Textures/menu_logo.png") &&
+                    m_texMenuText.LoadFromFile("Assets/Textures/menu_text.png") &&
+
                     m_texBg.LoadFromFile("Assets/Textures/background.png") &&
 
                     m_texPlayer.LoadFromFile("Assets/Textures/player.png") &&
 
                     m_texBonuses[+BonusType::Regular].LoadFromFile("Assets/Textures/Bonuses/regular.png") &&
                     m_texBonuses[+BonusType::Good].LoadFromFile("Assets/Textures/Bonuses/good.png") &&
+                    m_texBonuses[+BonusType::Killer].LoadFromFile("Assets/Textures/Bonuses/killer.png") &&
 
                     m_texEnemies[+EnemyType::Static].LoadFromFile("Assets/Textures/Enemies/static.png") &&
                     m_texEnemies[+EnemyType::Follower].LoadFromFile("Assets/Textures/Enemies/follower.png") &&
@@ -86,28 +92,43 @@ namespace esd
                     m_texEnemies[+EnemyType::Madman].LoadFromFile("Assets/Textures/Enemies/madman.png") &&
                     m_texEnemies[+EnemyType::Eater].LoadFromFile("Assets/Textures/Enemies/eater.png") &&
                     m_texEnemies[+EnemyType::Guardian].LoadFromFile("Assets/Textures/Enemies/guardian.png") &&
-                    m_texEnemies[+EnemyType::Retard].LoadFromFile("Assets/Textures/Bonuses/regular.png") &&
+                    m_texEnemies[+EnemyType::Retard].LoadFromFile("Assets/Textures/Enemies/static.png") &&
                     m_texEnemies[+EnemyType::Rotador].LoadFromFile("Assets/Textures/Enemies/rotador.png") &&
 
-                    m_sndBonusPickups[+BonusType::Regular].LoadFromFile("Assets/Sounds/bonus_pickup.wav") &&
-                    m_sndBonusPickups[+BonusType::Good].LoadFromFile("Assets/Sounds/enemy_bonus_pickup.wav") &&
+                    m_sndBonusPickups[+BonusType::Regular].LoadFromFile("Assets/Sounds/Bonuses/regular.wav") &&
+                    m_sndBonusPickups[+BonusType::Good].LoadFromFile("Assets/Sounds/Bonuses/good.wav") &&
+                    m_sndBonusPickups[+BonusType::Killer].LoadFromFile("Assets/Sounds/Bonuses/good.wav") &&
 
+                    m_sndMenu.LoadFromFile("Assets/Sounds/menu.wav") &&
                     m_sndAmbient.LoadFromFile("Assets/Sounds/ambient.wav") &&
-
                     m_sndGameOver.LoadFromFile("Assets/Sounds/game_over.wav")
                 )
                 {
-                    m_texBg.SetRepeated(true);
-                    m_sprBg.SetTexture(m_texBg);
-                    m_sprBg.SetTextureRect({ 0.0f, 0.0f, m_window->GetSize().x + 200.0f, m_window->GetSize().y + 200.0f });
-                    m_sprBg.SetPosition({ -100.0f, -100.0f, 0.0f });
-
                     m_sprCursor.SetTexture(m_texCursor);
                     m_sprCursor.SetOrigin({ 16.0f, 16.0f, 0.0f });
                     m_animCursor.SetAnimations({ 2 });
                     m_animCursor.SetFrameDuration(std::chrono::milliseconds{ 500 });
                     m_animCursor.SetFrameSize({ 32, 32 });
                     m_animCursor.Play(0);
+
+                    m_sprMenuBg.SetTexture(m_texMenuBg);
+                    m_sprMenuBg.SetPosition({ m_window->GetSizeHalved().x, m_window->GetSizeHalved().y, 0.0f });
+                    m_sprMenuBg.SetOrigin({ m_texMenuBg.GetSizeHalved().x, m_texMenuBg.GetSizeHalved().y, 0.0f });
+
+                    m_sprMenuLogo.SetTexture(m_texMenuLogo);
+                    m_sprMenuLogo.SetPosition({ m_window->GetSizeHalved().x, m_window->GetSize().y * 0.75f, 0.0f });
+                    m_sprMenuLogo.SetOrigin({ m_texMenuLogo.GetSizeHalved().x, m_texMenuLogo.GetSizeHalved().y, 0.0f });
+
+                    m_sprMenuText.SetTexture(m_texMenuText);
+                    m_sprMenuText.SetPosition({ m_window->GetSizeHalved().x, m_window->GetSize().y * 0.2f, 0.0f });
+                    m_sprMenuText.SetOrigin({ m_texMenuText.GetSizeHalved().x, m_texMenuText.GetSizeHalved().y, 0.0f });
+
+                    m_texBg.SetRepeated(true);
+                    m_sprBg.SetTexture(m_texBg);
+                    m_sprBg.SetTextureRect({ 0.0f, 0.0f, m_window->GetSize().x + 200.0f, m_window->GetSize().y + 200.0f });
+                    m_sprBg.SetPosition({ -100.0f, -100.0f, 0.0f });
+
+                    m_sndMenu.Play();
 
                     return true;
                 }
@@ -172,7 +193,7 @@ namespace esd
     {
         if (m_gameState == GameState::InGame)
         {
-            if (m_ambientLoopClock.CheckStep(std::chrono::seconds{ 33 }))
+            if (m_ambientLoopClock.CheckStep(std::chrono::seconds{ 60 + 54 }))
             {
                 m_sndAmbient.Play();
             }
@@ -231,8 +252,15 @@ namespace esd
                         m_score -= m_bonus.GetRewardAmount();
                         m_bonus.Kill();
 
+                        if (m_bonus.GetSubType().b == BonusType::Killer)
+                        {
+                            it->Kill();
+                        }
+
                         M_SpawnBonus();
                         M_SpawnEnemy();
+
+                        break;
                     }
                 }
                 
@@ -242,6 +270,8 @@ namespace esd
                     {
                         m_player.Kill();
                         it->Kill();
+
+                        break;
                     }
                 }
 
@@ -275,64 +305,79 @@ namespace esd
 
     void World::Render()
     {
-        if (m_gameState == GameState::Menu)
+        switch (m_gameState)
         {
-            m_guiLayer.Clear({ 0.8f, 0.8f, 0.0f, 1.0f });
-
-            m_guiLayer.Render(*m_window, m_guiProgram, m_staticCamera);
-        }
-        else if (m_gameState == GameState::InGame)
-        {
-            if (m_pauseClock.IsRunning())
+            case GameState::Menu:
             {
-                m_gameCamera.SetPosition({
-                    std::clamp(m_player.GetPosition().x - m_window->GetSizeHalved().x, -100.0f, 100.0f),
-                    std::clamp(m_player.GetPosition().y - m_window->GetSizeHalved().y, -100.0f, 100.0f),
-                    0.0f
-                });
+                m_guiLayer.Clear();
+
+                m_sprMenuBg.Render(*m_window, m_guiProgram, m_staticCamera);
+
+                m_sprMenuLogo.Render(*m_window, m_guiProgram, m_staticCamera);
+
+                m_sprMenuText.Render(*m_window, m_guiProgram, m_staticCamera);
+
+                m_guiLayer.Render(*m_window, m_guiProgram, m_staticCamera);
             }
+            break;
 
-            //
-
-            m_gameLayer.Clear();
-
-            m_sprBg.Render(m_gameLayer, m_defaultProgram, m_gameCamera);
-
-            m_player.Render(m_gameLayer, m_defaultProgram, m_gameCamera);
-
-            m_bonus.Render(m_gameLayer, m_defaultProgram, m_gameCamera);
-
-            for (auto const& e : m_enemies)
+            case GameState::InGame:
             {
-                e.Render(m_gameLayer, m_defaultProgram, m_gameCamera);
+                if (m_pauseClock.IsRunning())
+                {
+                    m_gameCamera.SetPosition({
+                        std::clamp(m_player.GetPosition().x - m_window->GetSizeHalved().x, -100.0f, 100.0f),
+                        std::clamp(m_player.GetPosition().y - m_window->GetSizeHalved().y, -100.0f, 100.0f),
+                        0.0f
+                    });
+                }
+
+                //
+
+                m_gameLayer.Clear();
+
+                m_sprBg.Render(m_gameLayer, m_defaultProgram, m_gameCamera);
+
+                m_player.Render(m_gameLayer, m_defaultProgram, m_gameCamera);
+
+                m_bonus.Render(m_gameLayer, m_defaultProgram, m_gameCamera);
+
+                for (auto const& e : m_enemies)
+                {
+                    e.Render(m_gameLayer, m_defaultProgram, m_gameCamera);
+                }
+
+                m_gameLayer.Render(*m_window, m_ppProgram, m_staticCamera);
+
+                //
+
+                m_guiLayer.Clear();
+                
+                int mx;
+                int my;
+                SDL_GetMouseState(&mx, &my);
+
+                m_sprCursor.SetPosition({ mx, m_window->GetSize().y - my, 0.0f });
+                m_sprCursor.SetTextureRect(m_animCursor.GetTextureRect());
+                m_sprCursor.Render(m_guiLayer, m_guiProgram, m_staticCamera);
+
+                m_guiLayer.Render(*m_window, m_guiProgram, m_staticCamera);
             }
-
-            m_gameLayer.Render(*m_window, m_ppProgram, m_staticCamera);
-
-            //
-
-            m_guiLayer.Clear();
+            break;
             
-            int mx;
-            int my;
-            SDL_GetMouseState(&mx, &my);
+            case GameState::GameOver:
+            {
+                m_guiLayer.Clear({ 0.0f, 0.2f, 0.2f, 1.0f });
 
-            m_sprCursor.SetPosition({ mx, m_window->GetSize().y - my, 0.0f });
-            m_sprCursor.SetTextureRect(m_animCursor.GetTextureRect());
-            m_sprCursor.Render(m_guiLayer, m_guiProgram, m_staticCamera);
-
-            m_guiLayer.Render(*m_window, m_guiProgram, m_staticCamera);
-        }
-        else if (m_gameState == GameState::GameOver)
-        {
-            m_guiLayer.Clear({ 0.0f, 0.8f, 0.8f, 1.0f });
-
-            m_guiLayer.Render(*m_window, m_guiProgram, m_staticCamera);
+                m_guiLayer.Render(*m_window, m_guiProgram, m_staticCamera);
+            }
+            break;
         }
     }
 
     void World::M_StartGame()
     {
+        m_sndMenu.Stop();
         m_sndGameOver.Stop();
 
         m_gameState = GameState::InGame;

@@ -270,6 +270,13 @@ namespace esd
 
                 m_logicFunction = +[](Entity& e, int64_t dt, Vec4i const&, Entity const&, Entity const& b, float, Clock&)
                 {
+                    if (b.GetSubType().b == BonusType::Killer)
+                    {
+                        e.m_animNextState = AnimationState::Special2;
+
+                        return;
+                    }
+
                     auto const distance = Distance(b.m_position.x, b.m_position.y, e.m_position.x, e.m_position.y);
                     auto const angle = std::atan2(b.m_position.y - e.m_position.y, b.m_position.x - e.m_position.x);
                     auto speed = e.m_speed;
@@ -291,7 +298,8 @@ namespace esd
 
                 m_animation.SetAnimations({
                     4, // Basic
-                    4, // Special1
+                    4, // Special2
+                    1, // Special1
                 });
 
                 m_collider.SetRadius(20.0f);
@@ -399,9 +407,9 @@ namespace esd
                 };
 
                 m_animation.SetAnimations({
-                    1, // Basic
-                    1, // Special1
-                    1, // Special2
+                    4, // Basic
+                    4, // Special1
+                    4, // Special2
                 });
 
                 m_collider.SetRadius(22.0f);
@@ -424,7 +432,7 @@ namespace esd
         m_sprite.SetTexture(texture);
         m_sprite.SetOrigin({ 32.0f, 32.0f, 0.0f });
 
-        m_animation.SetFrameDuration(std::chrono::milliseconds{ 100 });
+        m_animation.SetFrameDuration(std::chrono::milliseconds{ 200 });
         m_animation.SetFrameSize({ 64, 64 });
 
         m_type = EntityType::Bonus;
@@ -435,16 +443,16 @@ namespace esd
             {
                 m_subType.b = BonusType::Regular;
 
-                m_logicFunction = +[](Entity&, int64_t, Vec4i const&, Entity const&, Entity const&, float, Clock&)
+                m_logicFunction = +[](Entity& e, int64_t dt, Vec4i const&, Entity const&, Entity const&, float, Clock&)
                 {
-                    
+                    e.m_rotation += 0.0008f * dt;
                 };
 
                 m_animation.SetAnimations({
-                    4, // Basic
+                    3, // Basic
                 });
 
-                m_reward = 1;
+                m_reward = 2;
 
                 m_collider.SetRadius(18.0f);
 
@@ -456,16 +464,37 @@ namespace esd
             {
                 m_subType.b = BonusType::Good;
 
-                m_logicFunction = +[](Entity&, int64_t, Vec4i const&, Entity const&, Entity const&, float, Clock&)
+                m_logicFunction = +[](Entity& e, int64_t dt, Vec4i const&, Entity const&, Entity const&, float, Clock&)
                 {
-                    
+                    e.m_rotation -= 0.001f * dt;
+                };
+
+                m_animation.SetAnimations({
+                    3, // Basic
+                });
+
+                m_reward = 10;
+
+                m_collider.SetRadius(18.0f);
+
+                m_position = position;
+            }
+            break;
+
+            case BonusType::Killer:
+            {
+                m_subType.b = BonusType::Killer;
+
+                m_logicFunction = +[](Entity& e, int64_t dt, Vec4i const&, Entity const&, Entity const&, float, Clock&)
+                {
+                    e.m_rotation -= 0.005f * dt;
                 };
 
                 m_animation.SetAnimations({
                     4, // Basic
                 });
 
-                m_reward = 5;
+                m_reward = -5;
 
                 m_collider.SetRadius(18.0f);
 
