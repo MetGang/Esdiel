@@ -105,6 +105,7 @@ namespace esd
         Camera m_gameCamera;
         Camera m_staticCamera;
 
+        Vec2u m_size;
         Vec4i m_mousePosition;
 
         Texture m_texMenuBg;

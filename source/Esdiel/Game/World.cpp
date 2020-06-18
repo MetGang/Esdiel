@@ -49,6 +49,7 @@ namespace esd
         , m_guiProgram {}
         , m_gameCamera {}
         , m_staticCamera {}
+        , m_size { 2400.0f, 1200.0f }
         , m_mousePosition {}
         , m_player {}
         , m_texPlayer {}
@@ -124,10 +125,7 @@ namespace esd
                     m_sprMenuText.SetPosition({ m_window->GetSizeHalved().x, m_window->GetSize().y * 0.2f, 0.0f });
                     m_sprMenuText.SetOrigin({ m_texMenuText.GetSizeHalved().x, m_texMenuText.GetSizeHalved().y, 0.0f });
 
-                    m_texBg.SetRepeated(true);
                     m_sprBg.SetTexture(m_texBg);
-                    m_sprBg.SetTextureRect({ 0.0f, 0.0f, m_window->GetSize().x + 200.0f, m_window->GetSize().y + 200.0f });
-                    m_sprBg.SetPosition({ -100.0f, -100.0f, 0.0f });
 
                     m_sndMenu.Play();
 
@@ -330,8 +328,8 @@ namespace esd
                 if (m_pauseClock.IsRunning())
                 {
                     m_gameCamera.SetPosition({
-                        std::clamp(m_player.GetPosition().x - m_window->GetSizeHalved().x, -100.0f, 100.0f),
-                        std::clamp(m_player.GetPosition().y - m_window->GetSizeHalved().y, -100.0f, 100.0f),
+                        m_player.GetPosition().x - (m_player.GetPosition().x * m_window->GetSize().x / m_size.x),
+                        m_player.GetPosition().y - (m_player.GetPosition().y * m_window->GetSize().y / m_size.y),
                         0.0f
                     });
                 }
@@ -427,8 +425,8 @@ namespace esd
     Vec2f World::M_GetSpawnPosition()
     {
         return {
-            m_posDistribution(m_mt19937) * m_window->GetSize().x,
-            m_posDistribution(m_mt19937) * m_window->GetSize().y,
+            m_posDistribution(m_mt19937) * m_size.x,
+            m_posDistribution(m_mt19937) * m_size.y,
         };
     }
 }

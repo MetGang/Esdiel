@@ -92,6 +92,7 @@ namespace esd
         if (m_fbo)
         {
             glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_fbo);
+            glViewport(0, 0, m_texture.GetSize().x, m_texture.GetSize().y);
         }
     }
 
