@@ -37,6 +37,7 @@ namespace esd
             4.0, // Rotador
         }
         , m_piDistribution { -pi, pi }
+        , m_posDistribution { 0.0, 1.0f }
         , m_pauseClock {}
         , m_timeClock {}
         , m_gameState { GameState::Menu }
@@ -56,7 +57,7 @@ namespace esd
         , m_enemies {}
         , m_texEnemies {}
     {
-        m_enemies.reserve(100u);
+        // m_enemies.reserve(100u);
     }
 
     bool World::Initialize()
@@ -149,7 +150,7 @@ namespace esd
 
         for (auto& e : m_enemies)
         {
-            e.TogglePause();
+            e->TogglePause();
         }
 
         for (auto& s : m_sndBonusPickups)
@@ -209,7 +210,7 @@ namespace esd
 
                 for (auto& e : m_enemies)
                 {
-                    e.ProcessLogic(dt, m_mousePosition, m_player, m_bonus, piRand);
+                    e->ProcessLogic(dt, m_mousePosition, m_player, m_bonus, piRand);
                 }
             }
         }
@@ -227,7 +228,7 @@ namespace esd
                 
                 for (auto& e : m_enemies)
                 {
-                    e.PrepareCollider();
+                    e->PrepareCollider();
                 }
 
                 //
@@ -239,13 +240,13 @@ namespace esd
                     m_score += m_bonus.GetRewardAmount();
                     m_bonus.Kill();
 
-                    M_SpawnBonus();
                     M_SpawnEnemy();
+                    M_SpawnBonus();
                 }
                 
                 for (auto it = m_enemies.begin(); it != m_enemies.end(); ++it)
                 {
-                    if (m_bonus.ProcessCollision(*it))
+                    if (m_bonus.ProcessCollision(**it))
                     {
                         m_sndBonusPickups[+m_bonus.GetSubType().b].Play();
 
@@ -254,11 +255,14 @@ namespace esd
 
                         if (m_bonus.GetSubType().b == BonusType::Killer)
                         {
-                            it->Kill();
+                            (*it)->Kill();
+                        }
+                        else
+                        {
+                            M_SpawnEnemy();
                         }
 
                         M_SpawnBonus();
-                        M_SpawnEnemy();
 
                         break;
                     }
@@ -266,16 +270,16 @@ namespace esd
                 
                 for (auto it = m_enemies.begin(); it != m_enemies.end(); ++it)
                 {
-                    if (m_player.ProcessCollision(*it))
+                    if (m_player.ProcessCollision(**it))
                     {
                         m_player.Kill();
-                        it->Kill();
+                        (*it)->Kill();
 
                         break;
                     }
                 }
 
-                m_enemies.erase(std::remove_if(m_enemies.begin(), m_enemies.end(), [](auto const& enemy) { return !enemy.IsAlive(); }), m_enemies.end());
+                m_enemies.erase(std::remove_if(m_enemies.begin(), m_enemies.end(), [](auto const& enemy) { return !enemy->IsAlive(); }), m_enemies.end());
 
                 if (!m_player.IsAlive())
                 {
@@ -297,7 +301,7 @@ namespace esd
 
                 for (auto& e : m_enemies)
                 {
-                    e.ProcessAnimation();
+                    e->ProcessAnimation();
                 }
             }
         }
@@ -344,7 +348,7 @@ namespace esd
 
                 for (auto const& e : m_enemies)
                 {
-                    e.Render(m_gameLayer, m_defaultProgram, m_gameCamera);
+                    e->Render(m_gameLayer, m_defaultProgram, m_gameCamera);
                 }
 
                 m_gameLayer.Render(*m_window, m_ppProgram, m_staticCamera);
@@ -416,15 +420,23 @@ namespace esd
     void World::M_SpawnEnemy()
     {
         auto type = static_cast<EnemyType>(m_enemyDistribution(m_mt19937));
+        std::cout << +type << " | ";
 
-        m_enemies.emplace_back().Initialize(type, m_texEnemies[+type], M_GetSpawnPosition());
+        try {
+            std::cout << m_enemies.size() << ' ' << m_enemies.capacity() << " | ";
+            m_enemies.emplace_back(std::make_unique<Entity>())->Initialize(type, m_texEnemies[+type], M_GetSpawnPosition());
+            std::cout << m_enemies.size() << ' ' << m_enemies.capacity() << '\n';
+        }
+        catch (std::exception const& e) {
+            std::cout << e.what() << '\n';
+        }
     }
 
-    Vec2f World::M_GetSpawnPosition() const
+    Vec2f World::M_GetSpawnPosition()
     {
         auto ret = Vec2f{
-            std::rand() % static_cast<int32_t>(m_window->GetSize().x),
-            std::rand() % static_cast<int32_t>(m_window->GetSize().y),
+            m_posDistribution(m_mt19937) * m_window->GetSize().x,
+            m_posDistribution(m_mt19937) * m_window->GetSize().y,
         };
 
         return ret;

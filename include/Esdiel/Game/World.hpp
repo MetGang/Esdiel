@@ -10,6 +10,7 @@
 #include <Esdiel/Game/GameState.hpp>
 
 // C++
+#include <memory>
 #include <random>
 
 //
@@ -79,7 +80,7 @@ namespace esd
         void M_SpawnEnemy();
 
         ///
-        Vec2f M_GetSpawnPosition() const;
+        Vec2f M_GetSpawnPosition();
 
         Window const* m_window;
         SDL_Event const* m_event;
@@ -89,6 +90,7 @@ namespace esd
         std::discrete_distribution<std::underlying_type_t<BonusType>> m_bonusDistribution;
         std::discrete_distribution<std::underlying_type_t<EnemyType>> m_enemyDistribution;
         std::uniform_real_distribution<float> m_piDistribution;
+        std::uniform_real_distribution<float> m_posDistribution;
 
         Clock m_pauseClock;
         Clock m_timeClock;
@@ -127,7 +129,7 @@ namespace esd
         Entity m_bonus;
         Texture m_texBonuses[+BonusType::COUNT];
 
-        std::vector<Entity> m_enemies;
+        std::vector<std::unique_ptr<Entity>> m_enemies;
         Texture m_texEnemies[+EnemyType::COUNT];
 
         Sound m_sndBonusPickups[+BonusType::COUNT];
