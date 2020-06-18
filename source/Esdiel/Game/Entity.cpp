@@ -108,9 +108,9 @@ namespace esd
             {
                 m_subType.e = EnemyType::Static;
 
-                m_logicFunction = +[](Entity& e, int64_t, Vec4i const&, Entity const&, Entity const&, float, Clock&)
+                m_logicFunction = +[](Entity& e, int64_t dt, Vec4i const&, Entity const&, Entity const&, float, Clock&)
                 {
-                    e.m_rotation += 0.01f;
+                    e.m_rotation += 0.001f * dt;
                 };
 
                 m_animation.SetAnimations({
@@ -378,13 +378,13 @@ namespace esd
                     auto const srcDir = glm::normalize(Vec2f{ std::cos(e.m_rotation), std::sin(e.m_rotation) });
                     auto const dstDir = glm::normalize(p.m_position - e.m_position);
                     auto const speed = Lerp(e.m_speed, e.m_speed * 0.5f, std::clamp(distance / 1000.0f, 0.0f, 1.0f));
-                    auto const rotation = glm::orientedAngle(srcDir, dstDir) * Lerp(0.001f, 0.04f, std::clamp(distance / 300.0f, 0.0f, 1.0f));
+                    auto const rotation = glm::orientedAngle(srcDir, dstDir) * Lerp(0.0001f, 0.004f, std::clamp(distance / 300.0f, 0.0f, 1.0f));
 
-                    if (rotation > 0.01f)
+                    if (rotation > 0.001f)
                     {
                         e.m_animNextState = AnimationState::Special1;
                     }
-                    else if (rotation < -0.01f)
+                    else if (rotation < -0.001f)
                     {
                         e.m_animNextState = AnimationState::Special2;
                     }
@@ -393,7 +393,7 @@ namespace esd
                         e.m_animNextState = AnimationState::Basic;
                     }
 
-                    e.m_rotation += rotation;
+                    e.m_rotation += rotation * dt;
                     e.m_position.x += std::cos(e.m_rotation) * speed * dt;
                     e.m_position.y += std::sin(e.m_rotation) * speed * dt;
                 };
