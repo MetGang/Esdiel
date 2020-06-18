@@ -371,7 +371,7 @@ namespace esd
             
             case GameState::GameOver:
             {
-                m_guiLayer.Clear({ 0.0f, 0.2f, 0.2f, 1.0f });
+                m_guiLayer.Clear({ 0.0f, 0.0f, 0.1f, 1.0f });
 
                 m_guiLayer.Render(*m_window, m_guiProgram, m_staticCamera);
             }
@@ -420,25 +420,15 @@ namespace esd
     void World::M_SpawnEnemy()
     {
         auto type = static_cast<EnemyType>(m_enemyDistribution(m_mt19937));
-        std::cout << +type << " | ";
 
-        try {
-            std::cout << m_enemies.size() << ' ' << m_enemies.capacity() << " | ";
-            m_enemies.emplace_back(std::make_unique<Entity>())->Initialize(type, m_texEnemies[+type], M_GetSpawnPosition());
-            std::cout << m_enemies.size() << ' ' << m_enemies.capacity() << '\n';
-        }
-        catch (std::exception const& e) {
-            std::cout << e.what() << '\n';
-        }
+        m_enemies.emplace_back(std::make_unique<Entity>())->Initialize(type, m_texEnemies[+type], M_GetSpawnPosition());
     }
 
     Vec2f World::M_GetSpawnPosition()
     {
-        auto ret = Vec2f{
+        return {
             m_posDistribution(m_mt19937) * m_window->GetSize().x,
             m_posDistribution(m_mt19937) * m_window->GetSize().y,
         };
-
-        return ret;
     }
 }
