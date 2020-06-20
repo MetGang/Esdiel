@@ -13,17 +13,14 @@ workspace "E+G Study Project"
         "SDL_MAIN_HANDLED"
     }
 
-    flags {
-        "LinkTimeOptimization"
-    }
-
     filter "configurations:Debug"
         defines { "ESD_DEBUG" }
-        optimize "Debug"
+        symbols "On"
 
     filter "configurations:Release"
         defines { "NDEBUG" }
         optimize "Full"
+        flags { "LinkTimeOptimization" }
 
 -- Main project
 project "Esdiel"
@@ -52,10 +49,17 @@ project "Esdiel"
         "%{prj.location}/thirdparty/SDL2/include"
     }
 
-    filter "system:windows"
-        libdirs "%{prj.location}/thirdparty/SDL2/lib"
-
     links {
         "SDL2main",
         "SDL2"
     }
+
+    filter "system:windows"
+        libdirs "%{prj.location}/thirdparty/SDL2/lib"
+
+    filter "system:linux"
+        buildoptions { "`sdl2-config --cflags`" }
+        linkoptions { "`sdl2-config --libs`" }
+        links { "dl" }
+
+    filter {}
