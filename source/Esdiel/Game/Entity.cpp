@@ -88,6 +88,7 @@ namespace esd
 
         m_position = position;
         m_speed = 0.4f;
+        m_isAlive = true;
 
         m_animation.Play(+m_animState);
     }
@@ -366,10 +367,10 @@ namespace esd
                 };
 
                 m_animation.SetAnimations({
-                    2, // Basic
+                    4, // Basic
                 });
 
-                m_collider.SetRadius(22.0f);
+                m_collider.SetRadius(18.0f);
 
                 m_position = position;
                 m_speed = 0.3f;

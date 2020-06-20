@@ -37,7 +37,7 @@ namespace esd
             4.0, // Rotador
         }
         , m_piDistribution { -pi, pi }
-        , m_posDistribution { 0.0, 1.0f }
+        , m_posDistribution { 0.1, 0.9f }
         , m_pauseClock {}
         , m_timeClock {}
         , m_gameState { GameState::Menu }
@@ -58,7 +58,7 @@ namespace esd
         , m_enemies {}
         , m_texEnemies {}
     {
-        // m_enemies.reserve(100u);
+        m_enemies.reserve(100u);
     }
 
     bool World::Initialize()
@@ -76,9 +76,12 @@ namespace esd
 
                     m_texMenuBg.LoadFromFile("Assets/Textures/menu_bg.png") &&
                     m_texMenuLogo.LoadFromFile("Assets/Textures/menu_logo.png") &&
-                    m_texMenuText.LoadFromFile("Assets/Textures/menu_text.png") &&
+
+                    m_texGameOverBg.LoadFromFile("Assets/Textures/gameover_bg.png") &&
+                    m_texGameOverScore.LoadFromFile("Assets/Textures/gameover_score.png") &&
 
                     m_texBg.LoadFromFile("Assets/Textures/background.png") &&
+                    m_texExplosion.LoadFromFile("Assets/Textures/explosion.png") &&
 
                     m_texPlayer.LoadFromFile("Assets/Textures/player.png") &&
 
@@ -94,13 +97,14 @@ namespace esd
                     m_texEnemies[+EnemyType::Madman].LoadFromFile("Assets/Textures/Enemies/madman.png") &&
                     m_texEnemies[+EnemyType::Eater].LoadFromFile("Assets/Textures/Enemies/eater.png") &&
                     m_texEnemies[+EnemyType::Guardian].LoadFromFile("Assets/Textures/Enemies/guardian.png") &&
-                    m_texEnemies[+EnemyType::Retard].LoadFromFile("Assets/Textures/Enemies/static.png") &&
+                    m_texEnemies[+EnemyType::Retard].LoadFromFile("Assets/Textures/Enemies/retard.png") &&
                     m_texEnemies[+EnemyType::Rotador].LoadFromFile("Assets/Textures/Enemies/rotador.png") &&
 
                     m_sndBonusPickups[+BonusType::Regular].LoadFromFile("Assets/Sounds/Bonuses/regular.wav") &&
                     m_sndBonusPickups[+BonusType::Good].LoadFromFile("Assets/Sounds/Bonuses/good.wav") &&
-                    m_sndBonusPickups[+BonusType::Killer].LoadFromFile("Assets/Sounds/Bonuses/good.wav") &&
+                    m_sndBonusPickups[+BonusType::Killer].LoadFromFile("Assets/Sounds/Bonuses/killer.wav") &&
 
+                    m_sndExplosion.LoadFromFile("Assets/Sounds/explosion.wav") &&
                     m_sndMenu.LoadFromFile("Assets/Sounds/menu.wav") &&
                     m_sndAmbient.LoadFromFile("Assets/Sounds/ambient.wav") &&
                     m_sndGameOver.LoadFromFile("Assets/Sounds/game_over.wav")
@@ -121,11 +125,23 @@ namespace esd
                     m_sprMenuLogo.SetPosition({ m_window->GetSizeHalved().x, m_window->GetSize().y * 0.75f, 0.0f });
                     m_sprMenuLogo.SetOrigin({ m_texMenuLogo.GetSizeHalved().x, m_texMenuLogo.GetSizeHalved().y, 0.0f });
 
-                    m_sprMenuText.SetTexture(m_texMenuText);
-                    m_sprMenuText.SetPosition({ m_window->GetSizeHalved().x, m_window->GetSize().y * 0.2f, 0.0f });
-                    m_sprMenuText.SetOrigin({ m_texMenuText.GetSizeHalved().x, m_texMenuText.GetSizeHalved().y, 0.0f });
+                    m_sprGameOverBg.SetTexture(m_texGameOverBg);
+                    m_sprGameOverBg.SetPosition({ m_window->GetSizeHalved().x, m_window->GetSizeHalved().y, 0.0f });
+                    m_sprGameOverBg.SetOrigin({ m_texGameOverBg.GetSizeHalved().x, m_texGameOverBg.GetSizeHalved().y, 0.0f });
+
+                    m_sprGameOverScore.SetTexture(m_texGameOverScore);
+                    m_sprGameOverScore.SetPosition({ m_window->GetSizeHalved().x, m_window->GetSizeHalved().y, 0.0f });
+                    m_sprGameOverScore.SetOrigin({ 64, 64, 0.0f });
 
                     m_sprBg.SetTexture(m_texBg);
+
+                    m_sprExplosion.SetTexture(m_texExplosion);
+                    m_sprExplosion.SetScale({ 2.0f, 2.0f, 1.0f });
+                    m_sprExplosion.SetOrigin({ 23, 23, 0.0f });
+                    m_animExplosion.SetAnimations({ 11, 1 });
+                    m_animExplosion.SetFrameDuration(std::chrono::milliseconds{ 80 });
+                    m_animExplosion.SetFrameSize({ 46, 46 });
+                    m_animExplosion.Play(1);
 
                     m_sndMenu.Play();
 
@@ -172,7 +188,7 @@ namespace esd
             };
         }
 
-        if (m_gameState == GameState::Menu)
+        if (m_gameState == GameState::Menu || m_gameState == GameState::GameOver)
         {
             if (m_event->type == SDL_KEYDOWN && m_event->key.keysym.scancode == SDL_SCANCODE_RETURN && m_event->key.repeat == 0)
             {
@@ -254,6 +270,9 @@ namespace esd
                         if (m_bonus.GetSubType().b == BonusType::Killer)
                         {
                             (*it)->Kill();
+                            m_sndExplosion.Play();
+                            m_sprExplosion.SetPosition({ (*it)->GetPosition().x, (*it)->GetPosition().y, 0.0f });
+                            m_animExplosion.PlayOnce(0, 1);
                         }
                         else
                         {
@@ -272,6 +291,9 @@ namespace esd
                     {
                         m_player.Kill();
                         (*it)->Kill();
+                        m_sndExplosion.Play();
+                        m_sprExplosion.SetPosition({ (*it)->GetPosition().x, (*it)->GetPosition().y, 0.0f });
+                        m_animExplosion.PlayOnce(0, 1);
 
                         break;
                     }
@@ -301,6 +323,8 @@ namespace esd
                 {
                     e->ProcessAnimation();
                 }
+
+                m_sprExplosion.SetTextureRect(m_animExplosion.GetTextureRect());
             }
         }
     }
@@ -316,8 +340,6 @@ namespace esd
                 m_sprMenuBg.Render(*m_window, m_guiProgram, m_staticCamera);
 
                 m_sprMenuLogo.Render(*m_window, m_guiProgram, m_staticCamera);
-
-                m_sprMenuText.Render(*m_window, m_guiProgram, m_staticCamera);
 
                 m_guiLayer.Render(*m_window, m_guiProgram, m_staticCamera);
             }
@@ -349,6 +371,8 @@ namespace esd
                     e->Render(m_gameLayer, m_defaultProgram, m_gameCamera);
                 }
 
+                m_sprExplosion.Render(m_gameLayer, m_defaultProgram, m_gameCamera);
+
                 m_gameLayer.Render(*m_window, m_ppProgram, m_staticCamera);
 
                 //
@@ -369,7 +393,11 @@ namespace esd
             
             case GameState::GameOver:
             {
-                m_guiLayer.Clear({ 0.0f, 0.0f, 0.1f, 1.0f });
+                m_guiLayer.Clear();
+
+                m_sprGameOverBg.Render(*m_window, m_guiProgram, m_staticCamera);
+
+                m_sprGameOverScore.Render(*m_window, m_guiProgram, m_staticCamera);
 
                 m_guiLayer.Render(*m_window, m_guiProgram, m_staticCamera);
             }
@@ -383,6 +411,7 @@ namespace esd
         m_sndGameOver.Stop();
 
         m_gameState = GameState::InGame;
+        m_score = 0;
 
         M_SpawnPlayer();
         M_SpawnBonus();
@@ -395,6 +424,31 @@ namespace esd
     void World::M_StopGame()
     {
         m_gameState = GameState::GameOver;
+
+        uint32_t scoreIndex = 4;
+
+        if (m_score < 0)
+        {
+            scoreIndex = 4;
+        }
+        else if (m_score < 16)
+        {
+            scoreIndex = 3;
+        }
+        else if (m_score < 48)
+        {
+            scoreIndex = 2;
+        }
+        else if (m_score < 96)
+        {
+            scoreIndex = 1;
+        }
+        else
+        {
+            scoreIndex = 0;
+        }
+
+        m_sprGameOverScore.SetAnimationFrame(scoreIndex, 5, { 128, 128 });
 
         m_sndAmbient.Stop();
 

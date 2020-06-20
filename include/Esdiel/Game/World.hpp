@@ -114,11 +114,18 @@ namespace esd
         Texture m_texMenuLogo;
         Sprite m_sprMenuLogo;
 
-        Texture m_texMenuText;
-        Sprite m_sprMenuText;
+        Texture m_texGameOverBg;
+        Sprite m_sprGameOverBg;
+
+        Texture m_texGameOverScore;
+        Sprite m_sprGameOverScore;
 
         Texture m_texBg;
         Sprite m_sprBg;
+
+        Texture m_texExplosion;
+        Sprite m_sprExplosion;
+        Animation m_animExplosion;
 
         Texture m_texCursor;
         Sprite m_sprCursor;
@@ -134,6 +141,8 @@ namespace esd
         Texture m_texEnemies[+EnemyType::COUNT];
 
         Sound m_sndBonusPickups[+BonusType::COUNT];
+
+        Sound m_sndExplosion;
 
         Sound m_sndMenu;
 
