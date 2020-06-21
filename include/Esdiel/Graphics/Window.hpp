@@ -48,7 +48,7 @@ namespace esd
         GraphicsContext_t GetGraphicsContext() const;
 
         ///
-        bool Create(char const* name, bool fullscreen);
+        bool Create(char const* name);
 
         ///
         void Show();

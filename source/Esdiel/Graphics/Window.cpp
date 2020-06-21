@@ -44,7 +44,7 @@ namespace esd
         return m_graphicsContext;
     }
 
-    bool Window::Create(char const* name, bool fullscreen)
+    bool Window::Create(char const* name)
     {
         static bool isGladLoaded = false;
 
@@ -58,9 +58,7 @@ namespace esd
         SDL_GetCurrentDisplayMode(0, &dm);
         m_size = { dm.w, dm.h };
 
-        auto const flags = SDL_WINDOW_OPENGL | (fullscreen ? SDL_WINDOW_FULLSCREEN : SDL_WINDOW_BORDERLESS | SDL_WINDOW_INPUT_GRABBED);
-
-        m_window = SDL_CreateWindow(name, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, m_size.x, m_size.y, flags);
+        m_window = SDL_CreateWindow(name, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, m_size.x, m_size.y, SDL_WINDOW_OPENGL | SDL_WINDOW_FULLSCREEN);
 
         SDL_ShowCursor(SDL_DISABLE);
 
