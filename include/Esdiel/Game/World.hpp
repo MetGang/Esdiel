@@ -94,12 +94,14 @@ namespace esd
 
         Clock m_pauseClock;
         Clock m_timeClock;
+        Clock m_auxClock;
         GameState m_gameState;
         int32_t m_score;
 
         RenderLayer m_gameLayer;
         RenderLayer m_guiLayer;
         ShaderProgram m_defaultProgram;
+        ShaderProgram m_bgProgram;
         ShaderProgram m_ppProgram;
         ShaderProgram m_guiProgram;
         Camera m_gameCamera;

@@ -38,6 +38,7 @@ namespace esd
         , m_posDistribution { 0.1, 0.9f }
         , m_pauseClock {}
         , m_timeClock {}
+        , m_auxClock {}
         , m_gameState { GameState::Menu }
         , m_score { 0 }
         , m_gameLayer {}
@@ -65,6 +66,7 @@ namespace esd
         {
             if (
                 m_defaultProgram.LoadFromFile("Assets/Shaders/default.vert", "Assets/Shaders/default.frag") &&
+                m_bgProgram.LoadFromFile("Assets/Shaders/bg.vert", "Assets/Shaders/bg.frag") &&
                 m_ppProgram.LoadFromFile("Assets/Shaders/pp.vert", "Assets/Shaders/pp.frag") &&
                 m_guiProgram.LoadFromFile("Assets/Shaders/default.vert", "Assets/Shaders/default.frag")
             )
@@ -159,6 +161,7 @@ namespace esd
     {
         m_pauseClock.Toggle();
         m_timeClock.Toggle();
+        m_auxClock.Toggle();
 
         m_player.TogglePause();
 
@@ -295,7 +298,7 @@ namespace esd
                     if (m_player.ProcessCollision(**it))
                     {
                         m_player.Kill();
-                        m_timeClock.Restart();
+                        m_auxClock.Restart();
                         (*it)->Kill();
                         m_sndExplosion[0].Play();
                         m_sprExplosion[0].SetPosition({ m_player.GetPosition().x, m_player.GetPosition().y, 0.0f });
@@ -310,7 +313,7 @@ namespace esd
 
                 m_enemies.erase(std::remove_if(m_enemies.begin(), m_enemies.end(), [](auto const& enemy) { return !enemy->IsAlive(); }), m_enemies.end());
 
-                if (!m_player.IsAlive() && m_timeClock.HasPassed(std::chrono::seconds{ 2 }))
+                if (!m_player.IsAlive() && m_auxClock.HasPassed(std::chrono::seconds{ 3 }))
                 {
                     M_StopGame();
                 }
@@ -343,6 +346,25 @@ namespace esd
 
     void World::Render()
     {
+        m_bgProgram.UseProgram();
+        m_bgProgram.SetUniform("time", AsFSeconds(m_timeClock.GetElapsedDuration()));
+
+        m_ppProgram.UseProgram();
+        m_ppProgram.SetUniform("time", AsFSeconds(m_timeClock.GetElapsedDuration()));
+
+        if (m_player.IsAlive())
+        {
+            m_ppProgram.SetUniform("vignette.radius", 1.0f);
+            m_ppProgram.SetUniform("vignette.opacity", 0.6f);
+        }
+        else
+        {
+            float const percentage = AsFSeconds(m_auxClock.GetElapsedDuration()) / 3.0f;
+
+            m_ppProgram.SetUniform("vignette.radius", 1.0f - percentage);
+            m_ppProgram.SetUniform("vignette.opacity", 1.0f);
+        }
+
         switch (m_gameState)
         {
             case GameState::Menu:
@@ -366,13 +388,19 @@ namespace esd
                         m_player.GetPosition().y - (m_player.GetPosition().y * m_window->GetSize().y / m_size.y),
                         0.0f
                     });
+
+                    m_ppProgram.SetUniform("isPaused", false);
                 }
+                else
+                {
+                    m_ppProgram.SetUniform("isPaused", true);
+                }                
 
                 //
 
                 m_gameLayer.Clear();
 
-                m_sprBg.Render(m_gameLayer, m_defaultProgram, m_gameCamera);
+                m_sprBg.Render(m_gameLayer, m_bgProgram, m_gameCamera);
 
                 m_player.Render(m_gameLayer, m_defaultProgram, m_gameCamera);
 
