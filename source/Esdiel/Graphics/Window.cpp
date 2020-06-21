@@ -58,7 +58,8 @@ namespace esd
         SDL_GetCurrentDisplayMode(0, &dm);
         m_size = { dm.w, dm.h };
 
-        m_window = SDL_CreateWindow(name, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, m_size.x, m_size.y, SDL_WINDOW_OPENGL | SDL_WINDOW_FULLSCREEN);
+        // SDL_WINDOW_BORDERLESS
+        m_window = SDL_CreateWindow(name, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, m_size.x, m_size.y, SDL_WINDOW_OPENGL | SDL_WINDOW_FULLSCREEN | SDL_WINDOW_INPUT_GRABBED);
 
         SDL_ShowCursor(SDL_DISABLE);
 
