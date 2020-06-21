@@ -15,7 +15,7 @@ int main(int, char**)
 
     esd::Window window;
 
-    if (!window.Create("Esdiel Study Game"))
+    if (!window.Create("Esdiel Study Game", true))
     {
         return -2;
     }
