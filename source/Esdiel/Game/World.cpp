@@ -354,8 +354,8 @@ namespace esd
 
         if (m_player.IsAlive())
         {
-            m_ppProgram.SetUniform("vignette.radius", 1.0f);
-            m_ppProgram.SetUniform("vignette.opacity", 0.6f);
+            m_ppProgram.SetUniform("vignette.radius", 1.3f);
+            m_ppProgram.SetUniform("vignette.opacity", 0.2f);
         }
         else
         {
@@ -478,11 +478,11 @@ namespace esd
         {
             scoreIndex = 3;
         }
-        else if (m_score < 48)
+        else if (m_score < 56)
         {
             scoreIndex = 2;
         }
-        else if (m_score < 96)
+        else if (m_score < 108)
         {
             scoreIndex = 1;
         }

@@ -22,7 +22,7 @@ void main()
 {
     vec4 pixel = texture2D(tex, v_texCoord) * v_color;
 
-    pixel.rgb = (pixel.rgb - 0.5) * tan((sin(time) * 0.015 + 0.03 + 1.0) * pi4) + 0.5;
+    pixel.rgb = (pixel.rgb - 0.5) * tan((sin(time) * 0.01 + 0.02 + 1.0) * pi4) + 0.5;
 
     fragColor = pixel;
 }

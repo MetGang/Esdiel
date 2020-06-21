@@ -13,9 +13,11 @@ out vec2 v_texCoord;
 // Uniforms
 uniform mat4x4 mvp;
 
+uniform float time;
+
 void main()
 {
-    gl_Position = vec4(mvp * vec4(position, 1.0));
+    gl_Position = vec4(mvp * vec4(position + sin(time) * cos(time), 1.0));
 
     v_position = gl_Position.xyz;
     v_color = color;
