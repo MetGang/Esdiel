@@ -2,8 +2,6 @@
 #include <Esdiel/Graphics/Window.hpp>
 #include <Esdiel/Math/Vector.hpp>
 
-#include <iostream>
-
 int main(int, char**)
 {
     esd::Context context;

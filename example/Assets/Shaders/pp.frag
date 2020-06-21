@@ -13,5 +13,11 @@ uniform sampler2D tex;
 
 void main()
 {
-    fragColor = texture2D(tex, v_texCoord) * v_color;
+    vec4 pixel = texture2D(tex, v_texCoord) * v_color;
+
+    float factor = smoothstep(1.2, 0.01, length(v_position.xy));
+
+	pixel.rgb = mix(pixel.rgb, pixel.rgb * factor, 0.9);
+
+    fragColor = pixel;
 }

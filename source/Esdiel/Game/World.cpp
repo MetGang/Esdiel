@@ -10,8 +10,6 @@
 // SDL2
 #include <SDL2/SDL_events.h>
 
-#include <iostream>
-
 namespace esd
 {
     World::World(Window const& window, SDL_Event const& event)
@@ -104,7 +102,8 @@ namespace esd
                     m_sndBonusPickups[+BonusType::Good].LoadFromFile("Assets/Sounds/Bonuses/good.wav") &&
                     m_sndBonusPickups[+BonusType::Killer].LoadFromFile("Assets/Sounds/Bonuses/killer.wav") &&
 
-                    m_sndExplosion.LoadFromFile("Assets/Sounds/explosion.wav") &&
+                    m_sndExplosion[0].LoadFromFile("Assets/Sounds/explosion.wav") &&
+                    m_sndExplosion[1].LoadFromFile("Assets/Sounds/explosion.wav") &&
                     m_sndMenu.LoadFromFile("Assets/Sounds/menu.wav") &&
                     m_sndAmbient.LoadFromFile("Assets/Sounds/ambient.wav") &&
                     m_sndGameOver.LoadFromFile("Assets/Sounds/game_over.wav")
@@ -135,13 +134,16 @@ namespace esd
 
                     m_sprBg.SetTexture(m_texBg);
 
-                    m_sprExplosion.SetTexture(m_texExplosion);
-                    m_sprExplosion.SetScale({ 2.0f, 2.0f, 1.0f });
-                    m_sprExplosion.SetOrigin({ 23, 23, 0.0f });
-                    m_animExplosion.SetAnimations({ 11, 1 });
-                    m_animExplosion.SetFrameDuration(std::chrono::milliseconds{ 80 });
-                    m_animExplosion.SetFrameSize({ 46, 46 });
-                    m_animExplosion.Play(1);
+                    for (size_t i = 0; i < std::size(m_sprExplosion); ++i)
+                    {
+                        m_sprExplosion[i].SetTexture(m_texExplosion);
+                        m_sprExplosion[i].SetScale({ 2.0f, 2.0f, 1.0f });
+                        m_sprExplosion[i].SetOrigin({ 23, 23, 0.0f });
+                        m_animExplosion[i].SetAnimations({ 11, 1 });
+                        m_animExplosion[i].SetFrameDuration(std::chrono::milliseconds{ 80 });
+                        m_animExplosion[i].SetFrameSize({ 46, 46 });
+                        m_animExplosion[i].Play(1);
+                    }
 
                     m_sndMenu.Play();
 
@@ -222,9 +224,12 @@ namespace esd
 
                 m_bonus.ProcessLogic(dt, m_mousePosition, m_player, m_bonus, piRand);
 
-                for (auto& e : m_enemies)
+                if (m_player.IsAlive())
                 {
-                    e->ProcessLogic(dt, m_mousePosition, m_player, m_bonus, piRand);
+                    for (auto& e : m_enemies)
+                    {
+                        e->ProcessLogic(dt, m_mousePosition, m_player, m_bonus, piRand);
+                    }
                 }
             }
         }
@@ -270,9 +275,9 @@ namespace esd
                         if (m_bonus.GetSubType().b == BonusType::Killer)
                         {
                             (*it)->Kill();
-                            m_sndExplosion.Play();
-                            m_sprExplosion.SetPosition({ (*it)->GetPosition().x, (*it)->GetPosition().y, 0.0f });
-                            m_animExplosion.PlayOnce(0, 1);
+                            m_sndExplosion[0].Play();
+                            m_sprExplosion[0].SetPosition({ (*it)->GetPosition().x, (*it)->GetPosition().y, 0.0f });
+                            m_animExplosion[0].PlayOnce(0, 1);
                         }
                         else
                         {
@@ -290,10 +295,14 @@ namespace esd
                     if (m_player.ProcessCollision(**it))
                     {
                         m_player.Kill();
+                        m_timeClock.Restart();
                         (*it)->Kill();
-                        m_sndExplosion.Play();
-                        m_sprExplosion.SetPosition({ (*it)->GetPosition().x, (*it)->GetPosition().y, 0.0f });
-                        m_animExplosion.PlayOnce(0, 1);
+                        m_sndExplosion[0].Play();
+                        m_sprExplosion[0].SetPosition({ m_player.GetPosition().x, m_player.GetPosition().y, 0.0f });
+                        m_animExplosion[0].PlayOnce(0, 1);
+                        m_sndExplosion[1].Play();
+                        m_sprExplosion[1].SetPosition({ (*it)->GetPosition().x, (*it)->GetPosition().y, 0.0f });
+                        m_animExplosion[1].PlayOnce(0, 1);
 
                         break;
                     }
@@ -301,7 +310,7 @@ namespace esd
 
                 m_enemies.erase(std::remove_if(m_enemies.begin(), m_enemies.end(), [](auto const& enemy) { return !enemy->IsAlive(); }), m_enemies.end());
 
-                if (!m_player.IsAlive())
+                if (!m_player.IsAlive() && m_timeClock.HasPassed(std::chrono::seconds{ 2 }))
                 {
                     M_StopGame();
                 }
@@ -324,7 +333,10 @@ namespace esd
                     e->ProcessAnimation();
                 }
 
-                m_sprExplosion.SetTextureRect(m_animExplosion.GetTextureRect());
+                for (size_t i = 0; i < std::size(m_sprExplosion); ++i)
+                {
+                    m_sprExplosion[i].SetTextureRect(m_animExplosion[i].GetTextureRect());
+                }
             }
         }
     }
@@ -371,7 +383,10 @@ namespace esd
                     e->Render(m_gameLayer, m_defaultProgram, m_gameCamera);
                 }
 
-                m_sprExplosion.Render(m_gameLayer, m_defaultProgram, m_gameCamera);
+                for (auto const& exp : m_sprExplosion)
+                {
+                    exp.Render(m_gameLayer, m_defaultProgram, m_gameCamera);
+                }
 
                 m_gameLayer.Render(*m_window, m_ppProgram, m_staticCamera);
 

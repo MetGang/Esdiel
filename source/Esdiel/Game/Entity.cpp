@@ -10,8 +10,6 @@
 // glm
 #include <glm/gtx/vector_angle.hpp>
 
-#include <iostream>
-
 namespace esd
 {
     Entity::Entity()
@@ -425,6 +423,8 @@ namespace esd
             case EnemyType::COUNT: default: break;
         }
 
+        m_isAlive = true;
+
         m_animation.Play(+m_animState);
     }
 
@@ -508,9 +508,9 @@ namespace esd
             case BonusType::COUNT: default: break;
         }
 
-        m_animation.Play(+m_animState);
-
         m_isAlive = true;
+
+        m_animation.Play(+m_animState);
     }
 
     void Entity::TogglePause()
@@ -521,7 +521,7 @@ namespace esd
 
     void Entity::ProcessLogic(int64_t dt, Vec4i const& mousePosition, Entity const& player, Entity const& bonus, float piRand)
     {
-        if (m_logicFunction != nullptr)
+        if (m_isAlive && m_logicFunction != nullptr)
         {
             m_logicFunction(*this, dt, mousePosition, player, bonus, piRand, m_clock);
         }
@@ -578,6 +578,9 @@ namespace esd
 
     void Entity::Render(RenderLayer const& renderLayer, ShaderProgram const& shaderProgram, Camera const& camera) const
     {
-        m_sprite.Render(renderLayer, shaderProgram, camera);
+        if (m_isAlive)
+        {
+            m_sprite.Render(renderLayer, shaderProgram, camera);
+        }
     }
 }

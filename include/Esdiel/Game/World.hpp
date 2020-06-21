@@ -124,8 +124,8 @@ namespace esd
         Sprite m_sprBg;
 
         Texture m_texExplosion;
-        Sprite m_sprExplosion;
-        Animation m_animExplosion;
+        Sprite m_sprExplosion[2];
+        Animation m_animExplosion[2];
 
         Texture m_texCursor;
         Sprite m_sprCursor;
@@ -142,7 +142,7 @@ namespace esd
 
         Sound m_sndBonusPickups[+BonusType::COUNT];
 
-        Sound m_sndExplosion;
+        Sound m_sndExplosion[2];
 
         Sound m_sndMenu;
 
