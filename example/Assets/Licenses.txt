@@ -1,10 +1,7 @@
-Texture assets from
+Spaceships assets from
 https://www.humblebundle.com/software/8bit-pixel-game-dev-software
 with license
 https://static.gamedevmarket.net/terms-conditions/#pro-licence
-
-Background from
-https://wall.alphacoders.com/big.php?i=193
 
 Ambient music from
 https://opengameart.org/content/tragic-ambient-main-menu
@@ -16,7 +13,7 @@ https://opengameart.org/content/dark-ambient-loop-13
 with license
 https://creativecommons.org/licenses/by/3.0/
 
-Game over music from
+Gameover music from
 https://opengameart.org/content/lose-music-1
 with license
 https://creativecommons.org/licenses/by-sa/3.0/
