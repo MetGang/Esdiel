@@ -35,10 +35,10 @@ namespace esd
         Clock& operator = (Clock const&) = default;
 
         ///
-        Clock(Clock&& rhs);
+        Clock(Clock&& rhs) noexcept;
 
         ///
-        Clock& operator = (Clock&& rhs);
+        Clock& operator = (Clock&& rhs) noexcept;
 
         ///
         ~Clock() = default;

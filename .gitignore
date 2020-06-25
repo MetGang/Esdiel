@@ -1,8 +1,11 @@
 .vscode
+.vs
 build
 
-example/*.dll
-example/*.exe
+example/*
+*.vsxproj*
+*.sln
+*.htm
 *.xcf
 
 *.make

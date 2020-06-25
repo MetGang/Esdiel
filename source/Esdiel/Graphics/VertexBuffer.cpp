@@ -9,6 +9,7 @@
 #include <Esdiel/Utility/OffsetOf.hpp>
 
 // C++
+#include <algorithm>
 #include <utility>
 
 // glad

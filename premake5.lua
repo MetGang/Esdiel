@@ -1,6 +1,8 @@
 -- Workspace configuration
 workspace "E+G Study Project"
 
+    architecture "x86_64"
+
     configurations {
         "Debug",
         "Release"

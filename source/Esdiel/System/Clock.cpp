@@ -1,6 +1,7 @@
 #include <Esdiel/System/Clock.hpp>
 
 // C++
+#include <ctime>
 #include <cstring>
 
 namespace esd
@@ -24,14 +25,14 @@ namespace esd
 
     }
 
-    Clock::Clock(Clock&& rhs)
+    Clock::Clock(Clock&& rhs) noexcept
         : m_refPoint { rhs.m_refPoint }
         , m_pausePoint { rhs.m_pausePoint }
     {
         rhs.Restart();
     }
 
-    Clock& Clock::operator = (Clock&& rhs)
+    Clock& Clock::operator = (Clock&& rhs) noexcept
     {
         if (this != &rhs)
         {
@@ -150,16 +151,4 @@ namespace esd
 
         return count;
     }
-
-    char const* GetReadableTime(Duration_t const& duration)
-    {
-        std::time_t rawTime = SystemClock_t::to_time_t(SystemClock_t::time_point{ duration });
-        std::time_t currentTime = std::time(&rawTime);
-
-        char* result = std::ctime(&currentTime);
-        result[std::strlen(result) - 1] = '\0';
-
-        return result;
-    }
-
 }
