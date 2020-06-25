@@ -36,6 +36,7 @@ project "Esdiel"
     targetname "%{prj.name}-%{cfg.system}-%{cfg.buildcfg}"
 
     targetdir "example"
+    debugdir "example"
 
     objdir "build/%{cfg.system}/%{cfg.buildcfg}/obj"
 
