@@ -3,7 +3,7 @@
 build
 
 example/*
-*.vsxproj*
+*.vcxproj*
 *.sln
 *.htm
 *.xcf
