@@ -1,7 +1,9 @@
 .vscode
 build
-Makefile
-*.dll
-*.exe
+
+example/*.dll
+example/*.exe
 *.xcf
+
 *.make
+Makefile
