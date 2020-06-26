@@ -4,8 +4,7 @@ Programming study project repository that contains engine and game made in it.
 
 ### Building
 
-Clone this repository and follow steps below to generate project files and build executable.
-Then just run executable from `example` folder.
+Clone this repository and follow steps below to generate project files and build executable. Then just run executable from `example` folder.
 
 ##### Windows
 
@@ -31,9 +30,9 @@ make # config=release
 
 ### Controls
 
-`Escape` - closes the game
-`Enter` - starts the game while in menu or gameover screen
-`Mouse movement` - controls player in game
+* `Escape` - closes the game
+* `Enter` - starts the game while in menu or gameover screen
+* `Mouse movement` - controls player in game
 
 ### Issues
 
