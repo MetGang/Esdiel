@@ -5,7 +5,7 @@ Programming study project repository that contains engine and game made in it.
 ### Building
 
 Clone this repository and follow steps below to generate project files and build executable.
-Then just run executable in `example` folder.
+Then just run executable from `example` folder.
 
 ##### Windows
 
@@ -28,6 +28,12 @@ sudo apt install g++ libsdl2-dev
 ./tools/premake5 gmake2
 make # config=release
 ```
+
+### Controls
+
+`Escape` - closes the game
+`Enter` - starts the game while in menu or gameover screen
+`Mouse movement` - controls player in game
 
 ### Issues
 
